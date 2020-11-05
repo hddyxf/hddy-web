@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+       <link rel="shortcut icon" href="../../logo.ico" />
+        <link rel="stylesheet" href="/css/font.css">
+        <link rel="stylesheet" href="/css/xadmin.css">
+        <link rel="stylesheet" href="/css/theme.css">
+        <script src="/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/xadmin.js"></script>
+<script>  
+//这里代码多了几行，但是不会延迟显示，速度比较好，格式可以自定义，是理想的时间显示
+setInterval("fun(show_time)",1);
+function fun(timeID){ 
+var date = new Date();  //创建对象  
+var y = date.getFullYear();     //获取年份  
+var m =date.getMonth()+1;   //获取月份  返回0-11  
+var d = date.getDate(); // 获取日  
+var w = date.getDay();   //获取星期几  返回0-6   (0=星期天) 
+var ww = ' 星期'+'日一二三四五六'.charAt(new Date().getDay()) ;//星期几
+var h = date.getHours();  //时
+var minute = date.getMinutes()  //分
+var s = date.getSeconds(); //秒
+var sss = date.getMilliseconds() ; //毫秒
+    if(m<10){
+        m = "0"+m;}
+    if(d<10){
+        d = "0"+d;}
+    if(h<10){
+        h = "0"+h;}
+    if(minute<10){
+        minute = "0"+minute;} 
+    if(s<10){
+        s = "0"+s;}
+    if(sss<10){
+        sss = "00"+sss;}
+        else if(sss<100){
+      sss = "0"+sss;
+      }
+  document.getElementById(timeID.id).innerHTML =  y+"年"+m+"月"+d+"日 "+h+":"+minute+":"+s+""+ww; 
+  }
+</script>
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <blockquote class="layui-elem-quote">欢迎分院院长：
+                                <span class="x-red">{$Request.session.username}</span>    当前时间:   <span id="show_time"></span>
+                                <span></span>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+               
+                <br>
+                 
+           
+                <style id="welcome_style"></style>
+                        <div >
+                                本系统由 数据科学与人工智能学院 软件工程系 提供技术支持，并持有版权。
+                        </div>
+        </div>
+    </body>
+</html>

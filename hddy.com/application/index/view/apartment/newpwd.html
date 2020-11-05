@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
+    <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
+</head>
+<body>
+    <body>
+    <div class="alert alert-info">当前位置<b class="tip"></b>个人管理<b class="tip"></b>修改密码</div>
+    <table class="table table-striped table-bordered table-condensed list">
+        <thead>
+            <tr>
+                <td colspan="6"><b>修改密码</b></td>
+            </tr>
+        </thead>
+        <form method="post" action="newpwdrun">
+        <tbody>
+            <tr>
+                <td>用户名：</td>
+                <td colspan="5"><strong>{$Request.session.username}</strong>
+                    <input type="hidden" name="username" value="{$Request.session.username}"></td>
+            </tr>
+            <tr>
+                <td  width="15%">输入新密码：</td>
+                <td colspan="5">
+                    <input name="password" value="" type="password" />
+                </td>
+            </tr>
+            <tr>
+                <td  width="15%">再次输入新密码：</td>
+                <td colspan="5">
+                    <input name="passwordd" value="" type="password" />
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+<!--                    <a href="help" class="btn btn-inverse">保存</a>-->
+                    <input class="btn btn-inverse" id="find" type="submit" value="提交" />
+<!--                     <input class="btn btn-inverse" type="button" value="取消" /></td> -->
+            </tr>
+        </tfoot>
+    </table>
+        </from>
+</body>
+</html>

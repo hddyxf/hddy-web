@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
+    <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
+    
+
+      
+</head>
+<body>
+    <br>
+    <table class="table table-striped table-bordered table-condensed list">
+        <thead>
+            <tr>
+                <td colspan="6"><b>专业基本信息</b></td>
+            </tr>
+        </thead>
+        <form method="post" action="editmajor">
+        <tbody>
+           
+            <tr>
+                <td >专业名称：<font color="FF0000">*</font></td>
+                <td colspan="3">
+                     <input name="majorid" value="{$data.majorid}" type="hidden" />
+                    <input name="majorinfo" value="{$data.majorinfo}" type="text" placeholder='15位以内全汉字'/>
+                </td>
+                <td >所属学院：<font color="FF0000">*</font></td>
+                <td colspan="2">
+                    <select name="collegeid">
+                        <option value="{$data.collegeid}" >当前:{$data.collegeinfo}</option>
+                        {volist name='data1' id='list'}
+                        <option value="{$list.collegeid}">{$list.collegeinfo}</option>
+                         {/volist}
+                    </select>
+                    </td>
+            </tr>
+           
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+<!--                    <a href="help" class="btn btn-inverse">保存</a>-->
+                    <input class="btn btn-inverse" type="submit" value="提交" />
+                   <input class="btn btn-inverse" id="try" type="button" value="刷新" onclick="location.reload()"/>
+<!--                     <input class="btn btn-inverse" type="button" value="取消" /></td> -->
+&nbsp&nbsp&nbsp&nbsp信息保存成功如页面信息未更新请点击刷新按钮。
+    
+
+            </tr>
+        </tfoot>
+    </from>
+    </table>
+</body>
+</html>

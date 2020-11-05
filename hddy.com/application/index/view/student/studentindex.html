@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta charset="UTF-8">
+      	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
+        <title>欢迎使用学生德育学分管理系统</title>
+        <link rel="shortcut icon" href="../../logo.ico" />
+        <link rel="stylesheet" href="/css/font.css">
+         <link rel="stylesheet" href="/css/xadmin.css">
+        <link rel="stylesheet" href="/css/theme.css">
+        <script src="/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+            
+    </head>
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a>欢迎：&nbsp{$data.collegeinfo} &nbsp&nbsp{$data.username}  &nbsp&nbsp {$data.u_name} &nbsp&nbsp权限：{$data.jurisdictioninfo} </a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right;background-color:#4682B4" onclick="location.reload()" title="刷新" >
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px" ></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">          
+                             <h4><a class="layui-btn layui-btn-sm"   href="{:url('stulog')}"style="background-color:#4682B4">
+                               &nbsp;查看个人操作日志</a>
+                               <a class="layui-btn layui-btn-sm"  href="{:url('stuoperation')}"style="background-color:#FF5511">
+                                    &nbsp;学分操作</a>
+                                    <a class="layui-btn layui-btn-sm"  href="{:url('goout')}"style="background-color:#FF5511">
+                                            &nbsp;退出登陆</a>
+                              </h4>                     
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>       
+    </body>
+</html>

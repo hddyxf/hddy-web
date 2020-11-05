@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>欢迎使用学生德育学分管理系统</title>
+  <link rel="shortcut icon" href="/static/logo.ico" />
+   <link rel="stylesheet" href="/logincss/style.css">
+  <script>
+  window.onload = function IEVersion() {
+            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+            var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
+            var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+            var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+            if(isIE) {
+                var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                reIE.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                if(fIEVersion == 7) {
+                  alert ('系统不提供对IE系浏览器的支持') 
+                window.opener=null;window.top.open('','_self','');window.close(this);
+                } else if(fIEVersion == 8) {
+                  alert ('系统不提供对IE系浏览器的支持')
+                window.opener=null;window.top.open('','_self','');window.close(this);
+                } else if(fIEVersion == 9) {
+                  alert ('系统不提供对IE系浏览器的支持')
+                window.opener=null;window.top.open('','_self','');window.close(this);
+                } else if(fIEVersion == 10) {
+                  alert ('系统不提供对IE系浏览器的支持')
+                window.opener=null;window.top.open('','_self','');window.close(this);
+                } else {
+                  alert ('系统不提供对IE系浏览器的支持')
+                window.opener=null;window.top.open('','_self','');window.close(this);
+                }   
+            } else if(isEdge) {
+              alert ('系统不提供对IE系浏览器的支持')
+                window.opener=null;window.top.open('','_self','');window.close(this);
+            } else if(isIE11) {
+              alert ('系统不提供对IE系浏览器的支持')
+                window.opener=null;window.top.open('','_self','');window.close(this);
+            }
+            
+        }
+  </script>
+  <script>
+  function refresh(){
+    var code = document.getElementById('code');
+    code.src='{:captcha_src()}?'+Math.random();
+  }
+  </script>
+   <style>
+       img{
+  border:10px solid transparent;
+  vertical-align:top;
+}
+   </style>
+   <style type="text/css">
+    .imgPlace{ position:relative; top:45px; left:10px;}
+
+</style>
+<style type="text/css">
+.fixed{ position:fixed; left:0px;bottom:0px; width:100%; height:70px;  z-index:9999;}
+</style>
+</head>
+<body onload="refresh()">
+  &nbsp&nbsp&nbsp
+  <!-- <img src="static/images/logo1.png"/><img src="static/images/logo2.png" class="imgPlace"/> -->
+  <img src="/images/logo1.png" /><img src="/images/logo2.png" class="imgPlace"/>
+  <div class="container"><br><br><br><br>
+  <div class="login">
+  	<!-- <h5 class="login-heading" align="center">登陆系统</h5> -->
+      <form method="post" action="{:url('login/login')}">
+         <input type="text" name="username" placeholder="用户名：" required="required" class="input-txt" />
+          <input type="password" name="password" placeholder="密码：" required="required" class="input-txt" />
+          <input type="text" name="code" placeholder="验证码：" required="required" class="input-txt" style="width:250px" autocomplete="off"/>
+          <img id="code" alt="验证码" height="40" width="180" align="bottom" class="lnk btn--right"  style="cursor:pointer;" title="点击图片刷新" onclick="this.src='{:captcha_src()}?d='+Math.random();" />
+           <div class="login-footer">
+            <br><br>
+            <button type="submit" class="input-txt btn">登&emsp;陆</button>
+            <a href="{:url('Index/Help/help')} " class="lnk btn--left" style=" font-size:17px;" >登陆遇到问题？ </a>
+            <a href="{:url('Index/Stuquery/stuquery')} " class="lnk btn--right" style=" font-size:17px;" >学生自行查询入口</a>
+          </div>
+      </form>
+  </div>
+</div>
+
+<script>   
+　　console.log("%c ", "background: url(http://img.soogif.com/kx63nQscumXTtQjSl70ZyDv5w68AbL7C.gif) no-repeat center;padding-left:440px;padding-bottom: 142px;")
+    console.log("%c 你似乎发现了一个彩蛋 %c  %c 然而并没有什么卵用", "color:red","","color:orange;font-weight:bold")
+     console.log("%c 那就祝你可以拥有快乐的每一天吧 %c  %c 嗯哼？", "color:blue;font-weight:bold","","color:green;font-weight:bold")
+     console.log("%c 创客实验室 %c%c 出品", "color:BlueViolet;font-weight:bold","","color:Black;font-weight:bold")
+     
+</script>
+</body>
+</html>

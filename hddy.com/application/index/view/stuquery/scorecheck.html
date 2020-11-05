@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <!-- UNIFIED -->
+    <meta charset="utf-8">
+    <title>学生查询</title>
+    <link rel="shortcut icon" href="../../logo.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.css" >
+    <link rel="stylesheet" href="/css/xg.css"  >
+    <style type="text/css">
+    .imgPlace{ position:relative; top:25px; left:10px;}
+
+    </style>
+</head>
+<body>
+<!-- 内容区 -->
+<br>&nbsp&nbsp&nbsp
+<img src="/images/logo1.png" /><img src="/images/logo2.png" class="imgPlace"/>
+<div class="container xg-bybd aiui ">
+    <div class="sys-name"></div>
+    <div class="row">
+        <div class="col-md-2 col-sm-3 step">
+            <h3>学生学分查询</h3>
+            <ul>
+                <li class="choice"  ><div class="clearfix"><span class="pull-left nav-adorn"></span><span class="pull-left words">阅读注意事项<br/>填写学生信息</span></div></li>
+            </ul>
+             <a class="refer-btn" href="{:url('Admin/login')}">返回系统登陆</a>
+        </div>
+        <div class="col-md-10 col-sm-9">
+            <div class="r-content">
+              学号：<strong>{$date1.s_id}</strong>
+              &nbsp&nbsp姓名：<strong>{$date1.s_name}</strong>
+              &nbsp&nbsp性别：<strong>{$date1.s_sex}</strong>
+              &nbsp&nbsp当前德育学分：<strong>{$date1.score}</strong><br>
+              所在班级：<strong>{$date1.s_class}</strong>
+              &nbsp&nbsp所在学院：<strong>{$date1.collegeinfo}</strong>
+              &nbsp&nbsp所在专业：<strong>{$date1.majorinfo}</strong>
+              &nbsp&nbsp辅导员：<strong>{$date1.teacherinfo}</strong>
+              
+                <hr>
+                 <table class="table table-bordered text-center" >
+                        <tr>
+                                <td style="width:8%">处理人</td>
+                                <td style="width:10%">操作类型</td>
+                                <td style="width:10%">操作分值</td>
+                                <td style="width:10%">操作状态</td>
+                                <td style="width:7%">操作时间</td>
+                                <td >具体描述</td>
+                                <td style="width:10%">操作备注</td>
+                            </tr>
+                {volist name='data' id='list'}
+                <tr>
+                    <td>{$list.u_name}</td>
+                    <td>{$list.classinfo}</td>
+                    <td>{$list.score}</td>
+                    <td>{$list.operationinfo}</td>
+                    <td>{$list.datetime}</td>
+                    <td>{$list.scoresecinfo}</td>
+                    <td>{$list.info}</td>
+                </tr>
+                {/volist}
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..//js/jquery-1.7.1.min.js"></script>
+<script src="..//js/bootstrap.min.js"></script>
+<script src="..//js/datepicker/laydate.js"></script>
+</body>
+</html>
