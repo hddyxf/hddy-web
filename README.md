@@ -1,2 +1,2 @@
 # dy-develop
-this is a repository for dyxf project
+这是德育学分开发用仓库
