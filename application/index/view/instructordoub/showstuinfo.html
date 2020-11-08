@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
+    <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
+    <script>
+            function showCustomer(str)
+            {
+              var xmlhttp;    
+              if (str=="")
+              {
+                document.getElementById("txtHint").innerHTML="";
+                return;
+              }
+              if (window.XMLHttpRequest)
+              {
+                // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp=new XMLHttpRequest();
+              }
+              else
+              {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+              }
+              xmlhttp.onreadystatechange=function()
+              {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                  document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+                }
+              }
+              xmlhttp.open("GET","classmore?q="+str,true);
+              xmlhttp.send();
+            }
+            </script>
+</head>
+<body>
+    
+    <table class="table table-striped table-bordered table-condensed list">
+        <thead>
+            <tr>
+                <td colspan="6"><b>学生基本信息</b></td>
+            </tr>
+        </thead>
+        <tbody>
+           
+            <tr>
+                <td width="15%"><strong>学号：</strong></td>
+                <td width="15%">
+                    {$data.s_id}
+                </td>
+                <td width="15%"><strong>姓名：</strong></td>
+                <td width="15%">
+                        {$data.s_name}
+                <td width="15%"><strong>性别：</strong></td>
+                <td width="25%">
+                        {$data.s_sex}
+                </td>
+            </tr>
+            <tr>
+                <td ><strong>身份证号码：</strong></td>
+                <td >
+                        {$data.s_proid}
+                </td>
+                <td ><strong>学生手机号码：</strong></td>
+                <td >{$data.s_add}
+                    </td>
+                <td ><strong>家庭住址：</strong></td>
+                <td >
+                        {$data.s_home}
+                    </td>
+            </tr>
+            <tr>
+                    <td ><strong>辅导员：</strong></td>
+                    <td >
+                            {$data.teacherinfo}
+                    </td>
+                    <td ><strong>所在专业：</strong></td>
+                    <td >{$data.majorinfo}
+                        </td>
+                    <td ><strong>所在学院：</strong></td>
+                    <td >
+                            {$data.collegeinfo}
+                        </td>
+                </tr>
+            <tr>
+                    <td ><strong>行政班：</strong><font color="FF0000">*</font></td>
+                    <td >
+                            {$data.s_class}
+                    </td>
+                    <td ><strong>寝室号及床位：</strong><font color="FF0000">*</font></td>
+                    <td colspan="3">
+                            {$data.s_room}
+                    </td>
+                </tr>
+                <td ><strong>父亲姓名：</strong></td>
+                <td >{$data.s_dadname}              
+                </td>
+                <td ><strong>父亲手机号码：</strong></td>
+                <td colspan="3">
+                        {$data.s_dadadd}</td>
+            </tr>
+            <tr>
+                <td ><strong>母亲姓名：</strong></td>
+                <td >{$data.s_mumname}
+                    
+                </td>
+                <td ><strong>母亲手机号码：</strong></td>
+                <td colspan="3">{$data.s_mumadd}
+                    </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>学分操作信息（通常情况下数据为空，当有加分或减分操作时数据将会在下方显示。）
+    {volist name='data1' id='list'}
+    <table class="table table-striped table-bordered table-condensed" id="top">
+            <thead>
+                <tr class="tr_detail">
+                    <td class="auto-style1">操作流水号</td>
+                    <td class="auto-style1">学号</td>
+                    <td class="auto-style1">姓名</td>
+                    <td class="auto-style1">性别</td>
+                    <td class="auto-style1">处理人</td>
+                    <td class="auto-style1">操作类型</td>
+                    <td class="auto-style1">操作分数</td>
+                    <td class="auto-style1">操作状态</td>
+                    <td class="auto-style1">操作时间</td>
+                </tr>
+            </thead>
+            <tbody>
+                    
+                <tr>
+                    <td>{$list.id}</td>
+                    <td>{$list.s_id}</td>
+                    <td>{$list.s_name}</td>
+                    <td>{$list.s_sex}</td>
+                    <td>{$list.u_name} - {$list.username}</td>
+                    <td>{$list.classinfo}</td>
+                    <td>{$list.score}</td>
+                    <td>{$list.operationinfo}</td>
+                    <td>{$list.datetime}</td>
+                </tr>
+                
+                <tr>
+                        <td colspan="9"><strong>操作内容:</strong>{$list.scoresecinfo}</td>
+                </tr>
+               
+            </tbody>
+        </table>
+        {/volist}
+</body>
+</html>

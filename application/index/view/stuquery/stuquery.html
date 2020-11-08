@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <!-- UNIFIED -->
+    <meta charset="utf-8">
+  
+    <title>学生查询</title>
+    <link rel="shortcut icon" href="../../logo.ico" />
+    <link rel="stylesheet" href="/css/bootstrap.css" >
+    <link rel="stylesheet" href="/css/xg.css"  >
+    <style type="text/css">
+    .imgPlace{ position:relative; top:25px; left:10px;}
+
+    </style>
+</head>
+<body>
+<!-- 内容区 -->
+<br>&nbsp&nbsp&nbsp
+<img src="/images/logo1.png" /><img src="/images/logo2.png" class="imgPlace"/>
+<div class="container xg-bybd aiui ">
+    <div class="sys-name"></div>
+    <div class="row">
+        <div class="col-md-2 col-sm-3 step">
+            <h3>学生学分查询</h3>
+            <div style="margin-left: 40px">
+                <h6 style="font-size: medium">阅读注意事项<br/>填写学生信息</h6>
+            </div>
+
+<!--            <ul>-->
+<!--                <li class="choice"  ><div class="clearfix"><span class="pull-left nav-adorn"></span><span class="pull-left words">阅读注意事项<br/>填写学生信息</span></div></li>-->
+<!--            </ul>-->
+            
+            <a class="refer-btn" href="{:url('Admin/login')}">返回系统登陆</a>
+        </div>
+        <div class="col-md-10 col-sm-9">
+            <div class="r-content">
+                <em>各位同学：</em>
+                <p>为了简化程序，方便同学随时随地可以查询个人学分情况，本系统开通了学生网上学分查询系统。现将有关事项通知如下：</p>
+                <p>一、查询到的数据可能存在延迟。</p>
+                <p>二、如认为个人学分有误，可通过查看学分具体操作流水号，通过编号向辅导员说明情况等待复议。</p>
+                <div class="row form-s1 checkid">
+                	<form action="scorecheck" method="post">
+                    <div class="col-sm-4 col-md-2"><label>学生信息：</label></div>
+                    <div class="col-sm-8 col-md-5"><input class="form-control" placeholder="请输学号"  type="text" value="" name="u_id"></div>
+                    <div class="col-sm-8 col-md-5"><input class="form-control" placeholder="请输身份证号码"  type="text" value="" name="proid" maxlength="18"></div><br><br><br>
+                    <div  align="center"><button type="submit" class="btn btn-default blue30 btn-blue ">&nbsp&nbsp&nbsp查询学分&nbsp&nbsp&nbsp</button></div>
+                </div>
+                </form>
+                <div class="remark mt20 row">
+                    <div class="col-sm-3  col-xs-1 text-right">注:</div>
+                    <div class="col-xs-10 col-sm-9">
+                      <p>1、请填写真实、有效的学生学号</p>
+                      <p>2、请填写真实、有效的第二代身份证号码</p>
+                      <p>3、核对无误后开始查询</p> 
+                                  
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..//js/jquery-1.7.1.min.js"></script>
+<script src="..//js/bootstrap.min.js"></script>
+<script src="..//js/datepicker/laydate.js"></script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta charset="UTF-8">
+        <title>欢迎使用学生德育学分管理系统</title>
+        <link rel="shortcut icon" href="../../logo.ico" />
+        <link rel="stylesheet" href="/css/font.css">
+         <link rel="stylesheet" href="/css/xadmin.css">
+        <link rel="stylesheet" href="/css/theme.css">
+        <script src="/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script>
+            function addteacher(){
+		layer.open({
+        	//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type:2,
+            title:"添加辅导员信息",
+            area: ['80%','80%'],
+            shade: 0.4,
+            content:"addteacher"
+        });
+	}
+        </script>
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a>首页</a>
+                <a>系统参数管理</a>
+                <a>
+                    <cite>辅导员信息管理</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right;background-color:#4682B4" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                           
+                             <h4><button class="layui-btn layui-btn-sm" onclick="addteacher()" style="background-color:#4682B4">
+                                        <i class="layui-icon">&#xe608;</i> &nbsp添加辅导员信息</button><i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp</i> <strong>如辅导员离职或其他情况调离，需要新的人员接替管理其所带班级时，只编辑原辅导员信息即可更新，不建议新增辅导员，因为可能会导致学生、班级与辅导员的关联错误。</strong></h4>                     
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text"  placeholder="关键字查询" autocomplete="off" class="layui-input" name="ssk" id="ssk" ></div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <div class="layui-btn layui-btn-sm" lay-submit="" data-type="reload" id="tj" lay-filter="sreach" style="background-color:#4682B4">
+                                        <i class="layui-icon">&#xe615;</i></div>
+                                        <strong><i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp支持辅导员姓名、所在学院名称的精确及模糊查询。(输入“_”可查询所有信息)</i> </strong>
+                               
+                                    </div>
+                               
+                            </form>
+                        </div><table id="demo" lay-filter="test" class="layui-card-body " ></table>
+                        <script type="text/html" id="barDemo">
+                            <a class="layui-btn layui-btn-normal" lay-event="detail" style="background-color:#708090">查看/编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                        
+                        </script>
+                    </div>
+                </div>
+            </div>
+             <div >
+                                本系统由 数据科学与人工智能学院 软件工程系 提供技术支持，并持有版权。
+                        </div>
+        </div>
+         
+    </body>
+    <script>layui.use('laydate',
+        function() {
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+            
+
+        });</script>
+<script>
+  layui.use('table', function(){
+  var table = layui.table;
+  var index = layer.load(2);
+  table.render({
+    elem: '#demo'
+    ,url:'teacherlist'
+    ,toolbar: '#toolbarDemo'
+    ,title: '用户数据表'
+    ,cols: [[
+        {type:'numbers',title:'序号',}
+      ,{field:'teacherinfo', title:'姓名',}
+      ,{field:'collegeinfo', title:'所属学院',}
+      ,{ title:'操作', toolbar: '#barDemo',width:180}]]
+    ,page: true
+    ,done:function () {
+                        layer.close(index) //加载完数据
+                    }
+  });
+       
+
+        var active = {
+            reload: function(){
+                var index = layer.load(2);
+                var techerinfo = $('#ssk').val(); //传入搜索值 
+                //console.log((username));验证值是否获取
+                //执行重载
+                table.reload('demo', {
+                    url : 'teachercheck',
+                    method:'post',
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: { //类似于 data
+                         techerinfo:techerinfo //传入日期参数
+                         ,done:function () {
+                        layer.close(index) //加载完数据
+                    }
+                        
+                    }
+                });
+            }
+        };
+           
+        
+      var table = layui.table;
+      
+      //监听单元格编辑
+     table.on('tool(test)', function(obj){
+    var data = obj.data;
+   
+    if(obj.event === 'detail'){
+         layer.open({
+    type: 2,
+    title: '查看辅导员详情',
+    shadeClose: true,
+    shade: 0.4,
+    area: ['80%', '80%'],
+    
+    content: 'showteacher?id='+data.teacherid //iframe的url
+  });
+    }
+    if(obj.event === 'del'){
+        layer.confirm('确定删除辅导员:  ' + data.teacherinfo + '  吗？', function (index) {
+            obj.del();  //页面表格内部删除
+                    $.ajax({
+                        url: "delteacher",
+                        type: "POST",
+                        data: {'teacherid': data.teacherid,},
+                        async: false,
+                        success: function (data) {
+                            var res = JSON.parse(data)
+                            var status = parseInt(res.status);
+                            if (status == 1) {
+                                layer.msg('操作失败！', {icon: 0})
+                            }  else {
+                                layer.msg('操作成功！', {icon: 1})
+                            }
+                        }
+                    })
+                    layer.close(index);
+                    PowerTable.reload(); //重新加载表格
+                });
+    }
+    else{
+    console.log(('111'));
+    }
+  });
+    
+        $('#tj').on('click', function(){
+            var type = $(this).data('type');
+            //不能为空验证
+            if( $('#ssk').val()==""){
+                layer.msg('查询内容不能为空');
+                return false;
+            }
+            active[type] ? active[type].call(this) : '';
+        });
+    
+     $(document).on('keydown',function(e){
+      if(e.keyCode == 13){
+        $('#tj').trigger('click');
+        return false;
+      }
+        })
+
+
+
+
+         });
+         
+</script>
+ 
+</html>
