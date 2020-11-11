@@ -77,7 +77,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['add', 'require|length:11|number', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
+            ['add', 'require|length:11|mobile', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
             ['u_mail', 'email', '邮箱格式不正确'],
             ['qq', 'number|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
             ['vx', 'min:5|max:20|alphaDash', '微信号码至少5位|微信号码限制不能超过20位|微信号码包含非法字符'],]);
@@ -165,6 +165,7 @@ class Hddy1 extends Controller//权限1
     public function newpwdrun()//设置新密码操作
     {
         $date = input('post.');
+
         $validate = new validate([
             ['password', 'min:5|max:20|alphaDash|require', '密码至少5位|密码不能超过20位|密码不能包含非法字符|密码不能为空'],]);
         if (!$validate->check($date)) {
@@ -179,7 +180,9 @@ class Hddy1 extends Controller//权限1
             exit;//判断数据是否合法
         } else {
             $usrname = session('username');
-            if ($usrname === $date['username']) {//判断当前用户名是否和session相等，预防通过前端修改用户名
+            if ($usrname === $date['username']) {
+                //判断当前用户名是否和session相等，预防通过前端修改用户名
+
                 if ($date['password'] === $date['passwordd']) {//验证密码一致性
                     Db::table('user')
                         ->where('username', $usrname)
@@ -192,8 +195,14 @@ class Hddy1 extends Controller//权限1
                             'state' => '正常',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
-                        session('username', null);
-                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:8088" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
+//                        return json(session('url'));
+//                        return json($login_url);
+//                        return json(2);
+//                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:8088" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
+                        echo "<script type='text/javascript'>parent.layer.('saaa',function() {
+                           window.location.href=\"login.html\"
+                        });parent.history.go(-1);</script>";
+//                        $this->success("aaa","admin/login");
                         exit;
 
                     } else {
@@ -593,6 +602,7 @@ class Hddy1 extends Controller//权限1
     public function editshowrun()//编辑用户操作
     {
         $date = input('post.');
+//        return json($date);
         $validate = new validate([
             ['u_id', 'require|alphaDash|max:10', '未知参数异常，请返回重试！|未知参数异常，请返回重试！|未知参数异常，请返回重试！'],
             ['username', 'require|alphaDash|max:10', '用户名参数异常，请返回重试！|用户名参数异常，请返回重试！|用户名参数异常，请返回重试！'],
@@ -601,13 +611,14 @@ class Hddy1 extends Controller//权限1
             ['user_id', 'require|[0-9]{17}[0-9xX]|max:18', '身份证号码不能为空|身份证号码限制为18位数字最后一位可为X！|身份证号码限制不能超过18位'],
             ['u_class', 'require|number', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|number', '所属单位名称不能为空|参数异常'],
-            ['add', 'length:11|number', '手机号码限制11位全数字！|手机号码限制11位全数字！'],
+            ['add', 'length:11|mobile', '手机号码限制11位全数字！|手机号码限制11位全数字！'],
             ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|number', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash', '微信号码限制不能超过25位|微信号包含非法字符！'],
             ['state', 'max:5|number', '账号状态选项参数异常！|账号状态选项参数异常！'],
             ['jurisdiction', 'require|number', '权限参数异常！|权限参数异常！'],
         ]);
+//        return json($validate->check($date));
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
@@ -721,37 +732,69 @@ class Hddy1 extends Controller//权限1
 //        }catch(\Exception	$e){
 //            return json("nihao");
 //        }
-        $date['s_room']=$date['s_dormitory']."-".$date['s_room'];
-        foreach ($date as $key=>$value)
-        {
-            try{
-                $res=Db::name('students')
-                    ->where('s_id|s_name|s_sex|s_proid|s_add|s_home|s_class|s_room|s_apartment|s_dormitory|s_dadname|s_dadadd|s_mumname|s_mumadd',$value)
-                    ->findOrFail();
-                echo "<script>parent.layer.alert('请检查添加的学生信息防止重复');parent.history.go(-1)</script>";
-                exit;
-            }catch(\Exception	$e){
-                break;
-            }
-        }
+//        $check_room=Db::name('students')
+//            ->where('s_room',$date['s_room'])
+//            ->find();
+//        if($this){
+//            echo "<script>parent.layer.alert('');parent.history.go(-1)</script>";
+//        }
+//        return json($date);
 //       utf8中文字符一个汉字占3个字节
+//        $test=array(
+//            's_id'=>1180131231,
+//            's_name'=>'xx',
+//            's_sex'=>'男',
+//            's_proid'=>111111111111111111,
+//            's_add'=>1234567890.,
+//            's_home'=>'家',
+//            's_class'=>1801312,
+//            's_apartment'=>1101,
+//            's_dormitory'=>1102,
+//            's_dadname'=>'汪朝源',
+//            's_dadadd'=>1234567890.,
+//            's_mumname'=>'汪朝源',
+//            's_mumadd'=>1234657890.
+//        );
+//        $check_data=array(
+//            's_id'=>'与现有学号重复请更改',
+//            's_name'=>'与现有人名重复请更改',
+//            's_proid'=>'与现有身份证重复请更改',
+//            's_add'=>'与现有学生手机号码重复请更改',
+//            's_room'=>'与现有寝室信息重复请更改'
+//        );
+//        foreach ($date as $key=>$value)
+//        {
+//            $res=Db::name('students')
+//                ->where($key,$value)
+//                ->find();
+////                return json($res);
+//            if($res){
+////                    return json($check_data['s_id']);
+//                echo "<script>parent.layer.alert('$check_data[$key]');parent.history.go(-1)</script>";
+//                exit;
+//            }
+//        }
         $validate = new validate([
-            ['s_id', 'require|number|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
-            ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！'],
+            ['s_id', 'require|regex:int|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
+            ['s_name', 'require|chs|max:5', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
             ['s_sex', 'require|chs|max:3', '性别不能为空！|性别参数异常，请返回重试！|性别参数异常，请返回重试！'],
             ['s_proid', 'require|[0-9]{17}[0-9xX]|max:18', '身份证号码不能为空！|身份证号码限制18位数字，最后一位可以为X！|身份证号码限制不能超过18位！'],
-            ['s_add', 'length:11|number', '学生手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_add', 'length:11|regex:int', '学生手机号码限制为11位全数字|手机号码限制为11位全数字'],
             ['s_home', 'max:60', '家庭住址限制20个字符以内'],
-            ['s_class', 'require|number|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
-            ['s_room', 'require|max:10|alphaDash', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！'],
-            ['s_apartment', 'require|number', '未选择公寓号|参数异常，请返回重试'],
-            ['s_dormitory', 'require|number', '未选择寝室|参数异常，请返回重试'],
+            ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
+            ['s_room', 'require|max:15|alphaDash', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！'],
+            ['s_apartment', 'require|regex:int', '未选择公寓号|参数异常，请返回重试'],
+            ['s_dormitory', 'require|regex:int', '未选择寝室|参数异常，请返回重试'],
             ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
-            ['s_dadadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
             ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
-            ['s_mumadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
-        if (!$validate->check($date)) {
+//        echo ($validate->check($test));
+//        echo ($validate->getError());
+//        return false;
+        if (!$validate->check($test)) {
+//            return json('意味着通过了数据重复检验但格式错位');
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),
                 'info' => '添加学生时输入非法字符。',
@@ -763,6 +806,28 @@ class Hddy1 extends Controller//权限1
             exit;//判断数据是否合法
         }
         else {
+//            return json('完全正确');
+            $check_data=array(
+                's_id'=>'与现有学号重复请更改',
+                's_name'=>'与现有人名重复请更改',
+                's_proid'=>'与现有身份证重复请更改',
+                's_add'=>'与现有学生手机号码重复请更改',
+                's_room'=>'与现有寝室信息重复请更改'
+            );
+            foreach ($date as $key=>$value)
+            {
+                $res=Db::name('students')
+                    ->where($key,$value)
+                    ->find();
+//                return json($res);
+                if($res){
+//                    return json($check_data['s_id']);
+                    echo "<script>parent.layer.alert('$check_data[$key]');parent.history.go(-1)</script>";
+                    exit;
+                }
+            }
+
+//            return json('意味着完全正确');
             $date['apartment'] = Db::table('apartment')->where('apartmentid', $date['s_apartment'])->value('apartmentinfo');
             $date['dormitory'] = Db::table('dormitory')->where('dormitoryid', $date['s_dormitory'])->value('dormitoryinfo');
             $result = Db::table('students')
@@ -1041,14 +1106,14 @@ class Hddy1 extends Controller//权限1
             ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
             ['s_sex', 'require|chs', '性别不能为空！|性别参数异常！'],
             ['s_proid', 'require|[0-9]{17}[0-9xX]|max:18', '身份证号码不能为空！|身份证号码限制18位数字，最后一位可以为X！|身份证号码限制不能超过18位！'],
-            ['s_add', 'length:11|number', '学生手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_add', 'length:11|mobile', '学生手机号码限制为11位全数字|手机号码限制为11位全数字'],
             ['s_home', 'max:60', '家庭住址限制20个字符以内'],
             ['s_class', 'require|number|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
             ['s_room', 'require|max:10|alphaDash', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！'],
             ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
-            ['s_dadadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_dadadd', 'length:11|mobile', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
             ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
-            ['s_mumadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_mumadd', 'length:11|mobile', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -1058,7 +1123,11 @@ class Hddy1 extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent,history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg',function(index){
+    window.parent.location.reload();
+    layer.close(index);
+});parent,history.go(-1)</script>";
+//            echo "<script>window.parent.location.reload()</script>";
             exit;//判断数据是否合法
         } else {
             Db::table('students')
@@ -1083,10 +1152,14 @@ class Hddy1 extends Controller//权限1
                     'state' => '重要',
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
-                echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('保存成功！',function(index){
+    window.parent.location.reload();
+    layer.close(index););parent.history.go(-1);</script>";
                 exit;
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('保存参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('保存参数错误，请返回重试！',function(index){
+    window.parent.location.reload();
+    layer.close(index););parent.history.go(-1);</script>";
                 exit;//判断更新操作是否成功
             }
         }
@@ -1757,6 +1830,12 @@ class Hddy1 extends Controller//权限1
             ['majorid', 'require|number', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
             ['collegeid', 'require|number', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
         ]);
+        $repqire_data=Db::name('teacher')
+            ->where('teacherid',$date['teacherid'])
+            ->find();
+        $date['collegeid']=$repqire_data['collegeid'];
+        return json ($date);
+        //通过选择的辅导员在teacher表中获取其对应的学院用以填补所在学院的数据
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             $syslog = ['ip' => $ip = request()->ip(),
@@ -2887,7 +2966,7 @@ class Hddy1 extends Controller//权限1
     public function scoreoperationrun()//学分操作后台
     {
         $date = input('post.');
-    //        return json($date);
+//            return json($date);
         $time = date('Y-m-d H:i:s');
         $ip = request()->ip();
         $score=Db::name('students')
@@ -2909,6 +2988,8 @@ class Hddy1 extends Controller//权限1
             ['score', 'require|number', '请选择操作分数！|操作分数参数错误，请返回重试！'],
         ]);
         $score1=number_format($score['score']);
+//        $date=array('opscoreclass'=>2,'score'=>10,'stuid'=>1180131231);
+//        $score=0;
         if ($date['opscoreclass']=='1'&&($score1>=100||($date['score']+$score1)>100)){
             $score_update=Db::name('students')
                 ->where('s_id',$date['stuid'])
@@ -3269,7 +3350,18 @@ class Hddy1 extends Controller//权限1
             } else {
                 if ($date['opclass'] == '加分') {
                     $opres = Db::table('students')->where('s_id', $date['s_id'])->setDec('score', $date['score']);
-
+                    $check_opres=Db::name('students')
+                        ->where('s_id',$date['s_id'])
+                        ->find();
+//                    return json($check_opres['score']<0);
+                    if ($check_opres['score']<0){
+//                        return json("德育学分已为负数");
+                        $repaire_data=Db::name('students')
+                            ->where('s_id',$date['s_id'])
+                            ->update(['score'=>'0']);
+//                        return json($repaire_data);
+                        echo "<script type='text/javascript'>parent.layer.alert('当前学生德育学分已为负');parent.history.go(-1)</script>";
+                    }
                 } else {
                     $opres = Db::table('students')->where('s_id', $date['s_id'])->setInc('score', $date['score']);
 
