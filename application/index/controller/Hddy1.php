@@ -793,7 +793,7 @@ class Hddy1 extends Controller//权限1
 //        echo ($validate->check($test));
 //        echo ($validate->getError());
 //        return false;
-        if (!$validate->check($test)) {
+        if (!$validate->check($date)) {
 //            return json('意味着通过了数据重复检验但格式错位');
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),
@@ -1824,6 +1824,7 @@ class Hddy1 extends Controller//权限1
     public function addclassrun()//添加班级信息操作
     {
         $date = input('post.');
+        return json($date);
         $validate = new validate([
             ['class', 'require|number|min:7|max:10', '班级不能为空！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！'],
             ['teacherid', 'require|number', '辅导员不能为空！|辅导员信息参数异常，请返回重试！'],
@@ -1834,10 +1835,12 @@ class Hddy1 extends Controller//权限1
             ->where('teacherid',$date['teacherid'])
             ->find();
         $date['collegeid']=$repqire_data['collegeid'];
-        return json ($date);
+//        return json ($date);
         //通过选择的辅导员在teacher表中获取其对应的学院用以填补所在学院的数据
         if (!$validate->check($date)) {
             $msg = $validate->getError();
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            return false;
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),
                 'info' => '添加班级信息时输入非法字符。',
@@ -1853,6 +1856,7 @@ class Hddy1 extends Controller//权限1
             if ($classcheck) {
                 echo "<script type='text/javascript'>parent.layer.alert('该班级信息已经存在，请返回重试！');parent.history.go(-1);</script>";
             } else {
+                return json('数据完全正确');
                 $classadd = Db::table('class')->insert($date);
 //              $classadd1=Db::view('classview')->insert($date);
                 if ($classadd) {
@@ -2961,6 +2965,26 @@ class Hddy1 extends Controller//权限1
             echo "<option value='{$value['scoresecid']}' name='opscoresec'>{$value['scoresecinfo']} 分数上限：{$value['score']}</option>11";
         }
         echo "</select>";
+    }
+    public function classsec(){
+        $data=input('get.');
+//        echo $data['q'];
+        $college=Db::name('teacher')
+            ->where('teacherid',$data['q'])
+            ->select();//查询获得学院id
+        $major=Db::name('major')
+            ->where('collegeid',$college[0]['collegeid'])
+            ->select();
+//        var_dump($major);
+////        var_dump($major);
+////        return json($major);
+        echo "<select name='majorid' form='addclass'>";
+        echo "<option value=\"\">未选择</option>";
+        foreach ($major as $value) {
+            echo "<option value='{$value['majorid']}'>{$value['majorinfo']}</option>11";
+        }
+        echo "</select>";
+//        echo "<script>console.log($major)</script>";
     }
 
     public function scoreoperationrun()//学分操作后台

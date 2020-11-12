@@ -6,33 +6,45 @@
     <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
     <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <script>
-            function showCustomer(str)
+            function showCustomer(str)//str为学分一级操作分类的值
             {
-              var xmlhttp;    
+                console.log(str)
+                console.log(1)
+                console.log(window.XMLHttpRequest)
+              var xmlhttp;
               if (str=="")
-              {
+              { //如果学分一级操作分类无值上传则二级分类也为空
                 document.getElementById("txtHint").innerHTML="";
                 return;
               }
               if (window.XMLHttpRequest)
               {
+
                 // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
                 xmlhttp=new XMLHttpRequest();
+                  console.log(2)
+                  console.log(xmlhttp)
               }
               else
               {
                 // IE6, IE5 浏览器执行代码
                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                  console.log(3)
+                  console.log(xmlhttp)
               }
               xmlhttp.onreadystatechange=function()
               {
+                  console.log(4)
+                  console.log(xmlhttp)
                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
                 {
                   document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
                 }
               }
               xmlhttp.open("GET","scoresec?q="+str,true);
+              console.log("open执行")
               xmlhttp.send();
             }
             </script>
