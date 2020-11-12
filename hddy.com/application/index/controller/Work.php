@@ -1403,9 +1403,10 @@ $status = '1';
            {
        $date = input('post.');
         $validate = new validate([
-            ['majorinfo','require|max:45|chs','专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
+            ['majorinfo','require|length:0,15|chs','专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
             ['collegeid','require|number','所属学院不能为空！|所属学院参数异常，请返回重试！'],
             ]);
+//        return json(array('title'=>"传回的值是否合法",'judge'=>$validate->check($date),'$err'=>$validate->getError()));
         if (!$validate->check($date)){
             $syslog = [ 'ip' => $ip = request()->ip(),
             'datetime' => $time = date('Y-m-d H:i:s'),

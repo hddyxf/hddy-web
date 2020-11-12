@@ -2,6 +2,7 @@
 
 namespace app\index\controller;
 
+use think\console\output\descriptor\Console;
 use think\Controller;
 use think\Db;
 use app\index\model\User as UserModel;
@@ -162,10 +163,19 @@ class Instructordoub extends Controller//权限1
     public function newpwdrun()//设置新密码操作
     {
         $date = input('post.');
-        $validate = new validate([
-            ['password', 'min:5|max:20|alphaDash', '密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+        $data=(['password'=>'2222']);
+//        $validate = new validate([
+//            ['password', 'length:3,25|alphaDash', '密码至少5位至多20位|密码不能包含非法字符']]);
+        $validate=new validate([
+           ['password','require|min:5|max:25|alphaDash','密码不能为空|密码最少5位|密码最少25位|密码不能包含非法字符']
+        ]);
+//        return json(!$validate->check($date));
+//        echo '<script>console.log(' . json_encode($date) . ');</script>';
+//        echo '<script>console.log(' . json_encode($data) . ');</script>';
         if (!$validate->check($date)) {
+//            return json(1);
             $msg = $validate->getError();
+//            return json('1'.$msg);
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),
                 'info' => '修改个人密码时输入非法字符。',
@@ -175,6 +185,7 @@ class Instructordoub extends Controller//权限1
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
             exit;//判断数据是否合法
         } else {
+//            return json(array(['code'=>2,'judge'=>$validate->check($date)]));
             $usrname = session('username');
             if ($usrname === $date['username']) {//判断当前用户名是否和session相等，预防通过前端修改用户名
                 if ($date['password'] === $date['passwordd']) {//验证密码一致性
@@ -190,7 +201,7 @@ class Instructordoub extends Controller//权限1
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
                         session('username', null);
-                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:8088" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
+                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://localhost:83/" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
                         exit;
 
                     } else {
@@ -1281,5 +1292,20 @@ class Instructordoub extends Controller//权限1
 
     }
 
-
+public function  test(){
+        echo "test";
+        $data=(['test'=>'2222']);
+        $datastander= new validate([
+            ['test','length:3,25','该数字小于三位']
+        ]);
+        if(!$datastander->check($data)){
+            echo 1;//正确
+            echo '<script>console.log(' . json_encode($data) . ');</script>';
+            var_dump($data);
+        }else{
+            echo 2;//错误
+            echo '<script>console.log(' . json_encode($data) . ');</script>';
+            var_dump($data);
+        }
+}
 }

@@ -445,6 +445,7 @@ class Instructor extends Controller//权限1
     public function addsturun()//添加学生后台操作
     {
         $date = input('post.');
+//        return json($date['s_room']);
         $validate = new validate([
             ['s_id', 'require|number|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
             ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
@@ -459,6 +460,23 @@ class Instructor extends Controller//权限1
             ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
+//        $date['s_room']=$date['s_dormitory']."-".$date['s_room'];
+        foreach ($date as $key=>$value)
+        {
+            try{
+                $res=Db::name('students')
+                    ->where('s_id|s_name|s_sex|s_proid|s_add|s_home|s_class|s_room|s_apartment|s_dormitory|s_dadname|s_dadadd|s_mumname|s_mumadd',$value)
+                    ->findOrFail();
+//                $res=Db::name('students')
+//                    ->where('s_id','')
+//                    ->findOrFail();//这个操作在遇到查询失败=数据库中没有重复的信息的时候会遵循trycatch抛出异常
+                echo "<script>parent.layer.alert('请检查添加的学生信息防止重复');parent.history.go(-1)</script>";
+                exit;
+            }catch(\Exception	$e){
+               break;
+            }
+        }
+//        return json("continue");
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),

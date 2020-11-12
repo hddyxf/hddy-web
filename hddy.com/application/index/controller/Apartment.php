@@ -2437,6 +2437,7 @@ class Apartment extends Controller//权限1
     public function editapartment()//编辑公寓操作
     {
         $date = input('post.');
+//        return json($date);
         $validate = new validate([
             ['collegeid', 'require|number', '所属单位参数异常，请返回重试！|所属单位参数异常，请返回重试！'],
             ['apartmentinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
@@ -2457,8 +2458,9 @@ class Apartment extends Controller//权限1
             $scorefircheck = Db::table('apartment_view')
                 ->where('apartmentid', $date['apartmentid'])
                 ->where('apartmentinfo', $date['apartmentinfo'])
-                ->select();//判断
-            if ($scorefircheck) {
+                ->select();//判断(w_tip:此处应该是判断消息是否重复)
+    //            return json (!$scorefircheck);
+            if (!$scorefircheck) {
                 $scorefir = Db::table('apartment')
                     ->where('apartmentid', $date['apartmentid'])
                     ->update([
