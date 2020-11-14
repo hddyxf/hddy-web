@@ -2,7 +2,7 @@
 namespace app\index\validate;
 use think\Validate;
 
-class Validate extends Validate{
+class V extends Validate{
     protected $rule = [
         'add'   => 'require|max:11',
         'email' => 'email',
