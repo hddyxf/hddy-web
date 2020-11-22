@@ -11,6 +11,7 @@ use think\Request;
 use think\Env;
 use think\View;
 use think\Loader;
+use app\index\controller\Formcheck;
 
 //代码中具体分页代码及表格重载代码解释参照layui官方手册
 class Instructordoub extends Controller//权限1
@@ -20,17 +21,18 @@ class Instructordoub extends Controller//权限1
         $usrname = session('username');
         if (empty($usrname)) {
 
-            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:8088" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到系统环境异常！系统将在5秒后正在自动跳转。<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是非法登陆或登陆超时导致，您可尝试重新登陆系统。<br/></body></html>';
+            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:83" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到系统环境异常！系统将在5秒后正在自动跳转。<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是非法登陆或登陆超时导致，您可尝试重新登陆系统。<br/></body></html>';
             exit;
         } else {
             $result = Db::table('user')
                 ->where('username', $usrname)
                 ->where('jurisdiction', '5')
+                ->where('jurisdiction', '5')
                 ->where('state', '1')
                 ->select();//通过session查询个人信息
             if ($result == false) {
                 session('username', null);
-                echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:8088" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到账户异常！系统将在5秒后自动跳转<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是权限不足或您的账户信息已被管理员修改，您可尝试重新登陆系统。<br/></body></html>';
+                echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:83" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到账户异常！系统将在5秒后自动跳转<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是权限不足或您的账户信息已被管理员修改，您可尝试重新登陆系统。<br/></body></html>';
                 exit;
             }
         }
@@ -75,10 +77,10 @@ class Instructordoub extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['add', 'require|length:11|number', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
+            ['add', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
             ['u_mail', 'email', '邮箱格式不正确'],
-            ['qq', 'number|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
-            ['vx', 'min:5|max:20|alphaDash', '微信号码至少5位|微信号码限制不能超过20位|微信号码包含非法字符'],]);
+            ['qq', 'regex:int|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
+            ['vx', 'min:5|max:20|alphaDash|regex:fst-a', '微信号码至少5位|微信号码限制不能超过20位|微信号包含非法字符！|微信号必须以字母开头'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             $syslog = ['ip' => $ip = request()->ip(),
@@ -90,6 +92,15 @@ class Instructordoub extends Controller//权限1
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
             exit;//判断数据是否合法
         } else {
+            $cd=new Formcheck();
+            $checkey=array('add','qq','u_mail','vx');
+            $cd_res=$cd->check_stuinfo($date,'user',$checkey,'username');
+            var_dump($cd_res);
+            if ($cd_res){
+                $err_msg=$cd_res['msg'];
+                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                exit;
+            }
             $username = session('username');
             if ($username === $date['username']) {//判断当前用户名是否和session相等，预防通过前端修改用户名
                 Db::table('user')
@@ -284,7 +295,7 @@ class Instructordoub extends Controller//权限1
     {
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -312,7 +323,7 @@ class Instructordoub extends Controller//权限1
         $usrname = session('username');
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -343,9 +354,9 @@ class Instructordoub extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['opstate', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['opstate', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
-            ['id', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
             ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
 
@@ -456,18 +467,18 @@ class Instructordoub extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['s_id', 'require|number|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
+            ['s_id', 'require|regex:int|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
             ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
             ['s_sex', 'require|chs|max:3', '性别不能为空！|性别参数异常，请返回重试！|性别参数异常，请返回重试！'],
             ['s_proid', 'require|[0-9]{17}[0-9xX]|max:18', '身份证号码不能为空！|身份证号码限制18位数字，最后一位可以为X！|身份证号码限制不能超过18位！'],
-            ['s_add', 'length:11|number', '学生手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_add', 'length:11|regex:int', '学生手机号码限制为11位全数字|手机号码限制为11位全数字'],
             ['s_home', 'max:60', '家庭住址限制20个字符以内'],
-            ['s_class', 'require|number|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
-            ['s_room', 'require|max:10|alphaDash', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！'],
+            ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
+            ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
             ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
-            ['s_dadadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
             ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
-            ['s_mumadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -480,6 +491,14 @@ class Instructordoub extends Controller//权限1
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
             exit;//判断数据是否合法
         } else {
+            $cd=new Formcheck();
+            $checkey=array('s_id','s_add','s_proid','s_room');
+            $cd_res=$cd->check_addstu($date,'students',$checkey);
+            if ($cd_res['code']==1){
+                $err_msg=$cd_res['msg'];
+                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                exit;
+            }
             $result = Db::table('students')
                 ->where('s_id', $date['s_id'])
                 ->select();//用户名重复性检测
@@ -760,18 +779,18 @@ class Instructordoub extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['s_id', 'require|number|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
+            ['s_id', 'require|regex:int|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
             ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
             ['s_sex', 'require|chs', '性别不能为空！|性别参数异常！'],
             ['s_proid', 'require|[0-9]{17}[0-9xX]|max:18', '身份证号码不能为空！|身份证号码限制18位数字，最后一位可以为X！|身份证号码限制不能超过18位！'],
-            ['s_add', 'length:11|number', '学生手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_add', 'length:11|regex:int', '学生手机号码限制为11位全数字|手机号码限制为11位全数字'],
             ['s_home', 'max:60', '家庭住址限制20个字符以内'],
-            ['s_class', 'require|number|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
-            ['s_room', 'require|max:10|alphaDash', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！'],
+            ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
+            ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
             ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
-            ['s_dadadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
             ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
-            ['s_mumadd', 'length:11|number', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
+            ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -784,6 +803,15 @@ class Instructordoub extends Controller//权限1
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
             exit;//判断数据是否合法
         } else {
+            $cd=new Formcheck();
+            $checkey=array('s_id','s_add','s_proid','s_room');
+            $cd_res=$cd->check_stuinfo($date,'students',$checkey,'s_id');
+//            var_dump($cd_res);
+            if ($cd_res){
+                $err_msg=$cd_res['msg'];
+                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                exit;
+            }
             Db::table('students')
                 ->where('s_id', $date['s_id'])
                 ->update([
@@ -928,12 +956,12 @@ class Instructordoub extends Controller//权限1
         ];
         $data = $date + $operinfo;
         $validate = new validate([
-            ['stuid', 'require|number|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
+            ['stuid', 'require|regex:int|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
             ['opusername', 'require|alphaDash|max:15', '操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！'],
-            ['opscorefir', 'require|number', '请选择一级分类！|一级分类参数错误，请返回重试！'],
-            ['opscoresec', 'require|number', '请选择二级分类！|二级分类参数错误，请返回重试！'],
-            ['opscoreclass', 'require|number', '请选择操作类型！|操作类型参数错误，请返回重试！'],
-            ['score', 'require|number', '请选择操作分数！|操作分数参数错误，请返回重试！'],
+            ['opscorefir', 'require|regex:int', '请选择一级分类！|一级分类参数错误，请返回重试！'],
+            ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类参数错误，请返回重试！'],
+            ['opscoreclass', 'require|regex:int', '请选择操作类型！|操作类型参数错误，请返回重试！'],
+            ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -1050,7 +1078,7 @@ class Instructordoub extends Controller//权限1
     {
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -1074,14 +1102,14 @@ class Instructordoub extends Controller//权限1
         ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
         $date = $data + $stateupdate;
         $validate = new validate([
-            ['opstate', 'require|number', '请选择操作类型！|操作当前状态参数异常，请返回重试！'],
+            ['opstate', 'require|regex:int', '请选择操作类型！|操作当前状态参数异常，请返回重试！'],
             ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
-            ['id', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
             ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
-            ['s_id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['s_id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
             ['classinfo', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
-            ['score', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['score', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
 
@@ -1216,7 +1244,7 @@ class Instructordoub extends Controller//权限1
     {
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -1238,9 +1266,9 @@ class Instructordoub extends Controller//权限1
         $usrname = session('username');
 
         $validate = new validate([
-            ['opstate', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['opstate', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
-            ['id', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
             ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
 

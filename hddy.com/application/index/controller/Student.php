@@ -296,12 +296,12 @@ class Student extends Controller//权限1
         ];
         $data = $date + $operinfo;
         $validate = new validate([
-            ['stuid', 'require|number|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
+            ['stuid', 'require|regex:int|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
             ['opusername', 'require|alphaDash|max:15', '操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！'],
-            ['opscorefir', 'require|number', '请选择一级分类！|一级分类参数错误，请返回重试！'],
-            ['opscoresec', 'require|number', '请选择二级分类！|二级分类参数错误，请返回重试！'],
-            ['opscoreclass', 'require|number', '请选择操作类型！|操作类型参数错误，请返回重试！'],
-            ['score', 'require|number', '请选择操作分数！|操作分数参数错误，请返回重试！'],
+            ['opscorefir', 'require|regex:int', '请选择一级分类！|一级分类参数错误，请返回重试！'],
+            ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类参数错误，请返回重试！'],
+            ['opscoreclass', 'require|regex:int', '请选择操作类型！|操作类型参数错误，请返回重试！'],
+            ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
