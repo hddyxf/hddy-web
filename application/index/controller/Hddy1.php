@@ -12,6 +12,7 @@ use think\Env;
 use think\View;
 use think\Loader;
 use app\index\model\Students;
+use app\index\controller\Formcheck;
 
 //代码中具体分页代码及表格重载代码解释参照layui官方手册
 class Hddy1 extends Controller//权限1
@@ -87,7 +88,7 @@ class Hddy1 extends Controller//权限1
             ['add', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
             ['u_mail', 'email', '邮箱格式不正确'],
             ['qq', 'regex:int|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
-            ['vx', 'min:5|max:20|alphaDash|regex:fst-a', '微信号码至少5位|微信号码限制不能超过20位|微信号码包含非法字符|微信号必须以字母开头'],]);
+            ['vx', 'min:5|max:20|alphaDash|regex:fst-a', '微信号码至少5位|微信号码限制不能超过20位|微信号包含非法字符！|微信号必须以字母开头'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             $syslog = ['ip' => $ip = request()->ip(),
@@ -103,7 +104,7 @@ class Hddy1 extends Controller//权限1
             $cd=new Formcheck();
             $checkey=array('add','qq','u_mail','vx');
             $cd_res=$cd->check_stuinfo($date,'user',$checkey,'username');
-            var_dump($cd_res);
+//            var_dump($cd_res);
             if ($cd_res){
                 $err_msg=$cd_res['msg'];
                 echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
@@ -300,7 +301,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -328,7 +329,7 @@ class Hddy1 extends Controller//权限1
         $usrname = session('username');
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -357,9 +358,9 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['opstate', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['opstate', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
-            ['id', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
             ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
 
@@ -459,7 +460,7 @@ class Hddy1 extends Controller//权限1
             ['jurisdiction', 'require|regex:int', '权限未分配|账号权限选项参数异常！'],
             ['password', 'require|regex:int|max:6', '用户密码初始化失败！|用户密码初始化失败！|用户密码初始化失败！'],
 ]);
-        if (false) {
+        if (!$validate->check($date)) {
             $msg = $validate->getError();
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),
@@ -579,7 +580,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -1252,10 +1253,10 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['teacherid', 'require|number', '辅导员信息参数异常，请返回重试！|辅导员信息参数异常，请返回重试！'],
+            ['teacherid', 'require|regex:int', '辅导员信息参数异常，请返回重试！|辅导员信息参数异常，请返回重试！'],
             ['teacherinfo', 'chs|require|max:15', '姓名必须为汉字|姓名不能为空|姓名不能超过5位！'],
-            ['teacheradd', 'require|length:11|number', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
-            ['collegeid', 'require|number', '所属学院不能为空！|所属学院信息参数异常，请返回重试！'],
+            ['teacheradd', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
+            ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院信息参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -1311,7 +1312,7 @@ class Hddy1 extends Controller//权限1
             ['teacherinfo', 'chs|require|max:5', '姓名必须为汉字|姓名不能为空|姓名不能超过5位！'],
             ['teacheradd', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
             ['teachersex', 'require|chs|max:5', '辅导员性别参数异常，请返回重试！|辅导员性别参数异常，请返回重试！|辅导员性别参数异常，请返回重试！'],
-            ['collegeid', 'require|number', '所属学院不能为空|所属学院参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所属学院不能为空|所属学院参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -1508,7 +1509,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['collegeid', 'require|number', '学院信息参数异常，请返回重试！|学院信息参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '学院信息参数异常，请返回重试！|学院信息参数异常，请返回重试！'],
             ['collegeinfo', 'require|chs|max:45', '学院名称不能为空！|学院名称限制为15以内全汉字！|学院名称限制为15以内全汉字！'],
         ]);
         if (!$validate->check($date)) {
@@ -1636,7 +1637,7 @@ class Hddy1 extends Controller//权限1
         $date = input('post.');
         $validate = new validate([
             ['majorinfo', 'require|max:45|chs', '专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
-            ['collegeid', 'require|number', '所属学院不能为空！|所属学院参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -1690,9 +1691,9 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['majorid', 'require|number', '专业信息参数异常，请返回重试！|专业信息参数异常，请返回重试！'],
+            ['majorid', 'require|regex:int', '专业信息参数异常，请返回重试！|专业信息参数异常，请返回重试！'],
             ['majorinfo', 'require|max:45|chs', '专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
-            ['collegeid', 'require|number', '所属学院不能为空！|所属学院参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -1830,9 +1831,9 @@ class Hddy1 extends Controller//权限1
 //        var_dump($date);
         $validate = new validate([
             ['class', 'require|regex:int|min:7|max:10', '班级不能为空！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！'],
-            ['teacherid', 'require|number', '辅导员不能为空！|辅导员信息参数异常，请返回重试！'],
-            ['majorid', 'require|number', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
-            ['collegeid', 'require|number', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
+            ['teacherid', 'require|regex:int', '辅导员不能为空！|辅导员信息参数异常，请返回重试！'],
+            ['majorid', 'require|regex:int', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
         ]);
         $repqire_data=Db::name('teacher')
             ->where('teacherid',$date['teacherid'])
@@ -1904,10 +1905,10 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['class', 'require|number|min:7|max:10', '班级参数异常，请稍后再试！|班级限制为7-10位全数字！|班级限制为7-10位全数字！|班级限制为7-10位全数字！'],
-            ['teacherid', 'require|number', '辅导员信息不能为空！|辅导员信息参数异常，请返回重试！'],
-            ['majorid', 'require|number', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
-            ['collegeid', 'require|number', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
+            ['class', 'require|regex:int|min:7|max:10', '班级参数异常，请稍后再试！|班级限制为7-10位全数字！|班级限制为7-10位全数字！|班级限制为7-10位全数字！'],
+            ['teacherid', 'require|regex:int', '辅导员信息不能为空！|辅导员信息参数异常，请返回重试！'],
+            ['majorid', 'require|regex:int', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -2110,7 +2111,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['collegeid', 'require|number', '所属单位名称不能为空|参数错误，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所属单位名称不能为空|参数错误，请返回重试！'],
             ['scoreinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
         ]);
         if (!$validate->check($date)) {
@@ -2159,9 +2160,9 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['scorefirid', 'require|number', '所属分类名称不能为空|所属分类参数错误，请返回重试！'],
-            ['classid', 'require|number', '操作类型不能为空|操作类型参数错误，请返回重试！'],
-            ['score', 'require|number', '分数上限不能为空！|分数上限参数异常，请返回重试！'],
+            ['scorefirid', 'require|regex:int', '所属分类名称不能为空|所属分类参数错误，请返回重试！'],
+            ['classid', 'require|regex:int', '操作类型不能为空|操作类型参数错误，请返回重试！'],
+            ['score', 'require|regex:int', '分数上限不能为空！|分数上限参数异常，请返回重试！'],
             ['scoresecinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
         ]);
         if (!$validate->check($date)) {
@@ -2214,7 +2215,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['collegeid', 'require|number', '所属单位参数异常，请返回重试！|所属单位参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所属单位参数异常，请返回重试！|所属单位参数异常，请返回重试！'],
             ['scoreinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
         ]);
         if (!$validate->check($date)) {
@@ -2278,10 +2279,10 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['scoresecid', 'require|number', '操作参数异常，请返回重试！|操作参数异常，请返回重试！'],
-            ['scorefirid', 'require|number', '所属一级分类参数异常，请返回重试！|所属一级分类参数异常，请返回重试！'],
-            ['classid', 'require|number', '操作类型参数异常，请返回重试！|操作类型参数异常，请返回重试！'],
-            ['score', 'require|number', '分数参数异常，请返回重试！|分数参数异常，请返回重试！'],
+            ['scoresecid', 'require|regex:int', '操作参数异常，请返回重试！|操作参数异常，请返回重试！'],
+            ['scorefirid', 'require|regex:int', '所属一级分类参数异常，请返回重试！|所属一级分类参数异常，请返回重试！'],
+            ['classid', 'require|regex:int', '操作类型参数异常，请返回重试！|操作类型参数异常，请返回重试！'],
+            ['score', 'require|regex:int', '分数参数异常，请返回重试！|分数参数异常，请返回重试！'],
             ['scoresecinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
         ]);
         if (!$validate->check($date)) {
@@ -2353,7 +2354,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-//            ['collegeid', 'require|number', '所属单位名称不能为空|参数错误，请返回重试！'],
+//            ['collegeid', 'require|regex:int', '所属单位名称不能为空|参数错误，请返回重试！'],
             ['apartmentinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
         ]);
         if (!$validate->check($date)) {
@@ -2401,8 +2402,8 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['apartmentid', 'require|number', '所属分类名称不能为空|所属分类参数错误，请返回重试！'],
-            ['dormitoryinfo', 'require|number', '操作类型不能为空|操作类型参数错误，请返回重试！'],
+            ['apartmentid', 'require|regex:int', '所属分类名称不能为空|所属分类参数错误，请返回重试！'],
+            ['dormitoryinfo', 'require|regex:int', '操作类型不能为空|操作类型参数错误，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -2556,9 +2557,9 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['collegeid', 'require|number', '所属单位参数异常，请返回重试！|所属单位参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所属单位参数异常，请返回重试！|所属单位参数异常，请返回重试！'],
             ['apartmentinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
-            ['apartmentid', 'require|number', '所属一级分类参数异常，请返回重试！|所属一级分类参数异常，请返回重试！']
+            ['apartmentid', 'require|regex:int', '所属一级分类参数异常，请返回重试！|所属一级分类参数异常，请返回重试！']
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -2636,8 +2637,8 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['dormitoryid', 'require|number', '操作参数异常，请返回重试！|操作参数异常，请返回重试！'],
-            ['apartmentid', 'require|number', '所属一级分类参数异常，请返回重试！|所属一级分类参数异常，请返回重试！'],
+            ['dormitoryid', 'require|regex:int', '操作参数异常，请返回重试！|操作参数异常，请返回重试！'],
+            ['apartmentid', 'require|regex:int', '所属一级分类参数异常，请返回重试！|所属一级分类参数异常，请返回重试！'],
             ['dormitoryinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
         ]);
         if (!$validate->check($date)) {
@@ -2839,7 +2840,7 @@ class Hddy1 extends Controller//权限1
         $date = input('post.');
         $validate = new validate([
             ['collegeinfo', 'require|chs|max:60', '部门/单位名称不能为空！|部门/单位名称为20位以内全汉字|部门/单位名称为20位以内全汉字'],
-            ['collegeid', 'require|number', '部门/单位参数异常，请返回重试！|部门/单位参数异常，请返回重试！'],
+            ['collegeid', 'require|regex:int', '部门/单位参数异常，请返回重试！|部门/单位参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -3009,12 +3010,12 @@ class Hddy1 extends Controller//权限1
         ];
         $data = $date + $operinfo;
         $validate = new validate([
-            ['stuid', 'require|number|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
+            ['stuid', 'require|regex:int|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
             ['opusername', 'require|alphaDash|max:15', '操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！'],
-            ['opscorefir', 'require|number', '请选择一级分类！|一级分类参数错误，请返回重试！'],
-            ['opscoresec', 'require|number', '请选择二级分类！|二级分类参数错误，请返回重试！'],
-            ['opscoreclass', 'require|number', '请选择操作类型！|操作类型参数错误，请返回重试！'],
-            ['score', 'require|number', '请选择操作分数！|操作分数参数错误，请返回重试！'],
+            ['opscorefir', 'require|regex:int', '请选择一级分类！|一级分类参数错误，请返回重试！'],
+            ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类参数错误，请返回重试！'],
+            ['opscoreclass', 'require|regex:int', '请选择操作类型！|操作类型参数错误，请返回重试！'],
+            ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
         ]);
         $score1=number_format($score['score']);//转字符为number类型
 //        $date=array('opscoreclass'=>2,'score'=>10,'stuid'=>1180131231);
@@ -3134,7 +3135,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -3158,9 +3159,9 @@ class Hddy1 extends Controller//权限1
         ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
         $date = $data + $stateupdate;
         $validate = new validate([
-            ['opstate', 'require|number', '请选择操作类型！|操作当前状态参数异常，请返回重试！'],
+            ['opstate', 'require|regex:int', '请选择操作类型！|操作当前状态参数异常，请返回重试！'],
             ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
-            ['id', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
             ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
@@ -3336,7 +3337,7 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('get.');
         $validate = new validate([
-            ['id', 'require|number', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '参数异常，请返回重试！|参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
@@ -3358,9 +3359,9 @@ class Hddy1 extends Controller//权限1
         $usrname = session('username');
 
         $validate = new validate([
-            ['opstate', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['opstate', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
-            ['id', 'require|number', '请选择操作类型！|参数异常，请返回重试！'],
+            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
             ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
 
