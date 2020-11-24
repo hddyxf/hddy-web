@@ -14,12 +14,24 @@ class Wechat extends Controller
     }
     public function login(){
         $data=input('post.');
-//        return json($data);
+//        return json($data)
         $jur=Db::name('user')
             ->where('username',$data['user'])
             ->where('password',md5($data['pwd']))
             ->value('jurisdiction');
-        return json($jur);
+        if ($jur==7){
+            $msg=array('code'=>'3','info'=>$jur,);
+            return json($msg);
+        }
+        $msg=array('code'=>'1','info'=>$jur);
+        if ($jur==null){//判断不为管理员为普通学生
+            $stu_exist=Db::name('students')
+                ->where('s_id',$data['user'])
+                ->find();
+            $msg=array('code'=>'2','info'=>$stu_exist);
+            return json($msg);
+        }
+        return json($msg);
     }
     public function Wx_GetOpenidByCode(){
         $code = $_REQUEST['code'];//获取code
@@ -52,5 +64,32 @@ class Wechat extends Controller
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
         return json(array('k1'=>$pc,'k2'=>$errCode,'k3'=>$data));
 
+    }
+    public function search(){
+        $data=input('post.');
+        if($data['jur']==1) {
+            $res = Db::name('stu_view')
+                ->where('s_id', $data['s_id'])
+                ->find();
+            $msg=array('code'=>'1','info'=>$res,'msg'=>'查询成功');
+            return json($msg);
+        }else{//班长
+            $user_id = Db::table('user_view')
+                ->where('username',$data['user'])
+                ->value('user_id');
+            $class_lim=Db::table('students')
+                ->where('s_proid',$user_id)
+                ->value('s_class');
+            $res = Db::name('stu_view')
+                ->where('s_id', $data['s_id'])
+                ->find();
+            if ($res['s_class']!=$class_lim)
+            {
+                $msg=array('code'=>'3','info'=>$class_lim,'msg'=>'只能查询自己班级的学生');//这个学生信息你无权查询
+                return json($msg);
+            }
+            $msg=array('code'=>'2','info'=>$res,'user_id'=>$user_id,'class_lim'=>$class_lim,'jur'=>$data['jur'],'msg'=>'查询成功');
+            return json($msg);
+        }
     }
 }

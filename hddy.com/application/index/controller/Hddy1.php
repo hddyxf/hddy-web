@@ -1828,7 +1828,7 @@ class Hddy1 extends Controller//权限1
     public function addclassrun()//添加班级信息操作
     {
         $date = input('post.');
-//        var_dump($date);
+        return json($date);
         $validate = new validate([
             ['class', 'require|regex:int|min:7|max:10', '班级不能为空！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！'],
             ['teacherid', 'require|regex:int', '辅导员不能为空！|辅导员信息参数异常，请返回重试！'],
@@ -2600,7 +2600,7 @@ class Hddy1 extends Controller//权限1
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误或重复，请返回重试！');parent.history.go(-1);</script>";
                 exit;
             }
 

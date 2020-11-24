@@ -146,7 +146,7 @@ class Work extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['password', 'min:5|max:20|alphaDash', '密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+            ['password', 'requrie|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
@@ -1711,17 +1711,18 @@ class Work extends Controller//权限1
     public function addclassrun()//添加班级信息操作
     {
         $date = input('post.');
-//        var_dump($date);
+        return json($date);
         $validate = new validate([
             ['class', 'require|regex:int|min:7|max:10', '班级不能为空！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！'],
             ['teacherid', 'require|regex:int', '辅导员不能为空！|辅导员信息参数异常，请返回重试！'],
             ['majorid', 'require|regex:int', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
             ['collegeid', 'require|regex:int', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
         ]);
-        $repqire_data=Db::name('teacher')
+        $date['collegeid']=Db::name('teacher')
             ->where('teacherid',$date['teacherid'])
-            ->find();
-        $date['collegeid']=$repqire_data['collegeid'];
+            ->value('collegeid');
+        $date['majorid']=Db::name('');
+//        return json($date);
 //        return json ($date);
         //通过选择的辅导员在teacher表中获取其对应的学院用以填补所在学院的数据
         if (!$validate->check($date)) {
@@ -1808,12 +1809,12 @@ class Work extends Controller//权限1
             ->where('collegeid',$college[0]['collegeid'])
             ->select();
 //        var_dump($major);
-////        var_dump($major);
-////        return json($major);
-        echo "<select name='majorid' form='addclass'>";
+//        var_dump($major);
+//        return json($major);
+        echo "<select name='majorid' onchange='majorid(this.value)'>";
         echo "<option value=\"\">未选择</option>";
         foreach ($major as $value) {
-            echo "<option value='{$value['majorid']}'>{$value['majorinfo']}</option>11";
+            echo "<option value='{$value['majorid']}'>{$value['majorinfo']}</option>";
         }
         echo "</select>";
 //        echo "<script>console.log($major)</script>";
