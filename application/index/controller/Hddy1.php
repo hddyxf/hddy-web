@@ -65,10 +65,12 @@ class Hddy1 extends Controller//权限1
     public function goout()//退出
     {
         session('username', null);
-        $this->success('退出成功', 'Index/index');
+        $this->success('退出成功', 'Admin/login');
     }
 
 //个人管理模块开始部分-------------------------------------------------------------》
+
+
 
     public function information()//个人信息页
     {
@@ -86,7 +88,7 @@ class Hddy1 extends Controller//权限1
         $date = input('post.');
         $validate = new validate([
             ['add', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
-            ['u_mail', 'email', '邮箱格式不正确'],
+            ['u_mail', 'regex:new_email', '邮箱格式不正确'],
             ['qq', 'regex:int|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
             ['vx', 'min:5|max:20|alphaDash|regex:fst-a', '微信号码至少5位|微信号码限制不能超过20位|微信号包含非法字符！|微信号必须以字母开头'],]);
         if (!$validate->check($date)) {
@@ -453,7 +455,7 @@ class Hddy1 extends Controller//权限1
             ['u_class', 'require|regex:int', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|regex:int', '所属单位名称不能为空|参数异常'],
             ['add', 'length:11|regex:int|require', '手机号码限制11位全数字！|手机号码限制11位全数字！|手机号码不能为空'],
-            ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
+            ['u_mail', 'regex:new_email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|regex:int', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash|regex:fst-a', '微信号码限制不能超过25位|微信号包含非法字符！|微信号必须以字母开头'],
             ['state', 'max:5|regex:int', '账号状态选项参数异常！|账号状态选项参数异常！'],
@@ -638,7 +640,7 @@ class Hddy1 extends Controller//权限1
             ['u_class', 'require|regex:int', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|regex:int', '所属单位名称不能为空|参数异常'],
             ['add', 'length:11|regex:int|require', '手机号码限制11位全数字！|手机号码限制11位全数字！|手机号码不能为空'],
-            ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
+            ['u_mail', 'regex:new_email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|regex:int', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash|regex:fst-a', '微信号码限制不能超过25位|微信号包含非法字符！|微信号必须以字母开头'],
             ['state', 'max:5|regex:int', '账号状态选项参数异常！|账号状态选项参数异常！'],
