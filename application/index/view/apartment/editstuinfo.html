@@ -55,12 +55,12 @@
                 </td>
                 <td >姓名：<font color="FF0000">*</font></td>
                 <td >
-                    <input name="s_name" value="{$data.s_name}" type="text" placeholder="5位以内全汉字"/></td>
+                    <input name="s_name" value="{$data.s_name}" type="text" placeholder="5位以内全汉字" readonly/></td>
                 <td >性别：</td>
                 <td >
                         
-                        <select name="s_sex" >
-                                <option value="{$data.s_sex}">当前:{$data.s_sex}</option>
+                        <select name="s_sex" disabled>
+                                <option value="{$data.s_sex}" >当前:{$data.s_sex}</option>
                                 <option value="男">男</option>
                                 <option value="女">女</option>
                             </select>
@@ -72,7 +72,7 @@
                     <input name="s_proid" value="{$data.s_proid}" type="text" placeholder="18位全数字，最后一位可以为X" readonly/>
                 </td>
                 <td >学生手机号码：</td>
-                <td ><input name="s_add" value="{$data.s_add}" type="text" placeholder="11位全数字"/>
+                <td ><input name="s_add" value="{$data.s_add}" type="text" placeholder="11位全数字" readonly/>
                     </td>
                 <td >家庭住址：</td>
                 <td >
@@ -96,7 +96,7 @@
                     <td >行政班：<font color="FF0000">*</font></td>
                     <td > 
                             <!--辅导员权限时直接改为显示班级且不能修改，并修改下方提示语句。班级修改权限只有院长拥有，学工团委均没有-->
-                            <select name="s_class" onchange="showCustomer(this.value)" >
+                            <select name="s_class" onchange="showCustomer(this.value)" disabled>
                                     <option value="{$data.s_class}">当前:{$data.s_class}</option>
                                      {volist name='data1' id='list'}
                                     <option value="{$list.class}">{$list.class}</option>

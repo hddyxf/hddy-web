@@ -1056,7 +1056,7 @@ class College extends Controller//权限11170131315
         $date = input('post.');
         $validate = new validate([
             ['add', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
-            ['u_mail', 'email', '邮箱格式不正确'],
+            ['u_mail', 'regex:new_email', '邮箱格式不正确'],
             ['qq', 'regex:int|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
             ['vx', 'min:5|max:20|alphaDash|regex:fst-a', '微信号码至少5位|微信号码限制不能超过20位|微信号包含非法字符！|微信号必须以字母开头'],]);
         if (!$validate->check($date)) {
