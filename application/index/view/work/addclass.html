@@ -60,19 +60,23 @@
             xmlhttp.onreadystatechange=function()
             {
                 console.log(4)
-                console.log(xmlhttp)
+                console.log((xmlhttp.responseText))
                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
                 {
                     document.getElementById("majorid").innerHTML=xmlhttp.responseText;
                 }
             }
             xmlhttp.open("GET","classsec?q="+str,true);
+            var option_cret=document.createElement('option');
+
             console.log("open执行")
             xmlhttp.send();
         }
 
     </script>
+    <script>
 
+    </script>
 
 
 </head>
@@ -105,9 +109,7 @@
                          {/volist}
                     </select>
                 </td>
-             </tr>
-            <tr>
-                <td style="height: 30px">所属专业：<font color="FF0000">*</font></td>
+                <td >所属专业：<font color="FF0000">*</font></td>
                  <td colspan=6 id="majorid">
                      <text>选择辅导员后将会显示</text>
 <!--                    <select name="majorid">-->

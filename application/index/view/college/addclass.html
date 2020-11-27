@@ -70,9 +70,17 @@
             console.log("open执行")
             xmlhttp.send();
         }
-
+        function majorid(str) {
+            console.log('QI');
+            console.log(str)
+        }
     </script>
-
+    <script>
+        function majorid(str) {
+            console.log('QI');
+            console.log(str)
+        }
+    </script>
 
 
 </head>
@@ -105,10 +113,8 @@
                          {/volist}
                     </select>
                 </td>
-             </tr>
-            <tr>
-                <td style="height: 30px">所属专业：<font color="FF0000">*</font></td>
-                 <td colspan=6 id="majorid">
+                <td >所属专业：<font color="FF0000">*</font></td>
+                 <td>
                      <text>选择辅导员后将会显示</text>
                      <!--                        <select id='majorid' name="majorid">-->
                      <!--                        <option value="">未选择</option>-->
@@ -141,7 +147,7 @@
 
             </tr>
         </tfoot>
-    </from>
+    </form>
     </table>
 </body>
 </html>

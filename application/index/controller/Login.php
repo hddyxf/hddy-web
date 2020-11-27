@@ -13,7 +13,7 @@ class Login extends Controller
     public function login()
     {
         $date = input('post.');
-        session('url',$_SERVER['HTTP_REFERER']);
+        session('ip',$_SERVER['HTTP_HOST']);
 //        return json(session('url'));
 //        $dateinfo=Db::name('user')
 //            ->where('u_id',$date['username'])
@@ -61,7 +61,7 @@ class Login extends Controller
                         if ($qxcheck['jurisdiction'] == '1') {
                             $this->success("登陆成功!  欢迎：{$date['username']}。", 'Hddy1/hddy');
                             session('username', $date['username']);
-                            session('login_url',$_SERVER['HTTP_REFERER']);
+                            session('login_url',$_SERVER['HTTP_HOST']);
                         } else {
                             if ($qxcheck['jurisdiction'] == '9') {
                                 $this->success("登陆成功!  欢迎：{$date['username']}。", 'Apartment/hddy');

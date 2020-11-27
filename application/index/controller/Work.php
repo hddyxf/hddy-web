@@ -62,7 +62,8 @@ class Work extends Controller//权限1
     public function goout()//退出
     {
         session('username', null);
-        $this->success('退出成功', 'Admin/login');
+        $ip="http://".session('ip');
+        $this->success('退出成功', $ip);
     }
 
 //个人管理模块开始部分-------------------------------------------------------------》
@@ -83,7 +84,7 @@ class Work extends Controller//权限1
         $date = input('post.');
         $validate = new validate([
             ['add', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
-            ['u_mail', 'regex:new_email', '邮箱格式不正确'],
+            ['u_mail', 'email', '邮箱格式不正确'],
             ['qq', 'regex:int|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
             ['vx', 'min:5|max:20|alphaDash|regex:fst-a', '微信号码至少5位|微信号码限制不能超过20位|微信号包含非法字符！|微信号必须以字母开头'],]);
         if (!$validate->check($date)) {
@@ -145,8 +146,9 @@ class Work extends Controller//权限1
     public function respwdrun()//验证密码操作
     {
         $date = input('post.');
+//        return json($date);
         $validate = new validate([
-            ['password', 'requrie|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+            ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
@@ -206,10 +208,12 @@ class Work extends Controller//权限1
                             'state' => '正常',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
+
                         session('username', null);
 //                echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:8088" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
 //                  exit;
-                        echo "<script type='text/javascript'>parent.layer.alert('密码修改成功');parent.history.go(-1);window.parent.location.href='http://127.0.0.1:83';</script>";
+                        $ip="http://".session('ip');
+                        echo "<script type='text/javascript'>parent.layer.alert('密码修改成功');window.parent.location.href='$ip';</script>";
 
                     } else {
                         echo "<script>parent.layer.alert('修改失败，请返回重试！');parent.history.go(-1);</script>";
@@ -443,7 +447,7 @@ class Work extends Controller//权限1
             ['u_class', 'require|regex:int', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|regex:int', '所属单位名称不能为空|参数异常'],
             ['add', 'length:11|regex:int', '手机号码限制11位全数字！|手机号码限制11位全数字！'],
-            ['u_mail', 'regex:new_email|max:25', '邮箱格式不正确|邮箱输入过长！'],
+            ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|regex:int', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash|regex:fst-a', '微信号码限制不能超过25位|微信号包含非法字符！|微信号必须以字母开头'],
             ['state', 'max:5|regex:int', '账号状态选项参数异常！|账号状态选项参数异常！'],
@@ -616,7 +620,7 @@ class Work extends Controller//权限1
             ['u_class', 'require|regex:int', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|regex:int', '所属单位名称不能为空|参数异常'],
             ['add', 'length:11|regex:int', '手机号码限制11位全数字！|手机号码限制11位全数字！'],
-            ['u_mail', 'regex:new_email|max:25', '邮箱格式不正确|邮箱输入过长！'],
+            ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|regex:int', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash|regex:fst-a', '微信号码限制不能超过25位|微信号包含非法字符！|微信号必须以字母开头'],
             ['state', 'max:15|regex:int', '账号状态选项参数异常！|账号状态选项参数异常！'],
@@ -1711,17 +1715,18 @@ class Work extends Controller//权限1
     public function addclassrun()//添加班级信息操作
     {
         $date = input('post.');
-//        var_dump($date);
+//        return json($date);
         $validate = new validate([
             ['class', 'require|regex:int|min:7|max:10', '班级不能为空！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！'],
             ['teacherid', 'require|regex:int', '辅导员不能为空！|辅导员信息参数异常，请返回重试！'],
             ['majorid', 'require|regex:int', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
             ['collegeid', 'require|regex:int', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
         ]);
-        $repqire_data=Db::name('teacher')
+        $date['collegeid']=Db::name('teacher')
             ->where('teacherid',$date['teacherid'])
-            ->find();
-        $date['collegeid']=$repqire_data['collegeid'];
+            ->value('collegeid');
+        $date['majorid']=Db::name('');
+//        return json($date);
 //        return json ($date);
         //通过选择的辅导员在teacher表中获取其对应的学院用以填补所在学院的数据
         if (!$validate->check($date)) {
@@ -1808,12 +1813,12 @@ class Work extends Controller//权限1
             ->where('collegeid',$college[0]['collegeid'])
             ->select();
 //        var_dump($major);
-////        var_dump($major);
-////        return json($major);
-        echo "<select name='majorid' form='addclass'>";
+//        var_dump($major);
+//        return json($major);
+        echo "<select name='majorid' onchange='majorid(this.value)'>";
         echo "<option value=\"\">未选择</option>";
         foreach ($major as $value) {
-            echo "<option value='{$value['majorid']}'>{$value['majorinfo']}</option>11";
+            echo "<option value='{$value['majorid']}'>{$value['majorinfo']}</option>";
         }
         echo "</select>";
 //        echo "<script>console.log($major)</script>";
@@ -2535,13 +2540,13 @@ class Work extends Controller//权限1
     public function scoresec()//二级联动---二级分类
     {
         $scoresec = input('get.');
-        $score = Db::name("scoresec")
+        $score = Db::name("scoresec_view")
             ->where('scorefirid', $scoresec['q'])
             ->select();
         $count = Db::name("scoresec")
             ->where('scorefirid', $scoresec['q'])
             ->count("scorefirid");
-
+        return json($score);
         echo "<select name='opscoresec'>";
 
         foreach ($score as $value) {

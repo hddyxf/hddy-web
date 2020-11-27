@@ -147,7 +147,7 @@
     if(obj.event === 'detail'){
          layer.open({
     type: 2,
-    title: false,
+    title: '查看学生详情',
     shadeClose: true,
     shade: 0.4,
     area: ['90%', '90%'],
@@ -159,11 +159,11 @@
     if(obj.event === 'edit'){
          layer.open({
     type: 2,
-    title: false,
+    title: '编辑学生信息',
     shadeClose: true,
     shade: 0.4,
     area: ['90%', '90%'],
-
+    
     content: 'editstuinfo?id='+data.s_id //iframe的url
   });
     }

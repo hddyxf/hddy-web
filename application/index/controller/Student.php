@@ -150,12 +150,11 @@ class Student extends Controller//权限1
     public function stucollop(Request $request)
     {
         $date = $request->post();
-        $usrname = session('username');
-        $usrinfo = Db::table('user')
-            ->where('username', $usrname)
+        $username = session('username');
+        $userinfo = Db::table('user_stu_view')
+            ->where('username', $username)
             ->find();
-//        $usrcollege = $usrinfo['u_classinfo'];
-
+//        return $userinfo;
         $page = input("post.page") ? input("post.page") : 1;
         $page = intval($page);
         $limit = input("post.limit") ? input("post.limit") : 1;
@@ -168,7 +167,8 @@ class Student extends Controller//权限1
             ->count("s_id");
         $cate_list = Db::name("stu_view")
 //             ->where('collegeid',$usrcollege)
-            ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
+            ->where('s_id|s_name|s_class|dor0mitoryinfo', 'like', "%" . $date["stuname"] . "%")
+            ->where('s_class',$userinfo['s_class'])
             ->limit($start, $limit)
             ->order("s_id desc")
             ->select();
@@ -184,8 +184,9 @@ class Student extends Controller//权限1
     public function stuschop(Request $request)
     {
         $date = $request->post();
+//        return 1;
         $usrname = session('username');
-        $usrinfo = Db::table('user')
+        $usrinfo = Db::table('user_stu_view')
             ->where('username', $usrname)
             ->find();
         $usrcollege = $usrinfo['u_classinfo'];
@@ -197,10 +198,12 @@ class Student extends Controller//权限1
         //分页查询
         $count = Db::name("stu_view")
              ->where('collegeid',$usrcollege)
+            ->where('s_class',$usrinfo['s_class'])
             ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
             ->count("s_id");
         $cate_list = Db::name("stu_view")
-             ->where('collegeid',$usrcollege)
+            ->where('collegeid',$usrcollege)
+             ->where('s_class',$usrinfo['s_class'])
             ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
             ->limit($start, $limit)
             ->order("s_id desc")

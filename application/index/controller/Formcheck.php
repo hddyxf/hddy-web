@@ -61,6 +61,11 @@ class Formcheck extends Controller
             'u_mail'=>'邮件号重复请重新输入',
             'teacheradd'=>'教师手机号码重复请重新输入',
         );
+        foreach ($checkey as $key=>$value){
+            if ($data[$value]==null){
+                unset($checkey[$key]);
+            }
+        }
         foreach ($checkey as $key => $value){
             $res=Db::name($table)
                 ->where($value,$data[$value])

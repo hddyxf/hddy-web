@@ -12,26 +12,67 @@ class Wechat extends Controller
     public function  test(){
         return json(10);
     }
+    public function auto_login(){
+        $data=input('get.');
+//        return json($data);
+        $u_info=Db::name('user_view')
+            ->where('openid',$data['openid'])
+            ->find();
+        if ($u_info){
+            if ($u_info['jurisdiction']==7){
+                $res=Db::name('stu_view')
+                    ->where('openid',$data['openid'])
+                    ->find();
+                return  json(array('code'=>'3','info'=>$u_info,'user'=>$u_info['username'],'info2'=>$res));
+            }else{
+                return json(array('code'=>'1','info'=>$u_info,'user'=>$u_info['username']));
+            }
+        }
+        $s_info=Db::name('stu_view')
+            ->where('openid',$data['openid'])
+            ->find();
+        if ($s_info){
+            return json(array('code'=>'2','info'=>$s_info,'user'=>$s_info['s_id']));
+        }
+
+    }
     public function login(){
         $data=input('post.');
-//        return json($data)
-        $jur=Db::name('user')
+//        return json($data);
+        $jur=Db::name('user_view')
             ->where('username',$data['user'])
             ->where('password',md5($data['pwd']))
             ->value('jurisdiction');
-        if ($jur==7){
-            $msg=array('code'=>'3','info'=>$jur,);
-            return json($msg);
+        $openid=Db::name('user')
+            ->where('username',$data['user'])
+            ->update(['openid'=>$data['openid']]);
+        if ($jur==7){//如果权限为测评班长
+            $res=Db::name('user_view')
+                ->where('username',$data['user'])
+                ->value('user_id');
+            $res2=Db::name('stu_view')
+                ->where('s_proid',$res)
+                ->find();
+            $msg=array('code'=>'3','info'=>$jur,'info2'=>$res2,'info3'=>$res);
+            return json($msg);//以班长权限退出
         }
-        $msg=array('code'=>'1','info'=>$jur);
-        if ($jur==null){//判断不为管理员为普通学生
-            $stu_exist=Db::name('students')
+
+        if ($jur==null){//判断不为管理员为普通学生/第一次查询数据失败
+            $stu_exist=Db::name('stu_view')
                 ->where('s_id',$data['user'])
                 ->find();
-            $msg=array('code'=>'2','info'=>$stu_exist);
-            return json($msg);
+            if($stu_exist==null){//第二次查询数据失败
+                $msg=array('code'=>'4','info'=>'你并非本校用户');
+                return json($msg);
+            }
+            $openid=Db::name('students')
+                ->where('s_id',$data['user'])
+                ->update(['openid'=>$data['openid']]);
+            $msg=array('code'=>'2','info'=>$stu_exist,'info2'=>$jur);
+            return json($msg);//以学生身份退出
         }
-        return json($msg);
+        $msg=array('code'=>'1','info'=>$jur);
+        return json($msg);//以其他权限退出
     }
     public function Wx_GetOpenidByCode(){
         $code = $_REQUEST['code'];//获取code
@@ -67,7 +108,7 @@ class Wechat extends Controller
     }
     public function search(){
         $data=input('post.');
-        if($data['jur']==1) {
+        if($data['jur']!=7) {
             $res = Db::name('stu_view')
                 ->where('s_id', $data['s_id'])
                 ->find();

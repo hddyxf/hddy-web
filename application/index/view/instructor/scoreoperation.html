@@ -94,7 +94,8 @@
       ,{field:'teacherinfo', title:'辅导员',width:120}
       ,{ field:'1',title:'操作', toolbar: '#barDemo',width:160}]]
     ,page: true
-    ,done:function () {
+    ,done:function (res) {
+          console.log(res)
                         layer.close(index) //加载完数据
                     }
   });
@@ -114,7 +115,8 @@
                     }
                     ,where: { //类似于 data
                         stuname:stuname //传入日期参数
-                        ,done:function () {
+                        ,done:function (res) {
+                            console.log(res)
                         layer.close(index) //加载完数据
                     }
                     }

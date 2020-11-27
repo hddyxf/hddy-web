@@ -65,12 +65,10 @@ class Hddy1 extends Controller//权限1
     public function goout()//退出
     {
         session('username', null);
-        $this->success('退出成功', 'Admin/login');
+        $this->success('退出成功', 'Index/index');
     }
 
 //个人管理模块开始部分-------------------------------------------------------------》
-
-
 
     public function information()//个人信息页
     {
@@ -88,7 +86,7 @@ class Hddy1 extends Controller//权限1
         $date = input('post.');
         $validate = new validate([
             ['add', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
-            ['u_mail', 'regex:new_email', '邮箱格式不正确'],
+            ['u_mail', 'email', '邮箱格式不正确'],
             ['qq', 'regex:int|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
             ['vx', 'min:5|max:20|alphaDash|regex:fst-a', '微信号码至少5位|微信号码限制不能超过20位|微信号包含非法字符！|微信号必须以字母开头'],]);
         if (!$validate->check($date)) {
@@ -216,11 +214,15 @@ class Hddy1 extends Controller//权限1
                             'state' => '正常',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
-//                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:8088" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
-                        echo "<script type='text/javascript'>parent.layer.alert('密码修改成功',function(index) {
-//                            window.parent.location.href='Index/index';
-//                            layer.close(index);
-                        });parent.history.go(-1);window.parent.location.href='http://127.0.0.1:83';</script>";
+                        session('username',null);
+                        $ip="http://".session('ip');
+//                        echo $ip;
+//                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { location.href = "$ip" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
+                        echo "<script>window.parent.location.href='$ip'</script>>";
+                        //                        echo "<script type='text/javascript'>parent.layer.alert('密码修改成功',function(index) {
+////                            window.parent.location.href='Index/index';
+//                       layer.close(index);
+//                        });parent.history.go(-1);window.parent.location.href='$ip';</script>";
 //                        $this->goout();
                         exit;
                     } else {
@@ -455,7 +457,7 @@ class Hddy1 extends Controller//权限1
             ['u_class', 'require|regex:int', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|regex:int', '所属单位名称不能为空|参数异常'],
             ['add', 'length:11|regex:int|require', '手机号码限制11位全数字！|手机号码限制11位全数字！|手机号码不能为空'],
-            ['u_mail', 'regex:new_email|max:25', '邮箱格式不正确|邮箱输入过长！'],
+            ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|regex:int', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash|regex:fst-a', '微信号码限制不能超过25位|微信号包含非法字符！|微信号必须以字母开头'],
             ['state', 'max:5|regex:int', '账号状态选项参数异常！|账号状态选项参数异常！'],
@@ -640,7 +642,7 @@ class Hddy1 extends Controller//权限1
             ['u_class', 'require|regex:int', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|regex:int', '所属单位名称不能为空|参数异常'],
             ['add', 'length:11|regex:int|require', '手机号码限制11位全数字！|手机号码限制11位全数字！|手机号码不能为空'],
-            ['u_mail', 'regex:new_email|max:25', '邮箱格式不正确|邮箱输入过长！'],
+            ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|regex:int', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash|regex:fst-a', '微信号码限制不能超过25位|微信号包含非法字符！|微信号必须以字母开头'],
             ['state', 'max:5|regex:int', '账号状态选项参数异常！|账号状态选项参数异常！'],
@@ -1830,7 +1832,7 @@ class Hddy1 extends Controller//权限1
     public function addclassrun()//添加班级信息操作
     {
         $date = input('post.');
-//        var_dump($date);
+//        return json($date);
         $validate = new validate([
             ['class', 'require|regex:int|min:7|max:10', '班级不能为空！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！|班级号限制为7-10位全数字！'],
             ['teacherid', 'require|regex:int', '辅导员不能为空！|辅导员信息参数异常，请返回重试！'],
@@ -1862,7 +1864,7 @@ class Hddy1 extends Controller//权限1
             if ($classcheck) {
                 echo "<script type='text/javascript'>parent.layer.alert('该班级信息已经存在，请返回重试！');parent.history.go(-1);</script>";
             } else {
-                return json('数据完全正确');
+//                return json('数据完全正确');
                 $classadd = Db::table('class')->insert($date);
 //              $classadd1=Db::view('classview')->insert($date);
                 if ($classadd) {
@@ -2960,13 +2962,13 @@ class Hddy1 extends Controller//权限1
     public function scoresec()//二级联动---二级分类
     {
         $scoresec = input('get.');
-        $score = Db::name("scoresec")
+        $score = Db::name("scoresec_view")
             ->where('scorefirid', $scoresec['q'])
             ->select();
         $count = Db::name("scoresec")
             ->where('scorefirid', $scoresec['q'])
             ->count("scorefirid");
-
+        return json($score);
         echo "<select name='opscoresec'>";
 
         foreach ($score as $value) {
@@ -2985,7 +2987,7 @@ class Hddy1 extends Controller//权限1
             ->select();
 //        var_dump($major);
 ////        var_dump($major);
-////        return json($major);
+      return json($major);
         echo "<select name='majorid' form='addclass'>";
         echo "<option value=\"\">未选择</option>";
         foreach ($major as $value) {
@@ -3427,9 +3429,8 @@ class Hddy1 extends Controller//权限1
     }
 
     public function test(){
-//        $students=Students::get(['s_id'=>'1180131231']);
-//        return json($students);
-        return json('hello');
+        $data=input('post.');
+        return json($data);
     }
 
     public function tesxt1()
