@@ -1256,7 +1256,7 @@ class Hddy1 extends Controller//权限1
         $date = input('post.');
         $validate = new validate([
             ['teacherid', 'require|regex:int', '辅导员信息参数异常，请返回重试！|辅导员信息参数异常，请返回重试！'],
-            ['teacherinfo', 'chs|require|max:15', '姓名必须为汉字|姓名不能为空|姓名不能超过5位！'],
+            ['teacherinfo', 'chs|require|max:5', '姓名必须为汉字|姓名不能为空|姓名不能超过5位！'],
             ['teacheradd', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
             ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院信息参数异常，请返回重试！'],
         ]);
@@ -2602,7 +2602,7 @@ class Hddy1 extends Controller//权限1
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误或重复，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
                 exit;
             }
 
@@ -2960,19 +2960,19 @@ class Hddy1 extends Controller//权限1
     public function scoresec()//二级联动---二级分类
     {
         $scoresec = input('get.');
-        $score = Db::name("scoresec")
+        $score = Db::name("scoresec_view")
             ->where('scorefirid', $scoresec['q'])
             ->select();
         $count = Db::name("scoresec")
             ->where('scorefirid', $scoresec['q'])
             ->count("scorefirid");
-
+                return json($score);
         echo "<select name='opscoresec'>";
-
         foreach ($score as $value) {
             echo "<option value='{$value['scoresecid']}' name='opscoresec'>{$value['scoresecinfo']} 分数上限：{$value['score']}</option>11";
         }
         echo "</select>";
+
     }
     public function classsec(){
         $data=input('get.');
@@ -2983,22 +2983,19 @@ class Hddy1 extends Controller//权限1
         $major=Db::name('major')
             ->where('collegeid',$college[0]['collegeid'])
             ->select();
-//        var_dump($major);
-////        var_dump($major);
-////        return json($major);
-        echo "<select name='majorid' form='addclass'>";
+        return json($major);
+        echo "<select name='majorid' form='addclass' >";
         echo "<option value=\"\">未选择</option>";
         foreach ($major as $value) {
             echo "<option value='{$value['majorid']}'>{$value['majorinfo']}</option>11";
         }
         echo "</select>";
-//        echo "<script>console.log($major)</script>";
     }
 
     public function scoreoperationrun()//学分操作后台
     {
         $date = input('post.');
-//            return json($date);
+            return json($date);
         $time = date('Y-m-d H:i:s');
         $ip = request()->ip();
         $score=Db::name('students')
