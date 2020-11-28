@@ -139,7 +139,7 @@ class Instructor extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+            ['password', 'min:5|max:20|alphaDash', '密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";

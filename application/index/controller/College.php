@@ -731,7 +731,7 @@ class College extends Controller//权限11170131315
         $date = input('post.');
         $validate = new validate([
             ['teacherid', 'require|regex:int', '辅导员信息参数异常，请返回重试！|辅导员信息参数异常，请返回重试！'],
-            ['teacherinfo', 'chs|require|max:15', '姓名必须为汉字|姓名不能为空|姓名不能超过5位！'],
+            ['teacherinfo', 'chs|require|max:5', '姓名必须为汉字|姓名不能为空|姓名不能超过5位！'],
             ['teacheradd', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
             ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院信息参数异常，请返回重试！'],
         ]);
@@ -786,7 +786,7 @@ class College extends Controller//权限11170131315
     {
         $date = input('post.');
         $validate = new validate([
-            ['teacherinfo', 'chs|require|max:15', '姓名必须为汉字|姓名不能为空|姓名不能超过5位！'],
+            ['teacherinfo', 'chs|require|max:5', '姓名必须为汉字|姓名不能为空|姓名不能超过5位！'],
             ['teacheradd', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
             ['teachersex', 'require|chs|max:5', '辅导员性别参数异常，请返回重试！|辅导员性别参数异常，请返回重试！|辅导员性别参数异常，请返回重试！'],
             ['collegeid', 'require|regex:int', '所属学院不能为空|所属学院参数异常，请返回重试！'],
@@ -939,7 +939,7 @@ class College extends Controller//权限11170131315
     {
         $date = input('post.');
         $validate = new validate([
-            ['majorinfo', 'require|max:45|chs', '专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
+            ['majorinfo', 'require|max:15|chs', '专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
             ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
@@ -995,7 +995,7 @@ class College extends Controller//权限11170131315
         $date = input('post.');
         $validate = new validate([
             ['majorid', 'require|regex:int', '专业信息参数异常，请返回重试！|专业信息参数异常，请返回重试！'],
-            ['majorinfo', 'require|max:45|chs', '专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
+            ['majorinfo', 'require|max:15|chs', '专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
             ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院参数异常，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
@@ -1119,7 +1119,7 @@ class College extends Controller//权限11170131315
     {
         $date = input('post.');
         $validate = new validate([
-            ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+            ['password', 'min:5|max:20|alphaDash', '密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";

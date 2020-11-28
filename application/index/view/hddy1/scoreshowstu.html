@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
     <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquer y.js"></script>
     <script>
             function showCustomer(str)//str为学分一级操作分类的值
             {
@@ -22,6 +22,7 @@
               if (window.XMLHttpRequest)
               {
                 // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                  // 创建ajax对象
                 xmlhttp=new XMLHttpRequest();
                   console.log(2)
                   console.log(xmlhttp)
@@ -37,6 +38,16 @@
               {
                   console.log(4)
                   console.log(xmlhttp)
+                  var arr=JSON.parse(xmlhttp.response)
+                  console.log(arr)
+                  var op=document.getElementById('classinfo')
+                  if(arr[0].classinfo=="加分"){
+                      op.innerText="加分";
+                      op.setAttribute('value','加分')
+                  }else if(arr[0].classinfo=='减分'){
+                      op.innerText="减分";
+                      op.setAttribute('value','减分')
+                  }
                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
                 {
                   // document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
@@ -83,6 +94,9 @@
             })
         })
     </script>
+
+
+
 </head>
 <body>
     
@@ -123,7 +137,7 @@
                     </td>
                 <td ><strong>辅导员：</strong></td>
                 <td >
-                        <input type="hidden" name="opteacher" value="{$data2.teacherid}" />{$data2.teacherinfo}
+                        <input type="hidden" name="opteacher" value="{$data2.teacherid}"/>{$data2.teacherinfo}
                     </td>
             </tr>     
         </tbody>
@@ -187,9 +201,9 @@
                     <tr>
                         <td width="15%"><strong>操作类型：</strong></td>
                         <td width="15%">
-                            <input type="text" id="opscoreclass" name="opscoreclass" readonly>
-
-                            </input>
+                                <select name="opscoreclass">
+                                        <option id="lyd_none" value="">未选择</option>
+                                    </select>       
                         </td>
                         <td width="15%"><strong>操作分值：</strong></td>
                         <td width="15%">
