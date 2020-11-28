@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
     <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <script>
             function showCustomer(str)
             {
@@ -29,13 +30,49 @@
               {
                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
                 {
-                  document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+                  // document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
                 }
               }
               xmlhttp.open("GET","scoresec?q="+str,true);
               xmlhttp.send();
             }
             </script>
+    <script>
+        var fir=null;
+        $(document).ready(function () {
+            $('#opscorefir').change(function (value) {
+                console.log($('#opscorefir').val())
+                var scorefir=$('#opscorefir').val()
+                $('#first').empty();
+                $.ajax({
+                    url:"scoresec",
+                    type:"get",
+                    data:{
+                        q:scorefir
+                    },
+                    success:function (res) {
+                        console.log(res)
+                        fir=res;
+                        for (var i=0;i<res.length;i++) {
+                            var op = $("<option></option>").text(res[i].scoresecinfo+"   "+res[i].score+"分")
+                            var oped = $('#first').append(op)
+                            op.attr('value', res[i].scoresecid)
+                        }
+                        $('#opscoreclass').val(res[0].classinfo);
+                    }
+                })
+            })
+            $('#first').change(function () {
+                console.log($('#first').val())
+                var first=$('#first').val()
+                for (var i=0;i<fir.length;i++){
+                    if (fir[i].scoresecid==first){
+                        $('#opscoreclass').val(fir[i].classinfo)
+                    }
+                }
+            })
+        })
+    </script>
 </head>
 <body>
     
@@ -122,7 +159,7 @@
                         <tr>
                                 <td ><strong>学分操作一级分类：</strong></td>
                                 <td >
-                                        <select name="opscorefir" onchange="showCustomer(this.value)">
+                                        <select name="opscorefir" onchange="showCustomer(this.value)" id="opscorefir">
                                                 <option value="">未选择</option>    
                                             {volist name='data3' id='list'}
                                                 <option value="{$list.scoreid}">{$list.scoreinfo}</option>
@@ -131,18 +168,18 @@
                                 </td>
                                 <td ><strong>学分操作二级分类：</strong></td>
                                 <td colspan="3">
-                                        <div id="txtHint">选择一级分类后将会显示</div>
-                                       
+<!--                                        <div id="txtHint">选择一级分类后将会显示</div>-->
+                                    <select name="opscoresec" id="first">
+
+                                    </select>
                                 </td>
                             </tr>
                     <tr>
                         <td width="15%"><strong>操作类型：</strong></td>
                         <td width="15%">
-                                <select name="opscoreclass">
-                                        <option value="">未选择</option>
-                                        <option value="1">加分</option>
-                                        <option value="2">减分</option>
-                                    </select>       
+                            <input type="text" id="opscoreclass" name="opscoreclass" readonly>
+
+                            </input>
                         </td>
                         <td width="15%"><strong>操作分值：</strong></td>
                         <td width="15%">

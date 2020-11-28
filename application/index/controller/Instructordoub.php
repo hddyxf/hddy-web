@@ -141,7 +141,7 @@ class Instructordoub extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['password', 'min:5|max:20|alphaDash', '密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+            ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
@@ -930,13 +930,13 @@ class Instructordoub extends Controller//权限1
     public function scoresec()//二级联动---二级分类
     {
         $scoresec = input('get.');
-        $score = Db::name("scoresec")
+        $score = Db::name("scoresec_view")
             ->where('scorefirid', $scoresec['q'])
             ->select();
         $count = Db::name("scoresec")
             ->where('scorefirid', $scoresec['q'])
             ->count("scorefirid");
-
+        return json($score);
         echo "<select name='opscoresec'>";
 
         foreach ($score as $value) {
@@ -948,6 +948,11 @@ class Instructordoub extends Controller//权限1
     public function scoreoperationrun()//学分操作后台
     {
         $date = input('post.');
+        if($date['opscoreclass']=="加分"){
+            $date['opscoreclass']='1';
+        }else if($date['opscoreclass']=="减分"){
+            $date['opscoreclass']='2';
+        }
         $time = date('Y-m-d H:i:s');
         $ip = request()->ip();
         $operinfo = [

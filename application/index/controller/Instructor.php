@@ -139,7 +139,7 @@ class Instructor extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['password', 'min:5|max:20|alphaDash', '密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+            ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
@@ -173,7 +173,7 @@ class Instructor extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['password', 'min:5|max:20|alphaDash', '密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+            ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             $syslog = ['ip' => $ip = request()->ip(),
@@ -948,7 +948,7 @@ class Instructor extends Controller//权限1
         $usrname = session('username');
         //$classid = Db::table('user')->where('username',$usrname)->value('u_classinfo');
         $scoresec = input('get.');
-        $score = Db::name("scoresec")
+        $score = Db::name("scoresec_view")
             ->where('scorefirid', $scoresec['q'])
             //->where('u_classinfo',$classid)
             ->select();
@@ -956,7 +956,7 @@ class Instructor extends Controller//权限1
             ->where('scorefirid', $scoresec['q'])
             // ->where('u_classinfo',$classid)
             ->count("scorefirid");
-
+        return json($score);
         echo "<select name='opscoresec'>";
 
         foreach ($score as $value) {
@@ -968,6 +968,11 @@ class Instructor extends Controller//权限1
     public function scoreoperationrun()//学分操作后台
     {
         $date = input('post.');
+        if($date['opscoreclass']=="加分"){
+            $date['opscoreclass']='1';
+        }else if($date['opscoreclass']=="减分"){
+            $date['opscoreclass']='2';
+        }
         $time = date('Y-m-d H:i:s');
         $ip = request()->ip();
         $operinfo = [

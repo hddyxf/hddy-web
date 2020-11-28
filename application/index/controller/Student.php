@@ -151,10 +151,16 @@ class Student extends Controller//权限1
     {
         $date = $request->post();
         $username = session('username');
-        $userinfo = Db::table('user_stu_view')
+
+        //判断权限
+        $userinfo_1 = Db::name('user_stu_view')
             ->where('username', $username)
             ->find();
-//        return $userinfo;
+        $userinfo_2 = Db::name('user_view')
+            ->where('username', $username)
+            ->find();
+        $flag = empty($userinfo_1) ? 1 : 0;
+
         $page = input("post.page") ? input("post.page") : 1;
         $page = intval($page);
         $limit = input("post.limit") ? input("post.limit") : 1;
@@ -165,13 +171,22 @@ class Student extends Controller//权限1
 //             ->where('collegeid',$usrcollege)
             ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
             ->count("s_id");
-        $cate_list = Db::name("stu_view")
+        if ($flag) {
+            $cate_list = Db::name("stu_view")
 //             ->where('collegeid',$usrcollege)
-            ->where('s_id|s_name|s_class|dor0mitoryinfo', 'like', "%" . $date["stuname"] . "%")
-            ->where('s_class',$userinfo['s_class'])
-            ->limit($start, $limit)
-            ->order("s_id desc")
-            ->select();
+                ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
+                ->limit($start, $limit)
+                ->order("s_id desc")
+                ->select();
+        } else {
+            $cate_list = Db::name("stu_view")
+//             ->where('collegeid',$usrcollege)
+                ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
+                ->where('s_class', $userinfo_1['s_class'])
+                ->limit($start, $limit)
+                ->order("s_id desc")
+                ->select();
+        }
         $list["msg"] = "";
         $list["code"] = 0;
         $list["count"] = $count;
@@ -179,9 +194,11 @@ class Student extends Controller//权限1
         if (empty($cate_list)) {
             $list["msg"] = "暂无数据";
         }
-        return json($list);//返回数据给前端 
+        return json($list);//返回数据给前端
     }
-    public function stuschop(Request $request)
+
+    public
+    function stuschop(Request $request)
     {
         $date = $request->post();
 //        return 1;
@@ -197,13 +214,13 @@ class Student extends Controller//权限1
         $start = $limit * ($page - 1);
         //分页查询
         $count = Db::name("stu_view")
-             ->where('collegeid',$usrcollege)
-            ->where('s_class',$usrinfo['s_class'])
+            ->where('collegeid', $usrcollege)
+            ->where('s_class', $usrinfo['s_class'])
             ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
             ->count("s_id");
         $cate_list = Db::name("stu_view")
-            ->where('collegeid',$usrcollege)
-             ->where('s_class',$usrinfo['s_class'])
+            ->where('collegeid', $usrcollege)
+            ->where('s_class', $usrinfo['s_class'])
             ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
             ->limit($start, $limit)
             ->order("s_id desc")
@@ -218,7 +235,8 @@ class Student extends Controller//权限1
         return json($list);//返回数据给前端
     }
 
-    public function stucollshowstu()
+    public
+    function stucollshowstu()
     {
         $stu = input('get.');
         $usrname = session('username');
@@ -242,8 +260,9 @@ class Student extends Controller//权限1
             return $this->fetch();
         }
     }
-    
-    public function stucollshowstu1()
+
+    public
+    function stucollshowstu1()
     {
         $stu = input('get.');
         $usrname = session('username');
@@ -268,16 +287,17 @@ class Student extends Controller//权限1
         }
     }
 
-    public function scoresec()//二级联动---二级分类
+    public
+    function scoresec()//二级联动---二级分类
     {
         $scoresec = input('get.');
-        $score = Db::name("scoresec")
+        $score = Db::name("scoresec_view")
             ->where('scorefirid', $scoresec['q'])
             ->select();
         $count = Db::name("scoresec")
             ->where('scorefirid', $scoresec['q'])
             ->count("scorefirid");
-
+        return json($score);
         echo "<select name='opscoresec'>";
 
         foreach ($score as $value) {
@@ -286,9 +306,15 @@ class Student extends Controller//权限1
         echo "</select>";
     }
 
-    public function scoreoperationrun()//学分操作后台
+    public
+    function scoreoperationrun()//学分操作后台
     {
         $date = input('post.');
+        if ($date['opscoreclass'] == "加分") {
+            $date['opscoreclass'] = '1';
+        } else if ($date['opscoreclass'] == "减分") {
+            $date['opscoreclass'] = '2';
+        }
         $time = date('Y-m-d H:i:s');
         $ip = request()->ip();
         $operinfo = [
@@ -334,7 +360,10 @@ class Student extends Controller//权限1
             }
         }
     }
-    public function test(){
+
+    public
+    function test()
+    {
         return session('username');
     }
 }

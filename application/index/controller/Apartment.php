@@ -2503,7 +2503,7 @@ class Apartment extends Controller//权限1
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误或重复，请返回重试！');parent.history.go(-1);</script>";
                 exit;
             }
 
@@ -2861,13 +2861,13 @@ class Apartment extends Controller//权限1
     public function scoresec()//二级联动---二级分类
     {
         $scoresec = input('get.');
-        $score = Db::name("scoresec")
+        $score = Db::name("scoresec_view")
             ->where('scorefirid', $scoresec['q'])
             ->select();
         $count = Db::name("scoresec")
             ->where('scorefirid', $scoresec['q'])
             ->count("scorefirid");
-
+        return json($score);
         echo "<select name='opscoresec'>";
 
         foreach ($score as $value) {
@@ -2879,6 +2879,11 @@ class Apartment extends Controller//权限1
     public function scoreoperationrun()//学分操作后台
     {
         $date = input('post.');
+        if($date['opscoreclass']=="加分"){
+            $date['opscoreclass']='1';
+        }else if($date['opscoreclass']=="减分"){
+            $date['opscoreclass']='2';
+        }
         $time = date('Y-m-d H:i:s');
         $ip = request()->ip();
         $operinfo = [

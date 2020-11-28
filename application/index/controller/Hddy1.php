@@ -216,6 +216,7 @@ class Hddy1 extends Controller//权限1
                         Db::table('systemlog')->insert($syslog);
                         session('username',null);
                         $ip="http://".session('ip');
+
 //                        echo $ip;
 //                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { location.href = "$ip" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
                         echo "<script>window.parent.location.href='$ip'</script>>";
@@ -3000,6 +3001,11 @@ class Hddy1 extends Controller//权限1
     public function scoreoperationrun()//学分操作后台
     {
         $date = input('post.');
+        if($date['opscoreclass']=="加分"){
+            $date['opscoreclass']='1';
+        }else if($date['opscoreclass']=="减分"){
+            $date['opscoreclass']='2';
+        }
 //            return json($date);
         $time = date('Y-m-d H:i:s');
         $ip = request()->ip();

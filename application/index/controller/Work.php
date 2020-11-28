@@ -84,7 +84,7 @@ class Work extends Controller//权限1
         $date = input('post.');
         $validate = new validate([
             ['add', 'require|length:11|regex:int', '手机号码不能为空|手机号码限制为11位|手机号码限制全部为数字'],
-            ['u_mail', 'regex:new_email', '邮箱格式不正确'],
+            ['u_mail', 'email', '邮箱格式不正确'],
             ['qq', 'regex:int|min:5|max:11', 'QQ号码限制全部为数字|QQ号码限制5-11位|QQ号码限制5-11位'],
             ['vx', 'min:5|max:20|alphaDash|regex:fst-a', '微信号码至少5位|微信号码限制不能超过20位|微信号包含非法字符！|微信号必须以字母开头'],]);
         if (!$validate->check($date)) {
@@ -148,7 +148,7 @@ class Work extends Controller//权限1
         $date = input('post.');
 //        return json($date);
         $validate = new validate([
-            ['password', 'requrie|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
+            ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
@@ -447,7 +447,7 @@ class Work extends Controller//权限1
             ['u_class', 'require|regex:int', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|regex:int', '所属单位名称不能为空|参数异常'],
             ['add', 'length:11|regex:int', '手机号码限制11位全数字！|手机号码限制11位全数字！'],
-            ['u_mail', 'regex:new_email|max:25', '邮箱格式不正确|邮箱输入过长！'],
+            ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|regex:int', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash|regex:fst-a', '微信号码限制不能超过25位|微信号包含非法字符！|微信号必须以字母开头'],
             ['state', 'max:5|regex:int', '账号状态选项参数异常！|账号状态选项参数异常！'],
@@ -620,7 +620,7 @@ class Work extends Controller//权限1
             ['u_class', 'require|regex:int', '所属单位不能为空|参数异常'],
             ['u_classinfo', 'require|regex:int', '所属单位名称不能为空|参数异常'],
             ['add', 'length:11|regex:int', '手机号码限制11位全数字！|手机号码限制11位全数字！'],
-            ['u_mail', 'regex:new_email|max:25', '邮箱格式不正确|邮箱输入过长！'],
+            ['u_mail', 'email|max:25', '邮箱格式不正确|邮箱输入过长！'],
             ['qq', 'min:5|max:11|regex:int', 'QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!|QQ号码限制5-11位全部为数字!'],
             ['vx', 'max:25|alphaDash|regex:fst-a', '微信号码限制不能超过25位|微信号包含非法字符！|微信号必须以字母开头'],
             ['state', 'max:15|regex:int', '账号状态选项参数异常！|账号状态选项参数异常！'],
@@ -2558,6 +2558,11 @@ class Work extends Controller//权限1
     public function scoreoperationrun()//学分操作后台
     {
         $date = input('post.');
+        if($date['opscoreclass']=="加分"){
+            $date['opscoreclass']='1';
+        }else if($date['opscoreclass']=="减分"){
+            $date['opscoreclass']='2';
+        }
 //            return json($date);
         $time = date('Y-m-d H:i:s');
         $ip = request()->ip();
