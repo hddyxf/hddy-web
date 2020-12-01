@@ -48,6 +48,7 @@
             }
             </script>
     <script>
+        var limit_score;
         var fir=null;
         $(document).ready(function () {
             $('#opscorefir').change(function (value) {
@@ -78,7 +79,15 @@
                 for (var i=0;i<fir.length;i++){
                     if (fir[i].scoresecid==first){
                         $('#opscoreclass').val(fir[i].classinfo)
+                        limit_score=fir[i].score;
                     }
+                }
+                $('#score').removeAttr('readonly')
+            })
+            $('#score').change(function () {
+                if ($('#score').val()>limit_score){
+                    $('#score').val(null)
+                    parent.layer.alert("超过学分上限");
                 }
             })
         })
@@ -193,21 +202,22 @@
                         </td>
                         <td width="15%"><strong>操作分值：</strong></td>
                         <td width="15%">
-                                <select name="score">
-                                        <option value="">未选择</option>
-                                        <option value="1">1分</option>
-                                        <option value="2">2分</option>
-                                        <option value="3">3分</option>
-                                        <option value="4">4分</option>
-                                        <option value="5">5分</option>
-                                        <option value="6">6分</option>
-                                        <option value="7">7分</option>
-                                        <option value="8">8分</option>
-                                        <option value="9">9分</option>
-                                        <option value="10">10分</option>
-                                        <option value="11">11分</option>
-                                        <option value="12">12分</option>
-                                    </select>       
+                            <input type="text" placeholder="请输入加分/减分分数" name="score" id="score" readonly>
+                            <!--                                <select name="score">-->
+<!--                                        <option value="">未选择</option>-->
+<!--                                        <option value="1">1分</option>-->
+<!--                                        <option value="2">2分</option>-->
+<!--                                        <option value="3">3分</option>-->
+<!--                                        <option value="4">4分</option>-->
+<!--                                        <option value="5">5分</option>-->
+<!--                                        <option value="6">6分</option>-->
+<!--                                        <option value="7">7分</option>-->
+<!--                                        <option value="8">8分</option>-->
+<!--                                        <option value="9">9分</option>-->
+<!--                                        <option value="10">10分</option>-->
+<!--                                        <option value="11">11分</option>-->
+<!--                                        <option value="12">12分</option>-->
+<!--                                    </select>       -->
                         </td>
                         <td width="15%"><strong>操作状态：</strong></td>
                         <td width="25%">提交后立即确认
