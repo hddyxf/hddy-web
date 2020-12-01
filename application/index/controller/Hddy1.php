@@ -59,13 +59,15 @@ class Hddy1 extends Controller//权限1
 
     public function log()//首页右边内容
     {
+
         return $this->fetch();
     }
 
     public function goout()//退出
     {
         session('username', null);
-        $this->success('退出成功', 'Index/index');
+        $ip="http://".session('ip');
+        echo "<script>window.parent.location.href='$ip'</script>>";
     }
 
 //个人管理模块开始部分-------------------------------------------------------------》
@@ -216,7 +218,6 @@ class Hddy1 extends Controller//权限1
                         Db::table('systemlog')->insert($syslog);
                         session('username',null);
                         $ip="http://".session('ip');
-
 //                        echo $ip;
 //                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { location.href = "$ip" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
                         echo "<script>window.parent.location.href='$ip'</script>>";
@@ -476,7 +477,7 @@ class Hddy1 extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
             exit;//判断数据是否合法
         } else {
-            var_dump($date);
+//            var_dump($date);
             $cd=new Formcheck();
             $checkey=array('username','user_id','add','qq','vx','u_mail');
             $cd_res=$cd->check_addstu($date,'user',$checkey);
@@ -775,11 +776,12 @@ class Hddy1 extends Controller//权限1
             ['s_room', 'require|max:15|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
             ['s_apartment', 'require|regex:int', '未选择公寓号|参数异常，请返回重试'],
             ['s_dormitory', 'require|regex:int', '未选择寝室|参数异常，请返回重试'],
-            ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
+            ['s_dadname', 'max:5|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
             ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
-            ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
+            ['s_mumname', 'max:5|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
+//
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),
@@ -792,26 +794,6 @@ class Hddy1 extends Controller//权限1
             exit;//判断数据是否合法
         }
         else {
-////            return json('完全正确');
-//            $check_data=array(
-//                's_id'=>'与现有学号重复请更改',
-//                's_name'=>'与现有人名重复请更改',
-//                's_proid'=>'与现有身份证重复请更改',
-//                's_add'=>'与现有学生手机号码重复请更改',
-//                's_room'=>'与现有寝室信息重复请更改'
-//            );
-//            foreach ($date as $key=>$value)
-//            {
-//                $res=Db::name('students')
-//                    ->where($key,$value)
-//                    ->find();
-////                return json($res);
-//                if($res){
-////                    return json($check_data['s_id']);
-//                    echo "<script>parent.layer.alert('$check_data[$key]');parent.history.go(-1)</script>";
-//                    exit;
-//                }
-//            }
             $cd=new Formcheck();
             $checkey=array('s_id','s_add','s_proid','s_room');
             $cd_res=$cd->check_addstu($date,'students',$checkey);
@@ -853,7 +835,14 @@ class Hddy1 extends Controller//权限1
         return $this->fetch();
 
     }
+    public function addmanyuser()//批量添加学生页面
+    {
+        $result = Db::table('qxinfo')
+            ->select();
+        $this->assign('data', $result);
+        return $this->fetch();
 
+    }
     public function addmanysturun()//批量添加学生后台
     {
         $request = \think\Request::instance();
@@ -998,7 +987,181 @@ class Hddy1 extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
         }
     }
+    public function  test_regex(){
+        $str = array('lyd');
+        $isMatched = preg_grep('/^[a-z]{2,3}/', $str);
+        $isMatched2 = preg_match_all('/^[a-z]{2,3}/', $str[0]);
+        var_dump($isMatched);
+        var_dump($isMatched2);
+        echo "\n";
+        var_dump($str);
+    }
+    public function addmanyuserrun(){
+        $request = \think\Request::instance();
+        vendor("PHPExcel.PHPExcel");//引入导入excel第三方库
+        $file = request()->file('fileUpload');
+        if (empty($file)) {
+            $this->error("导入数据失败，可能是数据为空");//数据为空返回错误
+        }
+        $info = $file->validate(['ext' => 'xlsx,xls'])->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if ($info == false) {
+            $this->error("导入数据失败，可能是文件格式或文件类型导致");//数据为空返回错误
+        }
+        //获取上传到后台的文件名
+        $fileName = $info->getSaveName();
+        $syslog = ['ip' => $ip = request()->ip(),
+            'datetime' => $time = date('Y-m-d H:i:s'),
+            'info' => '上传文件批量导入学生信息，文件名为：' . $fileName . '',
+            'state' => '重要',
+            'username' => $usrlogo = session('username'),];
+        Db::table('systemlog')->insert($syslog);
+        //获取文件路径
+        $filePath = 'uploads' . DS . $fileName;
+        //   部署在linux环境下时获取路径需要更改为绝对路径
+        //  509：$filePath = 'uploads'.DS.$fileName;
+//        echo dirname(dirname(dirname(__FILE__)));
+//        exit;
+        //获取文件后缀
+        $suffix = $info->getExtension();
+        //判断哪种类型
+        if ($suffix == "xlsx") {
+            $reader = \PHPExcel_IOFactory::createReader('Excel2007');
+        } else {
+            $reader = \PHPExcel_IOFactory::createReader('Excel5');
+        }
 
+        //载入excel文件
+        $excel = $reader->load("$filePath", $encode = 'utf-8');
+        //读取第一张表
+        $sheet = $excel->getSheet(0);
+        //获取总行数
+        $row_num = $sheet->getHighestRow();
+        //获取总列数
+        $col_num = $sheet->getHighestColumn();
+        $data = []; //数组形式获取表格数据
+
+
+        for ($i = 2; $i <= $row_num; $i++) {//开始遍历获取值检验格式和查重
+            // var_dump($sheet->getCell("A".$i)->getValue());exit;
+//            $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
+            $data['username'] = $sheet->getCell("A" . $i)->getValue();
+            $data['password'] = "123456";
+            $data['u_name'] = $excel->getActiveSheet()->getCell("B" . $i)->getValue();
+            $data['u_sex'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+            $data['add'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+            $data['u_classinfo'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
+            $data['jurisdiction'] = $excel->getActiveSheet()->getCell("F".$i)->getValue();
+            $data['user_id'] = $excel->getActiveSheet()->getCell("G".$i)->getValue();
+            $data['apartmentid'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+            //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+            //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+//            $classcheck = Db::name("class")
+//                ->where('class', $data['s_class'])
+//                ->select();
+//            if ($classcheck == false) {
+//                $this->error("文件中第 {$i} 行的班级：{$data['s_class']} 无法在系统中被找到，请核对重试。");//数据为空返回错误
+//                exit;
+//            }
+//            $sidcheck = Db::name("students")
+//                ->where('s_id', $data['s_id'])
+//                ->select();
+//            if ($sidcheck) {
+//                $this->error("文件中第 {$i} 行的学生学号：{$data['s_id']} 学生信息已经存在，请核对后重试。");//数据为空返回错误
+//                exit;
+//            }
+//            $aidcheck = Db::name("apartment")
+//                ->where('apartmentinfo', $data['apartment'])
+//                ->select();
+//            if(!$aidcheck){
+//                $this->error("文件中第{$i}行的学生对应的公寓楼号：{$data['apartment']}信息不存在，请核对后重试。");
+//                exit;
+//            }
+//            $didcheck = Db::name("dormitory")
+//                ->where("dormitoryinfo",$data['dormitory'])
+//                ->select();
+//            if(!$didcheck){
+//                $this->error("文件中第{$i}行的学生对应的寝室号：{$data['dormitory']}信息不存在，请核对后重试。");
+//                exit;
+//            }
+            $validate=new validate([
+                ['u_id','regex:u_id','用户id格式错误'],
+                ['username','regex:username','用户名格式错误'],
+//                ['password','alphaDash','密码格式错误'],
+                ['u_name','chs|max:4|min:2','用户姓名格式错误|用户姓名格式错误|用户姓名格式错误'],
+                ['u_sex','regex:u_sex','性别格式错误'],
+                ['add','regex:add','手机号码格式错误'],
+                ['u_classinfo','regex:u_classinfo','所属学院编号格式错误'],
+                ['jurisdiction','regex:jurisdiction','权限级别格式错误'],
+                ['user_id','regex:user_id','身份证号格式错误']
+            ]);
+            if (!$validate->check($data)){
+//                $tes=preg_match("/^[男|女]$/","男");
+                $this->error("第".$i.'行'.$validate->getError());//数据为空返回错误
+                exit();
+            }
+            $cd=new Formcheck();
+            $cd_res=$cd->check_addstu($data,'user',$checkey);
+            if ($cd_res['code']==1){
+                $err_msg=$cd_res['msg'];
+                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                exit;
+            }
+            // Db::table("students")->insert($data);
+        }
+        for ($i = 2; $i <= $row_num; $i++) {//第二遍获取值并插入
+            // var_dump($sheet->getCell("A".$i)->getValue());exit;
+//            $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
+            $data['username'] = $sheet->getCell("A" . $i)->getValue();
+//            $data['password'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+            $data['password'] = md5("123456");
+            $data['u_name'] = $excel->getActiveSheet()->getCell("B" . $i)->getValue();
+            $data['u_sex'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+            $data['add'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+            $data['u_classinfo'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
+            $data['jurisdiction'] = $excel->getActiveSheet()->getCell("F".$i)->getValue();
+            $data['user_id'] = $excel->getActiveSheet()->getCell("G".$i)->getValue();
+            $data['apartmentid'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+            $gomany = Db::name('user')->insert($data);
+            if ($gomany == false) {
+                $this->error("发生未知错误，请联系管理员");//数据为空返回错误
+                exit;
+            }
+
+        }
+        $num = $row_num - 1;
+        $syslog = ['ip' => $ip = request()->ip(),
+            'datetime' => $time = date('Y-m-d H:i:s'),
+            'info' => '上传文件批量导入了：' . $num . ' 条用户信息，文件名为：' . $fileName . '',
+            'state' => '重要',
+            'username' => $usrlogo = session('username'),];
+        Db::table('systemlog')->insert($syslog);
+        $this->success("共 {$num} 条用户信息导入成功！");
+
+        if ($this) {
+            echo "<tr>";
+            for ($i = 2; $i <= $row_num; $i++) {
+                // 遍历在前端
+                // var_dump($sheet->getCell("A".$i)->getValue());exit;
+                $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
+                $data['username'] = $sheet->getCell("B" . $i)->getValue();
+//                $data['password'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+                $data['u_name'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+                $data['u_sex'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+                $data['add'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
+                $data['u_classinfo'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
+                $data['jurisdiction'] = $excel->getActiveSheet()->getCell("G".$i)->getValue();
+                $data['user_id'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+                //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+                //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+                echo "<td> " . $data['u_id'] . " " . $data['username'] . " " . $data['u_name'] . " "
+                    . $data['u_sex'] . " " . $data['add'] . " " . $data['u_classinfo'] . " "
+                    . $data['jurisdiction'] ." " . $data['user_id'] . "</td>";
+            }
+            echo "</tr>";
+        } else {
+            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
+        }
+    }
     public function showstu()//学生查询页面
     {
         $syslog = ['ip' => $ip = request()->ip(),
@@ -1102,9 +1265,9 @@ class Hddy1 extends Controller//权限1
             ['s_home', 'max:60', '家庭住址限制20个字符以内'],
             ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
             ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
-            ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
+            ['s_dadname', 'max:5|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
             ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
-            ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
+            ['s_mumname', 'max:5|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {

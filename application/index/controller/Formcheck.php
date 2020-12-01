@@ -29,7 +29,15 @@ class Formcheck extends Controller
             'vx'=>'微信号重复请重新输入',
             'u_mail'=>'邮件号重复请重新输入',
             'teacheradd'=>'教师手机号码重复请重新输入',
+            'u_id'=>'用户ID重复请重新输入',
+            'username'=>'用户名重复请重新输入',
+            'user_id'=>'身份证号重复请重新输入',
         );
+        foreach ($checkey as $key=>$value){
+            if ($data[$value]==null){
+                unset($checkey[$key]);
+            }
+        }
         foreach ($checkey as $key => $value){
             $res=Db::name($table)
                 ->where($value,$data[$value])
@@ -60,6 +68,9 @@ class Formcheck extends Controller
             'vx'=>'微信号重复请重新输入',
             'u_mail'=>'邮件号重复请重新输入',
             'teacheradd'=>'教师手机号码重复请重新输入',
+            'u_id'=>'用户ID重复请重新输入',
+            'username'=>'用户名重复请重新输入',
+            'user_id'=>'身份证号重复请重新输入'
         );
         foreach ($checkey as $key=>$value){
             if ($data[$value]==null){
@@ -77,5 +88,47 @@ class Formcheck extends Controller
             }
         }
         return false;
+    }
+
+    /*
+     * selef_user是自己的username
+     * or_user 是要插销的操作相关的权限的username
+     * */
+    public  function  auth_check($self_user,$or_user){
+       $or_jur= Db::name('user_view')
+            ->where('username',$or_user)
+            ->value('jurisdiction');
+        $self_jur=Db::name('user_view')
+            ->where('username',$self_user)
+            ->value('jurisdiction');
+        if ($self_jur<$or_jur){
+            return array('code'=>'1','res'=>true,'orinfo'=>$or_jur,'selfinfo'=>$self_jur);
+        }elseif ($self_jur>$or_jur){
+            return array('code'=>'2','res'=>false,'orinfo'=>$or_jur,'selfinfo'=>$self_jur);
+        }else{
+            return array('code'=>'3','res'=>false,'orinfo'=>$or_jur,'selfinfo'=>$self_jur);
+        }
+    }
+//$username,$limit_table,$limit_data,$sid
+    public static function limit_select_user($data){
+        if($data['jur']==9){
+            $res=Db::name('stu_view')
+                ->where('s_id',$data['s_id'])
+                ->where('apartment','<>',null)
+                ->find();
+        }elseif($data['jur']==2) {
+            $res = Db::name('stu_view')
+                ->where('s_id', $data['s_id'])
+                ->find();
+        }else {
+            $limit = Db::name($data['limit_table'])
+                ->where('username', $data['username'])
+                ->find();
+            $res = Db::name('stu_view')
+                ->where('s_id', $data['sid'])
+                ->where($data['limit_data'], $limit[$data['limit_data']])
+                ->find();
+        }
+        return $res;
     }
 }

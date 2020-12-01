@@ -21,14 +21,15 @@ else tb.style.display='none';
 }
 </script>
  <script type="text/javascript"> 
-    var isIE = /msie/i.test(navigator.userAgent) && !window.opera; 
+    var isIE = /msie/i.test(navigator.userAgent) && !window.opera;
+    //识别浏览器类型的代码
     function fileChange(target,id) { 
     var fileSize = 0; 
     var filetypes =[".xls",".xlsx"]; 
     var filepath = target.value; 
     var filemaxsize = 1024*2;//2M 
-    if(filepath){ 
-    var isnext = false; 
+    if(filepath){ //如果文件临时路径存在
+    var isnext = false;
     var fileend = filepath.substring(filepath.indexOf(".")); 
     if(filetypes && filetypes.length>0){ 
     for(var i =0; i<filetypes.length;i++){ 

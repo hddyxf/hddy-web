@@ -53,8 +53,8 @@ class College extends Controller//权限11170131315
     public function goout()//退出
     {
         session('username', null);
-        echo "<script type='text/javascript'>parent.layer.close()</script>";
-        $this->success('退出成功', 'Admin/login');
+        $ip="http://".session('ip');
+        echo "<script>window.parent.location.href='$ip'</script>>";
     }
 
 //系统参数设置---------------------------------------------------------------------》
@@ -528,6 +528,7 @@ class College extends Controller//权限11170131315
 //        var_dump($major);
 ////        var_dump($major);
 ////        return json($major);
+        return json($major);
         echo "<select name='majorid' form='addclass'>";
         echo "<option value=\"\">未选择</option>";
         foreach ($major as $value) {
@@ -546,6 +547,10 @@ class College extends Controller//权限11170131315
             ['majorid', 'require|regex:int', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
             ['collegeid', 'require|regex:int', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
         ]);
+        $repqire_data=Db::name('teacher')
+            ->where('teacherid',$date['teacherid'])
+            ->find();
+        $date['collegeid']=$repqire_data['collegeid'];
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             $syslog = ['ip' => $ip = request()->ip(),
@@ -1446,9 +1451,9 @@ class College extends Controller//权限11170131315
             ['s_home', 'max:40', '家庭住址限制40个字符以内'],
             ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
             ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
-            ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
+            ['s_dadname', 'max:5|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
             ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
-            ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
+            ['s_mumname', 'max:5|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
@@ -1763,9 +1768,9 @@ class College extends Controller//权限11170131315
             ['s_home', 'max:60', '家庭住址限制20个字符以内'],
             ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
             ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
-            ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
+            ['s_dadname', 'max:5|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
             ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
-            ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
+            ['s_mumname', 'max:5|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
@@ -2223,6 +2228,13 @@ class College extends Controller//权限11170131315
             echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
             exit;//判断数据是否合法
         } else {
+            $fc=new Formcheck();
+            $res=$fc->auth_check($usrname,$date['username']);
+//            return json($res);
+            if (!$res['res']){
+                echo "<script type='text/javascript'>parent.layer.alert('权限不够！');parent.history.go(-1);</script>";
+                exit;
+            }
             $checkclass = Db::table('scoreoperation')
                 ->where('opstate', '4')
                 ->where('id', $date['id'])

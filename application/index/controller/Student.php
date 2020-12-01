@@ -26,7 +26,9 @@ class Student extends Controller//权限1
     public function goout()//退出
     {
         session('username', null);
-        $this->success('退出成功', 'Admin/login');
+        $ip="http://".session('ip');
+        echo "<script>window.parent.location.href='$ip'</script>>";
+
     }
 
     public function studentindex()
@@ -173,7 +175,7 @@ class Student extends Controller//权限1
             ->count("s_id");
         if ($flag) {
             $cate_list = Db::name("stu_view")
-//             ->where('collegeid',$usrcollege)
+                ->where('apartmentid',$userinfo_2['apartmentid'])
                 ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
                 ->limit($start, $limit)
                 ->order("s_id desc")

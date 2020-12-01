@@ -4,11 +4,17 @@
 namespace app\index\controller;
 
 
+use app\index\model\Students;
+use app\index\model\Users;
 use think\Controller;
 use think\Db;
+use app\index\controller\Formcheck;
+use app\index\model\User;
+use app\index\model\Student;
 
 class Wechat extends Controller
 {
+
     public function  test(){
         return json(10);
     }
@@ -38,41 +44,77 @@ class Wechat extends Controller
     }
     public function login(){
         $data=input('post.');
-//        return json($data);
-        $jur=Db::name('user_view')
+////        return json($data);
+//        $jur=Db::name('user_view')
+//            ->where('username',$data['user'])
+//            ->where('password',md5($data['pwd']))
+//            ->value('jurisdiction');
+//        $openid=Db::name('user')
+//            ->where('username',$data['user'])
+//            ->update(['openid'=>$data['openid']]);
+//        if ($jur==7){//如果权限为测评班长
+//            $res=Db::name('user_view')
+//                ->where('username',$data['user'])
+//                ->value('user_id');
+//            $res2=Db::name('stu_view')
+//                ->where('0s_proid',$res)
+//                ->find();
+//            $msg=array('code'=>'3','info'=>$jur,'info2'=>$res2,'info3'=>$res);
+//            return json($msg);//以班长权限退出
+//        }
+//
+//        if ($jur==null){//判断不为管理员为普通学生/第一次查询数据失败
+//            $stu_exist=Db::name('stu_view')
+//                ->where('s_id',$data['user'])
+//                ->find();
+//            if($stu_exist==null){//第二次查询数据失败
+//                $msg=array('code'=>'4','info'=>'你并非本校用户');
+//                return json($msg);
+//            }
+//            $openid=Db::name('students')
+//                ->where('s_id',$data['user'])
+//                ->update(['openid'=>$data['openid']]);
+//            $msg=array('code'=>'2','info'=>$stu_exist,'info2'=>$jur);
+//            return json($msg);//以学生身份退出
+//        }
+//        $msg=array('code'=>'1','info'=>$jur);
+//        return json($msg);//以其他权限退出
+        $check_userinfo=Db::name('user_view')
             ->where('username',$data['user'])
             ->where('password',md5($data['pwd']))
-            ->value('jurisdiction');
-        $openid=Db::name('user')
-            ->where('username',$data['user'])
-            ->update(['openid'=>$data['openid']]);
-        if ($jur==7){//如果权限为测评班长
-            $res=Db::name('user_view')
-                ->where('username',$data['user'])
-                ->value('user_id');
-            $res2=Db::name('stu_view')
-                ->where('s_proid',$res)
-                ->find();
-            $msg=array('code'=>'3','info'=>$jur,'info2'=>$res2,'info3'=>$res);
-            return json($msg);//以班长权限退出
-        }
-
-        if ($jur==null){//判断不为管理员为普通学生/第一次查询数据失败
-            $stu_exist=Db::name('stu_view')
+            ->find();
+        if (empty($check_userinfo)||$check_userinfo['jurisdiction']==7){//此用户并非权限用户以及班长用户（数据获取阶段）（校外或者学生用户）
+            $check_stuinfo=Db::name('stu_view')
                 ->where('s_id',$data['user'])
+                ->where('s_proid',$data['pwd'])
                 ->find();
-            if($stu_exist==null){//第二次查询数据失败
-                $msg=array('code'=>'4','info'=>'你并非本校用户');
-                return json($msg);
+            if (empty($check_stuinfo)){//并非正常权限账户和学生账户→可能为班长和校外账户
+                $check_mnt=Db::name('user_stu_view')
+                    ->where('username',$data['user'])
+                    ->where('password',$data['pwd'])
+                    ->find();
+                    if(empty($check_mnt)){
+                        return json(array('code'=>'4','msg'=>'校外账户'));
+                    }elseif(!empty($check_mnt)){
+                        return json(array('code'=>'2','info'=>$check_mnt,'msg'=>'此账户为班长账户'));
+                    }else{
+                        return json(array('code'=>'4','msg'=>'查询异常','err_info_1'=>$check_userinfo,'err_info_2'=>$check_stuinfo,'err_info_3'=>$check_mnt));
+                    }
+            }elseif(!empty($check_stuinfo)){//学生账户
+                return json(array('code'=>'1','info'=>$check_stuinfo,'msg'=>'此账户为学生账户'));
+            }else{
+                return json(array('code'=>'4','msg'=>'查询异常','err_info_1'=>$check_userinfo,'err_info_2'=>$check_stuinfo));
             }
-            $openid=Db::name('students')
-                ->where('s_id',$data['user'])
-                ->update(['openid'=>$data['openid']]);
-            $msg=array('code'=>'2','info'=>$stu_exist,'info2'=>$jur);
-            return json($msg);//以学生身份退出
+            }elseif(!empty($check_userinfo)){//此为除了班长和学生和校外之外的账户,已经判断权限账户存在
+            if ($check_userinfo['jurisdiction']==10){
+                return json(array('code'=>'5','info'=>$check_userinfo,'msg'=>'此账户为楼长账户'));
+            }else{
+                return json(array('code'=>'3','info'=>$check_userinfo,'msg'=>'此账户为其他权限账户'));
+            }
+        }else{
+            return json(array('code'=>'4','msg'=>'查询异常','err_info_1'=>$check_userinfo));
+
         }
-        $msg=array('code'=>'1','info'=>$jur);
-        return json($msg);//以其他权限退出
     }
     public function Wx_GetOpenidByCode(){
         $code = $_REQUEST['code'];//获取code
@@ -106,31 +148,37 @@ class Wechat extends Controller
         return json(array('k1'=>$pc,'k2'=>$errCode,'k3'=>$data));
 
     }
+
     public function search(){
-        $data=input('post.');
-        if($data['jur']!=7) {
-            $res = Db::name('stu_view')
-                ->where('s_id', $data['s_id'])
-                ->find();
-            $msg=array('code'=>'1','info'=>$res,'msg'=>'查询成功');
-            return json($msg);
-        }else{//班长
-            $user_id = Db::table('user_view')
-                ->where('username',$data['user'])
-                ->value('user_id');
-            $class_lim=Db::table('students')
-                ->where('s_proid',$user_id)
-                ->value('s_class');
-            $res = Db::name('stu_view')
-                ->where('s_id', $data['s_id'])
-                ->find();
-            if ($res['s_class']!=$class_lim)
-            {
-                $msg=array('code'=>'3','info'=>$class_lim,'msg'=>'只能查询自己班级的学生');//这个学生信息你无权查询
-                return json($msg);
-            }
-            $msg=array('code'=>'2','info'=>$res,'user_id'=>$user_id,'class_lim'=>$class_lim,'jur'=>$data['jur'],'msg'=>'查询成功');
-            return json($msg);
+        $data=input('get.');
+        $data1=array(
+            '2'=>array('jur'=>$data['jur'],'limit_table'=>'u_colle_view','limit_data'=>'collegeinfo','sid'=>$data['s_id']),
+            '4'=>array('username'=>$data['username'],'limit_table'=>'u_colle_view','limit_data'=>'collegeinfo','sid'=>$data['s_id']),
+            '5'=>array('username'=>$data['username'],'limit_table'=>'u_colle_view','limit_data'=>'collegeinfo','sid'=>$data['s_id']),
+            '6'=>array('username'=>$data['username'],'limit_table'=>'user_view','limit_data'=>'u_name','sid'=>$data['s_id']),
+            '7'=>array('username'=>$data['username'],'limit_table'=>'user_stu_view','limit_data'=>'s_class','sid'=>$data['s_id']),
+            '9'=>array('jur'=>$data['jur'],'limit_table'=>'u_colle_view','limit_data'=>'collegeinfo','sid'=>$data['s_id']),
+            '10'=>array('username'=>$data['username'],'limit_table'=>'u_apart_view','limit_data'=>'apartmentinfo','sid'=>$data['s_id']),
+        );
+        $res=call_user_func_array(array('app\index\controller\Formcheck','limit_select_user'),array($data1[$data['jur']]));
+        if ($res){
+            $res="查询异常";
         }
+        return json($res);
+    }
+
+
+    public function test1(){
+        $students=Student::get(1);
+        var_dump($students->users());
+        exit();
+//        return json($res);
+    }
+    public function select(){
+        $data=request()->param();
+            $res=Db::name($data['table'])
+                ->where($data['Field'],$data['param'])
+                ->find();
+            return json($res);
     }
 }

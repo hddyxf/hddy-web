@@ -8,32 +8,6 @@
     <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
     <script>
         function bind_major(str) {
-            // var xmlhttp;
-            // console.log(str);
-            // // return;
-            // console.log(1)
-            // console.log(window.XMLHttpRequest)
-            // if(str=''){
-            //     return;
-            // }
-            // if(window.XMLHttpRequest){
-            //     xmlhttp=new XMLHttpRequest();
-            //     console.log(2)
-            //     console.log(xmlhttp)
-            // }else{
-            //     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            //     console.log(3)
-            //     console.log(xmlhttp)
-            // }
-            // xmlhttp.onreadystatechange(function () {
-            //     if (xmlhttp.readyState==4&&xmlhttp.state==200){
-            //         console.log(4)
-            //         console.log(xmlhttp)
-            //     $('#majorid').html(xmlhttp.responseText)
-            //     }
-            // })
-            // xmlhttp.open('GET',"classsec?q="+str,true);
-            // xmlhttp.send();
             console.log(str)
             console.log(1)
             console.log(window.XMLHttpRequest)
@@ -60,26 +34,28 @@
             xmlhttp.onreadystatechange=function()
             {
                 console.log(4)
-                console.log(xmlhttp)
+                console.log((JSON.parse(xmlhttp.response)))
+                var arr=JSON.parse(xmlhttp.response);//获取要替换的数据
+                var selc=document.getElementById('majorid')//获取对应id的标签
+                document.getElementById('majorid').innerHTML='';
+                for (var i=0;arr.length > i ;i++){
+                    console.log(arr[i])
+                    var option_pro=document.createElement('option');//创建元素语句缩写赋给
+                    option_pro.innerHTML=arr[i].majorinfo;
+                    option_pro.setAttribute("value",arr[i].majorid)
+                    option_pro.setAttribute("id","op")
+                    selc.appendChild(option_pro);
+                }
                 if (xmlhttp.readyState==4 && xmlhttp.status==200)
                 {
-                    document.getElementById("majorid").innerHTML=xmlhttp.responseText;
+                    // document.getElementById("majorid").innerHTML=xmlhttp.responseText;
                 }
             }
             xmlhttp.open("GET","classsec?q="+str,true);
             console.log("open执行")
             xmlhttp.send();
         }
-        function majorid(str) {
-            console.log('QI');
-            console.log(str)
-        }
-    </script>
-    <script>
-        function majorid(str) {
-            console.log('QI');
-            console.log(str)
-        }
+
     </script>
 
 
@@ -115,7 +91,10 @@
                 </td>
                 <td >所属专业：<font color="FF0000">*</font></td>
                  <td>
-                     <text>选择辅导员后将会显示</text>
+                     <select name="majorid" id="majorid">
+
+                     </select>
+<!--                     <text>选择辅导员后将会显示</text>-->
                      <!--                        <select id='majorid' name="majorid">-->
                      <!--                        <option value="">未选择</option>-->
                      <!--                       {volist name='data2' id='list'}-->

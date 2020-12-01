@@ -63,7 +63,7 @@ class Work extends Controller//权限1
     {
         session('username', null);
         $ip="http://".session('ip');
-        $this->success('退出成功', $ip);
+        echo "<script>window.parent.location.href='$ip'</script>>";
     }
 
 //个人管理模块开始部分-------------------------------------------------------------》
@@ -718,9 +718,9 @@ class Work extends Controller//权限1
             ['s_home', 'max:20', '家庭住址限制20个字符以内'],
             ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
             ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
-            ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
+            ['s_dadname', 'max:5|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
             ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
-            ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
+            ['s_mumname', 'max:5|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
@@ -988,9 +988,9 @@ class Work extends Controller//权限1
             ['s_home', 'max:60', '家庭住址限制20个字符以内'],
             ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
             ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
-            ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
+            ['s_dadname', 'max:5|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
             ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
-            ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
+            ['s_mumname', 'max:5|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
@@ -1233,7 +1233,7 @@ class Work extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script>parent.layer.alert('辅导员信息添加成功！');parent..go(-1);</script>";
+                    echo "<script>parent.layer.alert('辅导员信息添加成功！');parent.history.go(-1);</script>";
                 } else {
                     echo "<script>parent.layer.alert('辅导员信息添加失败！');parent.history.go(-1);</script>";
                 }
@@ -1722,10 +1722,10 @@ class Work extends Controller//权限1
             ['majorid', 'require|regex:int', '所属专业不能为空！|所属专业参数异常，请返回重试！'],
             ['collegeid', 'require|regex:int', '所在学院不能为空！|所在学院参数异常，请返回重试！'],
         ]);
-        $date['collegeid']=Db::name('teacher')
+        $repqire_data=Db::name('teacher')
             ->where('teacherid',$date['teacherid'])
-            ->value('collegeid');
-        $date['majorid']=Db::name('');
+            ->find();
+        $date['collegeid']=$repqire_data['collegeid'];
 //        return json($date);
 //        return json ($date);
         //通过选择的辅导员在teacher表中获取其对应的学院用以填补所在学院的数据
@@ -1748,7 +1748,7 @@ class Work extends Controller//权限1
             if ($classcheck) {
                 echo "<script type='text/javascript'>parent.layer.alert('该班级信息已经存在，请返回重试！');parent.history.go(-1);</script>";
             } else {
-                return json('数据完全正确');
+//                return json('数据完全正确');
                 $classadd = Db::table('class')->insert($date);
 //              $classadd1=Db::view('classview')->insert($date);
                 if ($classadd) {
@@ -1814,7 +1814,7 @@ class Work extends Controller//权限1
             ->select();
 //        var_dump($major);
 //        var_dump($major);
-//        return json($major);
+        return json($major);
         echo "<select name='majorid' onchange='majorid(this.value)'>";
         echo "<option value=\"\">未选择</option>";
         foreach ($major as $value) {
@@ -3003,6 +3003,13 @@ class Work extends Controller//权限1
             echo  "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
              exit;//判断数据是否合法
         } else {
+            $fc=new Formcheck();
+            $res=$fc->auth_check($usrname,$date['username']);
+//            return json($res);
+            if (!$res['res']){
+                echo "<script type='text/javascript'>parent.layer.alert('权限不够！');parent.history.go(-1);</script>";
+                exit;
+            }
             $checkclass = Db::table('scoreoperation')
                     ->where('opstate','4')
                     ->where('id',$date['id'])

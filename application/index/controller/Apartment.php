@@ -58,7 +58,8 @@ class Apartment extends Controller//权限1
     public function goout()//退出
     {
         session('username', null);
-        $this->success('退出成功', 'Admin/login');
+        $ip="http://".session('ip');
+        echo "<script>window.parent.location.href='$ip'</script>>";
     }
 
 //个人管理模块开始部分-------------------------------------------------------------》
@@ -728,9 +729,9 @@ class Apartment extends Controller//权限1
             ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
             ['s_apartment', 'require|regex:int', '未选择公寓号|参数异常，请返回重试'],
             ['s_dormitory', 'require|regex:int', '未选择寝室|参数异常，请返回重试'],
-            ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
+            ['s_dadname', 'max:5|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
             ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
-            ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
+            ['s_mumname', 'max:5|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
@@ -1026,9 +1027,9 @@ class Apartment extends Controller//权限1
             ['s_home', 'max:60', '家庭住址限制20个字符以内'],
             ['s_class', 'require|regex:int|max:10', '未选择班级！|班级参数异常，请返回重试！|班级参数异常，请返回重试！'],
             ['s_room', 'require|max:10|alphaDash|regex:room', '寝室信息不能为空！|寝室信息输入过长！|寝室信息包含非法字符！|寝室号及床位号格式必须为5110-1'],
-            ['s_dadname', 'max:15|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
+            ['s_dadname', 'max:5|chs', '父亲姓名至多输入5个汉字|父亲姓名限制为全汉字'],
             ['s_dadadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
-            ['s_mumname', 'max:15|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
+            ['s_mumname', 'max:5|chs', '母亲姓名至多输入5个汉字|母亲姓名限制为全汉字'],
             ['s_mumadd', 'length:11|regex:int', '手机号码限制为11位全数字|手机号码限制为11位全数字'],
         ]);
         if (!$validate->check($date)) {
@@ -3240,8 +3241,8 @@ class Apartment extends Controller//权限1
     public function editscorelogrun()//学分操作日志编辑操作
     {
         $date = input('post.');
+//        return json($date);
         $usrname = session('username');
-
         $validate = new validate([
             ['opstate', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
             ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
@@ -3255,6 +3256,14 @@ class Apartment extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
             exit;//判断数据是否合法
         } else {
+            //此处开始对权限进行越级评定
+            $fc=new Formcheck();
+            $res=$fc->auth_check($usrname,$date['username']);
+//            return json($res);
+            if (!$res['res']){
+                echo "<script type='text/javascript'>parent.layer.alert('权限不够！');parent.history.go(-1);</script>";
+                exit;
+            }
             $checkclass = Db::table('scoreoperation')
                 ->where('opstate', '4')
                 ->where('id', $date['id'])
