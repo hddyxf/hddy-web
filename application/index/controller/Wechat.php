@@ -4,6 +4,7 @@
 namespace app\index\controller;
 
 
+use app\index\model\Scoresec;
 use app\index\model\Students;
 use app\index\model\Users;
 use think\Controller;
@@ -11,6 +12,8 @@ use think\Db;
 use app\index\controller\Formcheck;
 use app\index\model\User;
 use app\index\model\Student;
+use app\index\model\Scorefirst;
+use think\Validate;
 
 class Wechat extends Controller
 {
@@ -44,41 +47,6 @@ class Wechat extends Controller
     }
     public function login(){
         $data=input('post.');
-////        return json($data);
-//        $jur=Db::name('user_view')
-//            ->where('username',$data['user'])
-//            ->where('password',md5($data['pwd']))
-//            ->value('jurisdiction');
-//        $openid=Db::name('user')
-//            ->where('username',$data['user'])
-//            ->update(['openid'=>$data['openid']]);
-//        if ($jur==7){//如果权限为测评班长
-//            $res=Db::name('user_view')
-//                ->where('username',$data['user'])
-//                ->value('user_id');
-//            $res2=Db::name('stu_view')
-//                ->where('0s_proid',$res)
-//                ->find();
-//            $msg=array('code'=>'3','info'=>$jur,'info2'=>$res2,'info3'=>$res);
-//            return json($msg);//以班长权限退出
-//        }
-//
-//        if ($jur==null){//判断不为管理员为普通学生/第一次查询数据失败
-//            $stu_exist=Db::name('stu_view')
-//                ->where('s_id',$data['user'])
-//                ->find();
-//            if($stu_exist==null){//第二次查询数据失败
-//                $msg=array('code'=>'4','info'=>'你并非本校用户');
-//                return json($msg);
-//            }
-//            $openid=Db::name('students')
-//                ->where('s_id',$data['user'])
-//                ->update(['openid'=>$data['openid']]);
-//            $msg=array('code'=>'2','info'=>$stu_exist,'info2'=>$jur);
-//            return json($msg);//以学生身份退出
-//        }
-//        $msg=array('code'=>'1','info'=>$jur);
-//        return json($msg);//以其他权限退出
         $check_userinfo=Db::name('user_view')
             ->where('username',$data['user'])
             ->where('password',md5($data['pwd']))
@@ -181,4 +149,14 @@ class Wechat extends Controller
                 ->find();
             return json($res);
     }
+    public function scorefirst(){
+        $res=Scorefirst::all();
+        return json(array($res));
+    }
+    public function scoresec(){
+        $data=request()->param();
+        $res=Scorefirst::getByScoreid($data['scorefirid'])->scoresec;
+        return json($res);
+    }
+
 }

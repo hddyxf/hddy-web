@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎使用学生德育学分管理系统</title>
+    <link rel="shortcut icon" href="../../logo.ico" />
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <script src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function toggle(id){
+            var tb=document.getElementById(id);
+            if(tb.style.display=='none') tb.style.display='block';
+            else tb.style.display='none';
+        }
+    </script>
+    <script type="text/javascript">
+        var isIE = /msie/i.test(navigator.userAgent) && !window.opera;
+        //识别浏览器类型的代码
+        function fileChange(target,id) {
+            var fileSize = 0;
+            var filetypes =[".xls",".xlsx"];
+            var filepath = target.value;
+            var filemaxsize = 1024*2;//2M
+            if(filepath){ //如果文件临时路径存在
+                var isnext = false;
+                var fileend = filepath.substring(filepath.indexOf("."));
+                if(filetypes && filetypes.length>0){
+                    for(var i =0; i<filetypes.length;i++){
+                        if(filetypes[i]==fileend){
+                            isnext = true;
+                            break;
+                        }
+                    }
+                }
+                if(!isnext){
+                    alert("不接受此文件类型！");
+                    target.value ="";
+                    return false;
+                }
+            }else{
+                return false;
+            }
+            if (isIE && !target.files) {
+                var filePath = target.value;
+                var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+                if(!fileSystem.FileExists(filePath)){
+                    alert("附件不存在，请重新输入！");
+                    return false;
+                }
+                var file = fileSystem.GetFile (filePath);
+                fileSize = file.Size;
+            } else {
+                fileSize = target.files[0].size;
+            }
+
+            var size = fileSize / 1024;
+            if(size>filemaxsize){
+                alert("附件大小不能大于"+filemaxsize/1024+"M！");
+                target.value ="";
+                return false;
+            }
+            if(size<=0){
+                alert("附件大小不能为0M！");
+                target.value ="";
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">用户管理</a>
+            <a>
+              <cite>批量添加用户</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right;background-color:#4682B4" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form action="addmanyapartrun" method="post" enctype="multipart/form-data">
+                        <input type="file"   name="fileUpload" onchange="fileChange(this);" />
+                        <input type="submit"  class="layui-btn" value="上传文件" style="background-color:#4682B4"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <h3><strong>通过上传Excel表格的方式批量录入大量学生信息时需要您注意以下要求。(如未按要求上传可能会导致数据录入失败或出现错误，甚至导致系统无法正常运行。)</strong></h3>
+                    <h4><strong>
+                        1、上传须知：您在上传文件时需保证Excel中的所有信息在本系统是真实存在的。</strong></h4>
+                    <h4><strong><br>
+                        2、内容格式：您的Excel文件中的内容中前十列必须为如下图所示的以“用户名”-“”-“姓名”-“性别”-“电话”-“学院编号”-“权限ID”-“身份证号”-“公寓（仅对楼长）”排列的表头，如果您的表格内容不足七列您需要自行创建几列(数据可以为空)，但必须保证至少七列，如果您的表格内容还有其他内容需要保证前七列为下图所示的排列方式。
+                    </strong></h4>
+                    <h4><strong><br>
+                        3、文件类型：您的Excel文件类型必须为97-2003年的以xls为后缀的文件。
+                    </strong></h4>
+                    <h4><strong><br>
+                        4、因为未按照格式上传文件造成系统错误的，与本系统无关。
+                    </strong></h4><br>
+                    <img src="/images/a.png" height="350" width="1000"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<div class="layui-fluid" id="table1" style="display:none">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <strong>各类权限信息：</strong>
+                    <table class="layui-table layui-form"  >
+                        <thead>
+                        <tr >
+                            <td>权限等级</td>
+                            <td>权限类型</td>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -996,6 +996,158 @@ class Hddy1 extends Controller//权限1
         echo "\n";
         var_dump($str);
     }
+    public function  addmanapart(){
+        return view();
+    }
+    public function addmanyapartrun(){
+        $request = \think\Request::instance();
+        vendor("PHPExcel.PHPExcel");//引入导入excel第三方库
+        $file = request()->file('fileUpload');
+        if (empty($file)) {
+            $this->error("导入数据失败，可能是数据为空");//数据为空返回错误
+        }
+        $info = $file->validate(['ext' => 'xlsx,xls'])->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if ($info == false) {
+            $this->error("导入数据失败，可能是文件格式或文件类型导致");//数据为空返回错误
+        }
+        //获取上传到后台的文件名
+        $fileName = $info->getSaveName();
+        $syslog = ['ip' => $ip = request()->ip(),
+            'datetime' => $time = date('Y-m-d H:i:s'),
+            'info' => '上传文件批量导入学生信息，文件名为：' . $fileName . '',
+            'state' => '重要',
+            'username' => $usrlogo = session('username'),];
+        Db::table('systemlog')->insert($syslog);
+        //获取文件路径
+        $filePath = 'uploads' . DS . $fileName;
+        //   部署在linux环境下时获取路径需要更改为绝对路径
+        //  509：$filePath = 'uploads'.DS.$fileName;
+//        echo dirname(dirname(dirname(__FILE__)));
+//        exit;
+        //获取文件后缀
+        $suffix = $info->getExtension();
+        //判断哪种类型
+        if ($suffix == "xlsx") {
+            $reader = \PHPExcel_IOFactory::createReader('Excel2007');
+        } else {
+            $reader = \PHPExcel_IOFactory::createReader('Excel5');
+        }
+
+        //载入excel文件
+        $excel = $reader->load("$filePath", $encode = 'utf-8');
+        //读取第一张表
+        $sheet = $excel->getSheet(0);
+        //获取总行数
+        $row_num = $sheet->getHighestRow();
+        //获取总列数
+        $col_num = $sheet->getHighestColumn();
+        $data = []; //数组形式获取表格数据
+
+
+        for ($i = 2; $i <= $row_num; $i++) {//开始遍历获取值检验格式和查重
+            // var_dump($sheet->getCell("A".$i)->getValue());exit;
+//            $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
+            $data['dormitoryid'] = $excel->getActiveSheet()->getCell("A" . $i)->getValue();
+            $data['apartmentid'] = $excel->getActiveSheet()->getCell("B" . $i)->getValue();
+            $data['dormitoryinfo'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+            //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+            //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+//            $classcheck = Db::name("class")
+//                ->where('class', $data['s_class'])
+//                ->select();
+//            if ($classcheck == false) {
+//                $this->error("文件中第 {$i} 行的班级：{$data['s_class']} 无法在系统中被找到，请核对重试。");//数据为空返回错误
+//                exit;
+//            }
+//            $sidcheck = Db::name("students")
+//                ->where('s_id', $data['s_id'])
+//                ->select();
+//            if ($sidcheck) {
+//                $this->error("文件中第 {$i} 行的学生学号：{$data['s_id']} 学生信息已经存在，请核对后重试。");//数据为空返回错误
+//                exit;
+//            }
+//            $aidcheck = Db::name("apartment")
+//                ->where('apartmentinfo', $data['apartment'])
+//                ->select();
+//            if(!$aidcheck){
+//                $this->error("文件中第{$i}行的学生对应的公寓楼号：{$data['apartment']}信息不存在，请核对后重试。");
+//                exit;
+//            }
+//            $didcheck = Db::name("dormitory")
+//                ->where("dormitoryinfo",$data['dormitory'])
+//                ->select();
+//            if(!$didcheck){
+//                $this->error("文件中第{$i}行的学生对应的寝室号：{$data['dormitory']}信息不存在，请核对后重试。");
+//                exit;
+//            }
+            $validate=new validate([
+                ['u_id','regex:u_id','用户id格式错误'],
+                ['username','regex:username','用户名格式错误'],
+//                ['password','alphaDash','密码格式错误'],
+                ['u_name','chs|max:4|min:2','用户姓名格式错误|用户姓名格式错误|用户姓名格式错误'],
+                ['u_sex','regex:u_sex','性别格式错误'],
+                ['add','regex:add','手机号码格式错误'],
+                ['u_classinfo','regex:u_classinfo','所属学院编号格式错误'],
+                ['jurisdiction','regex:jurisdiction','权限级别格式错误'],
+                ['user_id','regex:user_id','身份证号格式错误']
+            ]);
+//            !$validate->check($data)
+            if (false){
+//                $tes=preg_match("/^[男|女]$/","男");
+                $this->error("第".$i.'行'.$validate->getError());//数据为空返回错误
+                exit();
+            }
+//            $cd=new Formcheck();
+//            $cd_res=$cd->check_addstu($data,'user',$checkey);
+//            if ($cd_res['code']==1){
+//                $err_msg=$cd_res['msg'];
+//                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+//                exit;
+//            }
+            // Db::table("students")->insert($data);
+        }
+        for ($i = 2; $i <= $row_num; $i++) {//第二遍获取值并插入
+            // var_dump($sheet->getCell("A".$i)->getValue());exit;
+//            $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
+            $data['dormitoryid'] = $excel->getActiveSheet()->getCell("A" . $i)->getValue();
+            $data['apartmentid'] = $excel->getActiveSheet()->getCell("B" . $i)->getValue();
+            $data['dormitoryinfo'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+            $gomany = Db::name('dormitory')->insert($data);
+            if ($gomany == false) {
+                $this->error("发生未知错误，请联系管理员");//数据为空返回错误
+                exit;
+            }
+
+        }
+        $num = $row_num - 1;
+        $syslog = ['ip' => $ip = request()->ip(),
+            'datetime' => $time = date('Y-m-d H:i:s'),
+            'info' => '上传文件批量导入了：' . $num . ' 条用户信息，文件名为：' . $fileName . '',
+            'state' => '重要',
+            'username' => $usrlogo = session('username'),];
+        Db::table('systemlog')->insert($syslog);
+        $this->success("共 {$num} 条用户信息导入成功！");
+
+        if ($this) {
+            echo "<tr>";
+            for ($i = 2; $i <= $row_num; $i++) {
+                // 遍历在前端
+                // var_dump($sheet->getCell("A".$i)->getValue());exit;
+                $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
+                $data['username'] = $sheet->getCell("B" . $i)->getValue();
+//                $data['password'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+                $data['u_name'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+                //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+                //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+                echo "<td> " . $data['u_id'] . " " . $data['username'] . " " . $data['u_name'] . " "
+                    . $data['u_sex'] . " " . $data['add'] . " " . $data['u_classinfo'] . " "
+                    . $data['jurisdiction'] ." " . $data['user_id'] . "</td>";
+            }
+            echo "</tr>";
+        } else {
+            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
+        }
+    }
     public function addmanyuserrun(){
         $request = \think\Request::instance();
         vendor("PHPExcel.PHPExcel");//引入导入excel第三方库

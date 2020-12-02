@@ -54,12 +54,12 @@
                     success:function (res) {
                         console.log(res)
                         fir=res;
+                        $('#first').append($("<option></option>").text('未选择'))
                         for (var i=0;i<res.length;i++) {
                             var op = $("<option></option>").text(res[i].scoresecinfo+"   "+res[i].score+"分")
                             var oped = $('#first').append(op)
                             op.attr('value', res[i].scoresecid)
                         }
-                        $('#opscoreclass').val(res[0].classinfo);
                     }
                 })
             })
