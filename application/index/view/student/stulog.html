@@ -116,7 +116,8 @@
       
   ]]
     ,page: true
-    ,done:function () {
+    ,done:function (res) {
+        console.log(res)
                         layer.close(index) //加载完数据
                     }
 
@@ -125,6 +126,7 @@
   
         var active = {
             reload: function(){
+                console.log('reload')
                 var index = layer.load(2);
                 var log = $('#ssk').val(); //传入搜索值 
                 console.log(username);验证值是否获取
@@ -191,9 +193,10 @@
                 layer.msg('查询内容不能为空');
                 return false;
             }
+            console.log($(this).data('type'))
             active[type] ? active[type].call(this) : '';
         });
-    
+    0
      $(document).on('keydown',function(e){
       if(e.keyCode == 13){
         $('#tj').trigger('click');

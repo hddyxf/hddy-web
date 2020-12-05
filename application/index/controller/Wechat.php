@@ -13,6 +13,7 @@ use app\index\controller\Formcheck;
 use app\index\model\User;
 use app\index\model\Student;
 use app\index\model\Scorefirst;
+use think\Debug;
 use think\Validate;
 
 class Wechat extends Controller
@@ -150,13 +151,189 @@ class Wechat extends Controller
             return json($res);
     }
     public function scorefirst(){
+        Debug::remark('begin');
         $res=Scorefirst::all();
+        Debug::remark('end');
+       echo Debug::getRangeTime('begin','end').'s';
         return json(array($res));
     }
     public function scoresec(){
+        Debug::remark('begin');
         $data=request()->param();
         $res=Scorefirst::getByScoreid($data['scorefirid'])->scoresec;
+        Debug::remark('end');
+//      echo  Debug::getRangeTime('begin','end').'s';
         return json($res);
+    }
+
+    public function scoreoperationrun()//学分操作后台
+    {
+        return json(1);
+        $date = input('post.');
+        if ($date['jur']!=7) {
+            if ($date['opscoreclass'] == "加分") {
+                $date['opscoreclass'] = '1';
+            } else if ($date['opscoreclass'] == "减分") {
+                $date['opscoreclass'] = '2';
+            }
+            $time = date('Y-m-d H:i:s');
+            $ip = request()->ip();
+            $score = Db::name('students')
+                ->where('s_id', $date['stuid'])
+                ->find();
+            $operinfo = [
+                'ip' => $ip,
+                'datetime' => $time,
+                'opstate' => '1',
+                'otherstate' => '0',
+            ];
+            $data = $date + $operinfo;
+            $score1 = number_format($score['score']);//转字符为number类型
+//        $date=array('opscoreclass'=>2,'score'=>10,'stuid'=>1180131231);
+//        $score=0;
+            if ($date['opscoreclass'] == '1' && ($score1 >= 100 || ($date['score'] + $score1) > 100)) {
+                $score_update = Db::name('students')
+                    ->where('s_id', $date['stuid'])
+                    ->update(['score' => '100']);
+                return json(array('德育学分已满分'));
+                echo "<script type='text/javascript'>parent.layer.alert('德育学分已满分');parent.history.go(-1);</script>";
+            } else if ($date['opscoreclass'] == '2' && ($score1 <= 0 || ($score1 - $date['score']) < 0)) {
+                //            return json('进入减分判断');
+                $score_update = Db::name('students')
+                    ->where('s_id', $date['stuid'])
+                    ->update(['score' => '0']);
+                return json(array('msg' => '德育学分已扣完', 'info2' => $date, 'info3' => $score1));
+            } else {
+
+                $scorenumcheck = Db::name("scoresec")
+                    ->where('scoresecid', $date['opscoresec'])
+                    ->find();
+                if ($scorenumcheck['score'] >= $date['score']) {
+                    return json($data);
+                    $scoreopartion = Db::table('scoreoperation')->insert($data);
+                    if ($data['opscoreclass'] == '1') {
+                        $opres = Db::table('students')->where('s_id', $date['stuid'])->setInc('score', $date['score']);
+                    } else {
+                        $opres = Db::table('students')->where('s_id', $date['stuid'])->setDec('score', $date['score']);
+                    }
+                    if ($scoreopartion) {
+                        $syslog = ['ip' => $ip = request()->ip(),
+                            'datetime' => $time = date('Y-m-d H:i:s'),
+                            'info' => '对学生学号为：' . $date['stuid'] . ' 进行学分操作。',
+                            'state' => '重要',
+                            'username' => $usrlogo = session('username'),];
+                        Db::table('systemlog')->insert($syslog);
+                        //$this->success("对学号：{$date['stuid']} 的学生操作已被确认！");
+                        return json(array($score['s_name'] . '的德育学分已被确认'));
+                    } else {
+                        return json(array('操作失败'));
+                    }
+                } else {
+                    return json(array('参数异常'));
+                }
+            }
+        }else if ($date['jur']==7){
+            if ($date['opscoreclass'] == "加分") {
+                $date['opscoreclass'] = '1';
+            } else if ($date['opscoreclass'] == "减分") {
+                $date['opscoreclass'] = '2';
+            }
+            $time = date('Y-m-d H:i:s');
+            $ip = request()->ip();
+            $operinfo = [
+                'ip' => $ip,
+                'datetime' => $time,
+                'opstate' => '2',
+                'otherstate' => '0',
+            ];
+            $data = $date + $operinfo;
+//            $validate = new validate([
+//                ['stuid', 'require|regex:int|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
+//                ['opusername', 'require|alphaDash|max:15', '操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！'],
+//                ['opscorefir', 'require|regex:int', '请选择一级分类！|一级分类参数错误，请返回重试！'],
+//                ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类参数错误，请返回重试！'],
+//                ['opscoreclass', 'require|regex:int', '请选择操作类型！|操作类型参数错误，请返回重试！'],
+//                ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
+//            ]);
+                $scorenumcheck = Db::name("scoresec")
+                    ->where('scoresecid', $date['opscoresec'])
+                    ->find();
+                if ($scorenumcheck['score'] >= $date['score']) {
+
+                    $scoreopartion = Db::table('scoreoperation')->insert($data);
+                    if ($scoreopartion) {
+                        $syslog = ['ip' => $ip = request()->ip(),
+                            'datetime' => $time = date('Y-m-d H:i:s'),
+                            'info' => '对学生学号为：' . $date['stuid'] . ' 进行学分操作。',
+                            'state' => '重要',
+                            'username' => $usrlogo = session('username'),];
+                        Db::table('systemlog')->insert($syslog);
+                        return json(array('德育学分操作已被确认'));
+                    } else {
+                        return json(array('操作失败'));
+                    }
+                } else {
+                    return json(array('操作不能超过分数上线'));
+                }
+
+        }else{
+            return json(array('参数异常'));
+        }
+
+    }
+    public function examinerun()//审核操作
+    {
+        $data = input('post.');
+        $stateupdate = [
+            'opstate' => '1',
+        ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
+        $date = $data + $stateupdate;
+//        $validate = new validate([
+//            ['opstate', 'require|regex:int', '请选择操作类型！|操作当前状态参数异常，请返回重试！'],
+//            ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
+//            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
+//            ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
+//            ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
+//        ]);
+            $checkclass = Db::table('scoreoperation')
+                ->where('opstate', '1')
+                ->where('id', $date['id'])
+                ->select();//用户名重复性检测
+            if ($checkclass) {
+                echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');parent.history.go(-1)</script>";
+            } else {
+                $checkusr = Db::table('user')
+                    ->where('username', $date['username'])
+                    ->where('u_name', $date['othername'])
+                    ->select();//用户名重复性检测
+                if ($checkusr) {
+                    $time = date('Y-m-d H:i:s');
+                    $editscore = Db::table('scoreoperation')
+                        ->where('id', $date['id'])
+                        ->update([
+                            'opstate' => '1',
+                            'othername' => $date['othername'],
+                            'othertime' => $time,
+                            'otherstate' => '1',
+                            'info' => $date['info']]);//修改操作
+                    if ($editscore) {
+                        $syslog = ['ip' => $ip = request()->ip(),
+                            'datetime' => $time = date('Y-m-d H:i:s'),
+                            'info' => '对学生操作流水号为为：' . $date['id'] . ' 进行了操作。',
+                            'state' => '重要',
+                            'username' => $usrlogo = session('username'),];
+                        Db::table('systemlog')->insert($syslog);
+                        echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                        exit;
+                    } else {
+                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                        exit;//判断更新操作是否成功
+                    }
+                } else {
+                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');parent.history.go(-1);</script>";
+                    exit;
+                }
+        }
     }
 
 }

@@ -261,10 +261,10 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("oper_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("oper_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('id desc')
@@ -286,11 +286,11 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("oper_view")
             ->where('username', $usrname)
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("oper_view")
             ->where('username', $usrname)
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
@@ -835,7 +835,7 @@ class Hddy1 extends Controller//权限1
         return $this->fetch();
 
     }
-    public function addmanyuser()//批量添加学生页面
+    public function addmanyuser()//批量添加用户页面
     {
         $result = Db::table('qxinfo')
             ->select();
@@ -847,7 +847,6 @@ class Hddy1 extends Controller//权限1
     {
         $request = \think\Request::instance();
         vendor("PHPExcel.PHPExcel");//引入导入excel第三方库
-
         $file = request()->file('fileUpload');
 
         if (empty($file)) {
@@ -889,8 +888,6 @@ class Hddy1 extends Controller//权限1
         //获取总列数
         $col_num = $sheet->getHighestColumn();
         $data = []; //数组形式获取表格数据
-
-
         for ($i = 2; $i <= $row_num; $i++) {
             // var_dump($sheet->getCell("A".$i)->getValue());exit;
             $data['s_id'] = $sheet->getCell("A" . $i)->getValue();
@@ -902,6 +899,9 @@ class Hddy1 extends Controller//权限1
             $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
             $data['apartment'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
             $data['dormitory'] = $excel->getActiveSheet()->getCell("I".$i)->getValue();
+            $data['collegeid'] = $excel->getActiveSheet()->getCell("J".$i)->getValue();
+            $data['majorid'] = $excel->getActiveSheet()->getCell("K".$i)->getValue();
+            $data['teacherid'] = $excel->getActiveSheet()->getCell("L".$i)->getValue();
             //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
             //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
             $classcheck = Db::name("class")
@@ -909,28 +909,28 @@ class Hddy1 extends Controller//权限1
                 ->select();
             if ($classcheck == false) {
                 $this->error("文件中第 {$i} 行的班级：{$data['s_class']} 无法在系统中被找到，请核对重试。");//数据为空返回错误
-                exit;
+                exit();
             }
             $sidcheck = Db::name("students")
                 ->where('s_id', $data['s_id'])
                 ->select();
             if ($sidcheck) {
                 $this->error("文件中第 {$i} 行的学生学号：{$data['s_id']} 学生信息已经存在，请核对后重试。");//数据为空返回错误
-                exit;
+                exit();
             }
             $aidcheck = Db::name("apartment")
                 ->where('apartmentinfo', $data['apartment'])
                 ->select();
             if(!$aidcheck){
                 $this->error("文件中第{$i}行的学生对应的公寓楼号：{$data['apartment']}信息不存在，请核对后重试。");
-                exit;
+                exit();
             }
             $didcheck = Db::name("dormitory")
                 ->where("dormitoryinfo",$data['dormitory'])
                 ->select();
             if(!$didcheck){
                 $this->error("文件中第{$i}行的学生对应的寝室号：{$data['dormitory']}信息不存在，请核对后重试。");
-                exit;
+                exit();
             }
             // Db::table("students")->insert($data);
         }
@@ -943,10 +943,11 @@ class Hddy1 extends Controller//权限1
             $data['s_class'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
             $data['s_room'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
             $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
-            $data['apartment'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
-            $data['dormitory'] = $excel->getActiveSheet()->getCell("I".$i)->getValue();
             $data['s_apartment'] = Db::table('apartment')->where('apartmentinfo',$data['apartment'])->value('apartmentid');
             $data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $data['dormitory'])->value('dormitoryid');
+            $data['collegeid'] = $excel->getActiveSheet()->getCell("J".$i)->getValue();
+            $data['majorid'] = $excel->getActiveSheet()->getCell("K".$i)->getValue();
+            $data['teacherid'] = $excel->getActiveSheet()->getCell("L".$i)->getValue();
             $gomany = Db::table('students')->insert($data);
             if ($gomany == false) {
                 $this->error("发生未知错误，请联系管理员");//数据为空返回错误
@@ -987,15 +988,15 @@ class Hddy1 extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
         }
     }
-    public function  test_regex(){
-        $str = array('lyd');
-        $isMatched = preg_grep('/^[a-z]{2,3}/', $str);
-        $isMatched2 = preg_match_all('/^[a-z]{2,3}/', $str[0]);
-        var_dump($isMatched);
-        var_dump($isMatched2);
-        echo "\n";
-        var_dump($str);
-    }
+//    public function  test_regex(){
+//        $str = array('lyd');
+//        $isMatched = preg_grep('/^[a-z]{2,3}/', $str);
+//        $isMatched2 = preg_match_all('/^[a-z]{2,3}/', $str[0]);
+//        var_dump($isMatched);
+//        var_dump($isMatched2);
+//        echo "\n";
+//        var_dump($str);
+//    }
     public function  addmanapart(){
         return view();
     }
@@ -1094,7 +1095,7 @@ class Hddy1 extends Controller//权限1
 //            !$validate->check($data)
             if (false){
 //                $tes=preg_match("/^[男|女]$/","男");
-                $this->error("第".$i.'行'.$validate->getError());//数据为空返回错误
+                $this->error("addteacherrun第".$i.'行'.$validate->getError());//数据为空返回错误
                 exit();
             }
 //            $cd=new Formcheck();
@@ -1197,7 +1198,7 @@ class Hddy1 extends Controller//权限1
             // var_dump($sheet->getCell("A".$i)->getValue());exit;
 //            $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
             $data['username'] = $sheet->getCell("A" . $i)->getValue();
-            $data['password'] = "123456";
+            $data['password'] = md5("123456");
             $data['u_name'] = $excel->getActiveSheet()->getCell("B" . $i)->getValue();
             $data['u_sex'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
             $data['add'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
@@ -1205,6 +1206,8 @@ class Hddy1 extends Controller//权限1
             $data['jurisdiction'] = $excel->getActiveSheet()->getCell("F".$i)->getValue();
             $data['user_id'] = $excel->getActiveSheet()->getCell("G".$i)->getValue();
             $data['apartmentid'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+            $data['u_class']=$excel->getActiveSheet()->getCell("I" . $i)->getValue();
+            $data['state']=1;
             //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
             //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
 //            $classcheck = Db::name("class")
@@ -1244,7 +1247,8 @@ class Hddy1 extends Controller//权限1
                 ['add','regex:add','手机号码格式错误'],
                 ['u_classinfo','regex:u_classinfo','所属学院编号格式错误'],
                 ['jurisdiction','regex:jurisdiction','权限级别格式错误'],
-                ['user_id','regex:user_id','身份证号格式错误']
+                ['user_id','regex:user_id','身份证号格式错误'],
+                ['u_class','regex:int','部门ID格式错误']
             ]);
             if (!$validate->check($data)){
 //                $tes=preg_match("/^[男|女]$/","男");
@@ -1252,6 +1256,7 @@ class Hddy1 extends Controller//权限1
                 exit();
             }
             $cd=new Formcheck();
+            $checkey=array('username','add','user_id');
             $cd_res=$cd->check_addstu($data,'user',$checkey);
             if ($cd_res['code']==1){
                 $err_msg=$cd_res['msg'];
@@ -1264,7 +1269,6 @@ class Hddy1 extends Controller//权限1
             // var_dump($sheet->getCell("A".$i)->getValue());exit;
 //            $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
             $data['username'] = $sheet->getCell("A" . $i)->getValue();
-//            $data['password'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
             $data['password'] = md5("123456");
             $data['u_name'] = $excel->getActiveSheet()->getCell("B" . $i)->getValue();
             $data['u_sex'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
@@ -1273,6 +1277,8 @@ class Hddy1 extends Controller//权限1
             $data['jurisdiction'] = $excel->getActiveSheet()->getCell("F".$i)->getValue();
             $data['user_id'] = $excel->getActiveSheet()->getCell("G".$i)->getValue();
             $data['apartmentid'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+            $data['u_class']=$excel->getActiveSheet()->getCell("I" . $i)->getValue();
+            $data['state']=1;
             $gomany = Db::name('user')->insert($data);
             if ($gomany == false) {
                 $this->error("发生未知错误，请联系管理员");//数据为空返回错误
@@ -1294,15 +1300,16 @@ class Hddy1 extends Controller//权限1
             for ($i = 2; $i <= $row_num; $i++) {
                 // 遍历在前端
                 // var_dump($sheet->getCell("A".$i)->getValue());exit;
-                $data['u_id'] = $sheet->getCell("A" . $i)->getValue();//查符合格式与否+查重
-                $data['username'] = $sheet->getCell("B" . $i)->getValue();
-//                $data['password'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
-                $data['u_name'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
-                $data['u_sex'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
-                $data['add'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
-                $data['u_classinfo'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
-                $data['jurisdiction'] = $excel->getActiveSheet()->getCell("G".$i)->getValue();
-                $data['user_id'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+                $data['username'] = $sheet->getCell("A" . $i)->getValue();
+                $data['password'] = "123456";
+                $data['u_name'] = $excel->getActiveSheet()->getCell("B" . $i)->getValue();
+                $data['u_sex'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+                $data['add'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+                $data['u_classinfo'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
+                $data['jurisdiction'] = $excel->getActiveSheet()->getCell("F".$i)->getValue();
+                $data['user_id'] = $excel->getActiveSheet()->getCell("G".$i)->getValue();
+                $data['apartmentid'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+                $data['u_class']=$excel->getActiveSheet()->getCell("I" . $i)->getValue();
                 //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
                 //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
                 echo "<td> " . $data['u_id'] . " " . $data['username'] . " " . $data['u_name'] . " "
@@ -2144,7 +2151,182 @@ class Hddy1 extends Controller//权限1
         $this->assign('data3', $result3);
         return $this->fetch();
     }
+    public function addmanyclass(){
+        return $this->fetch();
+    }
+    public function addmanyclassrun()//批量添加学生后台
+    {
+        $request = \think\Request::instance();
+        vendor("PHPExcel.PHPExcel");//引入导入excel第三方库
+        $file = request()->file('fileUpload');
 
+        if (empty($file)) {
+            $this->error("导入数据失败，可能是数据为空");//数据为空返回错误
+        }
+        $info = $file->validate(['ext' => 'xlsx,xls'])->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if ($info == false) {
+            $this->error("导入数据失败，可能是文件格式或文件类型导致");//数据为空返回错误
+        }
+        //获取上传到后台的文件名
+        $fileName = $info->getSaveName();
+        $syslog = ['ip' => $ip = request()->ip(),
+            'datetime' => $time = date('Y-m-d H:i:s'),
+            'info' => '上传文件批量导入学生信息，文件名为：' . $fileName . '',
+            'state' => '重要',
+            'username' => $usrlogo = session('username'),];
+        Db::table('systemlog')->insert($syslog);
+        //获取文件路径
+        $filePath = 'uploads' . DS . $fileName;
+        //   部署在linux环境下时获取路径需要更改为绝对路径
+        //  509：$filePath = 'uploads'.DS.$fileName;
+//        echo dirname(dirname(dirname(__FILE__)));
+//        exit;
+        //获取文件后缀
+        $suffix = $info->getExtension();
+        //判断哪种类型
+        if ($suffix == "xlsx") {
+            $reader = \PHPExcel_IOFactory::createReader('Excel2007');
+        } else {
+            $reader = \PHPExcel_IOFactory::createReader('Excel5');
+        }
+
+        //载入excel文件
+        $excel = $reader->load("$filePath", $encode = 'utf-8');
+        //读取第一张表
+        $sheet = $excel->getSheet(0);
+        //获取总行数
+        $row_num = $sheet->getHighestRow();
+        //获取总列数
+        $col_num = $sheet->getHighestColumn();
+        $data = []; //数组形式获取表格数据
+        for ($i = 2; $i <= $row_num; $i++) {
+            // var_dump($sheet->getCell("A".$i)->getValue());exit;
+            $data['class'] = $sheet->getCell("A" . $i)->getValue();
+            $data['teacherid'] = $sheet->getCell("B" . $i)->getValue();
+            $data['majorid'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+            $data['collegeid'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+//            $data['s_class'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
+//            $data['s_room'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
+//            $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
+//            $data['apartment'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+//            $data['dormitory'] = $excel->getActiveSheet()->getCell("I".$i)->getValue();
+//            $data['collegeid'] = $excel->getActiveSheet()->getCell("J".$i)->getValue();
+//            $data['majorid'] = $excel->getActiveSheet()->getCell("K".$i)->getValue();
+//            $data['teacherid'] = $excel->getActiveSheet()->getCell("L".$i)->getValue();
+            //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+            //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+//            $classcheck = Db::name("class")
+//                ->where('class', $data['s_class'])
+//                ->select();
+//            if ($classcheck == false) {
+//                $this->error("文件中第 {$i} 行的班级：{$data['s_class']} 无法在系统中被找到，请核对重试。");//数据为空返回错误
+//                exit();
+//            }
+//            $sidcheck = Db::name("students")
+//                ->where('s_id', $data['s_id'])
+//                ->select();
+//            if ($sidcheck) {
+//                $this->error("文件中第 {$i} 行的学生学号：{$data['s_id']} 学生信息已经存在，请核对后重试。");//数据为空返回错误
+//                exit();
+//            }
+//            $aidcheck = Db::name("apartment")
+//                ->where('apartmentinfo', $data['apartment'])
+//                ->select();
+//            if(!$aidcheck){
+//                $this->error("文件中第{$i}行的学生对应的公寓楼号：{$data['apartment']}信息不存在，请核对后重试。");
+//                exit();
+//            }
+//            $didcheck = Db::name("dormitory")
+//                ->where("dormitoryinfo",$data['dormitory'])
+//                ->select();
+//            if(!$didcheck){
+//                $this->error("文件中第{$i}行的学生对应的寝室号：{$data['dormitory']}信息不存在，请核对后重试。");
+//                exit();
+//            }
+            $validate=new validate([
+                ['class','regex:int','班级格式错误'],
+                ['teacherid','regex:int','教师ID格式错误'],
+                ['majorid','regex:int','专业ID格式错误'],
+                ['collegeid','regex:int','学院ID格式错误|用户姓名格式错误|用户姓名格式错误'],
+            ]);
+            if (!$validate->check($data)){
+//                $tes=preg_match("/^[男|女]$/","男");
+                $this->error("第".$i.'行'.$validate->getError());//数据为空返回错误
+                exit();
+            }
+            $cd=new Formcheck();
+            $checkey=array('class');
+            $cd_res=$cd->check_addstu($data,'class',$checkey);
+            if ($cd_res['code']==1){
+                $err_msg=$cd_res['msg'];
+                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                exit;
+            }
+            // Db::table("students")->insert($data);
+        }
+        for ($i = 2; $i <= $row_num; $i++) {
+            // var_dump($sheet->getCell("A".$i)->getValue());exit;
+            $data['class'] = $sheet->getCell("A" . $i)->getValue();
+            $data['teacherid'] = $sheet->getCell("B" . $i)->getValue();
+            $data['majorid'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+            $data['collegeid'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+            $data['s_class'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
+            $data['s_room'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
+            $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
+            $data['s_apartment'] = Db::table('apartment')->where('apartmentinfo',$data['apartment'])->value('apartmentid');
+            $data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $data['dormitory'])->value('dormitoryid');
+            $data['collegeid'] = $excel->getActiveSheet()->getCell("J".$i)->getValue();
+            $data['majorid'] = $excel->getActiveSheet()->getCell("K".$i)->getValue();
+            $data['teacherid'] = $excel->getActiveSheet()->getCell("L".$i)->getValue();
+            $gomany = Db::table('students')->insert($data);
+            if ($gomany == false) {
+                $this->error("发生未知错误，请联系管理员");//数据为空返回错误
+                exit;
+            }
+
+        }
+        $num = $row_num - 1;
+        $syslog = ['ip' => $ip = request()->ip(),
+            'datetime' => $time = date('Y-m-d H:i:s'),
+            'info' => '上传文件批量导入了：' . $num . ' 条学生信息，文件名为：' . $fileName . '',
+            'state' => '重要',
+            'username' => $usrlogo = session('username'),];
+        Db::table('systemlog')->insert($syslog);
+        $this->success("共 {$num} 条学生信息导入成功！");
+
+        if ($this) {
+            echo "<tr>";
+            for ($i = 2; $i <= $row_num; $i++) {
+                // var_dump($sheet->getCell("A".$i)->getValue());exit;
+                $data['s_id'] = $sheet->getCell("A" . $i)->getValue();
+                $data['s_name'] = $sheet->getCell("B" . $i)->getValue();
+                $data['s_proid'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+                $data['s_sex'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+                $data['s_class'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
+                $data['s_room'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
+                $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
+                $data['apartment'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+                $data['dormitory'] = $excel->getActiveSheet()->getCell("I".$i)->getValue();
+                //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+                //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+                echo "<td> " . $data['s_id'] . " " . $data['s_name'] . " " . $data['s_proid'] . " "
+                    . $data['s_sex'] . " " . $data['s_class'] . " " . $data['s_room'] . " "
+                    . $data['s_add'] ." " . $data['apartment'] . " " . $data['dormitory'] ."</td>";
+            }
+            echo "</tr>";
+        } else {
+            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
+        }
+    }
+    public function  test_regex(){
+        $str = array('lyd');
+        $isMatched = preg_grep('/^[a-z]{2,3}/', $str);
+        $isMatched2 = preg_match_all('/^[a-z]{2,3}/', $str[0]);
+        var_dump($isMatched);
+        var_dump($isMatched2);
+        echo "\n";
+        var_dump($str);
+    }
     public function addclassrun()//添加班级信息操作
     {
         $date = input('post.');
@@ -3621,9 +3803,9 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("oper_view")
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("oper_view")
             ->limit($start, $limit)
             ->order('id desc')
             ->select();
@@ -3643,10 +3825,10 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("oper_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("oper_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")

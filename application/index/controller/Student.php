@@ -2,9 +2,11 @@
 
 namespace app\index\controller;
 
+use app\index\model\Zlog_view;
 use think\Controller;
 use think\Db;
 use app\index\model\User as UserModel;
+use think\Debug;
 use think\validate;
 use think\Request;
 use think\Env;
@@ -51,15 +53,18 @@ class Student extends Controller//权限1
         return $this->fetch();
     }
 
-    public function stuloglist()
+    public function stuloglist()//分页获取全部操作日志列表
     {
+        Debug::remark('begin');
         $usrname = session('username');
         $page = input("get.page") ? input("get.page") : 1;
-        $page = intval($page);
+        $page = intval($page);//变成整型
         $limit = input("get.limit") ? input("get.limit") : 1;
-        $limit = intval($limit);
+        $limit = intval($limit);//变成整型
         $start = $limit * ($page - 1);
         //分页查询
+        $cate_list=Zlog_view::scope('all',$usrname,$start,$limit)->select();
+        $count=Zlog_view::scope('all',$usrname,$start,$limit)->count();
         $count = Db::name("zlog_view")
             ->where('username', $usrname)
             ->count("id");
@@ -72,6 +77,8 @@ class Student extends Controller//权限1
         $list["code"] = 0;
         $list["count"] = $count;
         $list["data"] = $cate_list;
+        Debug::remark('end');
+//        echo Debug::getRangeTime('begin','end').'s';
         return json($list);
     }
 
@@ -79,8 +86,7 @@ class Student extends Controller//权限1
     {
         $usrname = session('username');
         $date = $request->post();
-//        $userinfo=Db::name('user_view')//找到这个用户
-//            ->where('user_id',)
+        return json(input('post.page'));
         $page = input("post.page") ? input("post.page") : 1;
         $page = intval($page);
         $limit = input("post.limit") ? input("post.limit") : 1;
