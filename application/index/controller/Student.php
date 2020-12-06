@@ -86,7 +86,7 @@ class Student extends Controller//权限1
     {
         $usrname = session('username');
         $date = $request->post();
-        return json(input('post.page'));
+//        return json(input('post.page'));
         $page = input("post.page") ? input("post.page") : 1;
         $page = intval($page);
         $limit = input("post.limit") ? input("post.limit") : 1;

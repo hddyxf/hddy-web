@@ -1239,15 +1239,15 @@ class Hddy1 extends Controller//权限1
 //                exit;
 //            }
             $validate=new validate([
-                ['u_id','regex:u_id','用户id格式错误'],
-                ['username','regex:username','用户名格式错误'],
+//                ['u_id',,'用户id格式错误'],
+                ['username','alphaDash','用户名格式错误'],
 //                ['password','alphaDash','密码格式错误'],
                 ['u_name','chs|max:4|min:2','用户姓名格式错误|用户姓名格式错误|用户姓名格式错误'],
-                ['u_sex','regex:u_sex','性别格式错误'],
-                ['add','regex:add','手机号码格式错误'],
-                ['u_classinfo','regex:u_classinfo','所属学院编号格式错误'],
-                ['jurisdiction','regex:jurisdiction','权限级别格式错误'],
-                ['user_id','regex:user_id','身份证号格式错误'],
+                ['u_sex','chs','性别格式错误'],
+                ['add','regex:int','手机号码格式错误'],
+                ['u_classinfo','regex:int','所属学院编号格式错误'],
+                ['jurisdiction','regex:int','权限级别格式错误'],
+                ['user_id','regex:int','身份证号格式错误'],
                 ['u_class','regex:int','部门ID格式错误']
             ]);
             if (!$validate->check($data)){
@@ -2270,15 +2270,7 @@ class Hddy1 extends Controller//权限1
             $data['teacherid'] = $sheet->getCell("B" . $i)->getValue();
             $data['majorid'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
             $data['collegeid'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
-            $data['s_class'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
-            $data['s_room'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
-            $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
-            $data['s_apartment'] = Db::table('apartment')->where('apartmentinfo',$data['apartment'])->value('apartmentid');
-            $data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $data['dormitory'])->value('dormitoryid');
-            $data['collegeid'] = $excel->getActiveSheet()->getCell("J".$i)->getValue();
-            $data['majorid'] = $excel->getActiveSheet()->getCell("K".$i)->getValue();
-            $data['teacherid'] = $excel->getActiveSheet()->getCell("L".$i)->getValue();
-            $gomany = Db::table('students')->insert($data);
+            $gomany = Db::table('class')->insert($data);
             if ($gomany == false) {
                 $this->error("发生未知错误，请联系管理员");//数据为空返回错误
                 exit;
@@ -2288,39 +2280,34 @@ class Hddy1 extends Controller//权限1
         $num = $row_num - 1;
         $syslog = ['ip' => $ip = request()->ip(),
             'datetime' => $time = date('Y-m-d H:i:s'),
-            'info' => '上传文件批量导入了：' . $num . ' 条学生信息，文件名为：' . $fileName . '',
+            'info' => '上传文件批量导入了：' . $num . ' 条班级信息，文件名为：' . $fileName . '',
             'state' => '重要',
             'username' => $usrlogo = session('username'),];
         Db::table('systemlog')->insert($syslog);
-        $this->success("共 {$num} 条学生信息导入成功！");
+        $this->success("共 {$num} 条班级信息导入成功！");
 
         if ($this) {
-            echo "<tr>";
-            for ($i = 2; $i <= $row_num; $i++) {
-                // var_dump($sheet->getCell("A".$i)->getValue());exit;
-                $data['s_id'] = $sheet->getCell("A" . $i)->getValue();
-                $data['s_name'] = $sheet->getCell("B" . $i)->getValue();
-                $data['s_proid'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
-                $data['s_sex'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
-                $data['s_class'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
-                $data['s_room'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
-                $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
-                $data['apartment'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
-                $data['dormitory'] = $excel->getActiveSheet()->getCell("I".$i)->getValue();
-                //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
-                //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
-                echo "<td> " . $data['s_id'] . " " . $data['s_name'] . " " . $data['s_proid'] . " "
-                    . $data['s_sex'] . " " . $data['s_class'] . " " . $data['s_room'] . " "
-                    . $data['s_add'] ." " . $data['apartment'] . " " . $data['dormitory'] ."</td>";
-            }
-            echo "</tr>";
+//            echo "<tr>";
+//            for ($i = 2; $i <= $row_num; $i++) {
+//                // var_dump($sheet->getCell("A".$i)->getValue());exit;
+//                $data['class'] = $sheet->getCell("A" . $i)->getValue();
+//                $data['teacherid'] = $sheet->getCell("B" . $i)->getValue();
+//                $data['majorid'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+//                $data['collegeid'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+//                //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+//                //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+////                echo "<td> " . $data['s_id'] . " " . $data['s_name'] . " " . $data['s_proid'] . " "
+////                    . $data['s_sex'] . " " . $data['s_class'] . " " . $data['s_room'] . " "
+////                    . $data['s_add'] ." " . $data['apartment'] . " " . $data['dormitory'] ."</td>";
+//            }
+//            echo "</tr>";
         } else {
             echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
         }
     }
     public function  test_regex(){
         $str = array('lyd');
-        $isMatched = preg_grep('/^[a-z]{2,3}/', $str);
+        $isMatched = preg_grep('/^[1-9][0-9]{0,2}/', $str);
         $isMatched2 = preg_match_all('/^[a-z]{2,3}/', $str[0]);
         var_dump($isMatched);
         var_dump($isMatched2);
@@ -3649,10 +3636,10 @@ class Hddy1 extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
             exit;//判断数据是否合法
         } else {
-            $result = Db::table('zlog_view')
+            $result = Db::name('zlog_view')
                 ->where('id', $date['id'])
                 ->find();//通过session查询个人信息
-
+//            return json($result);
             $this->assign('data', $result);
             return $this->fetch();
         }

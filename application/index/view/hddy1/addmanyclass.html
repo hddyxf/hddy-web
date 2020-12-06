@@ -90,7 +90,7 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <form action="addmanysturun" method="post" enctype="multipart/form-data">
+                    <form action="addmanyclassrun" method="post" enctype="multipart/form-data">
                         <input type="file"   name="fileUpload" onchange="fileChange(this);" />
                         <input type="submit"  class="layui-btn" value="上传文件" style="background-color:#4682B4"/>
                     </form>
@@ -104,11 +104,11 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <h3><strong>通过上传Excel表格的方式批量录入大量学生信息时需要您注意以下要求。(如未按要求上传可能会导致数据录入失败或出现错误，甚至导致系统无法正常运行。)</strong></h3>
+                    <h3><strong>通过上传Excel表格的方式批量录入大量班级信息时需要您注意以下要求。(如未按要求上传可能会导致数据录入失败或出现错误，甚至导致系统无法正常运行。)</strong></h3>
                     <h4><strong>
-                        1、上传须知：您在上传文件时需保证Excel中的班级在本系统是真实存在的，如您不确定班级是否存在请点击 &nbsp<input type="button" value="查看班级信息" class="layui-btn" onClick="toggle('table1')" style="background-color:#FF5511"/>&nbsp进行查看，如果您导入文件中的班级在本系统中不存在，可能会导致相关信息无法关联，虽然后期可以对系统参数进行调整，但我们不推荐这样做。</strong></h4>
+                        1、上传须知：您在上传文件时需保证Excel中的班级在本系统是真实存在的</strong></h4>
                     <h4><strong><br>
-                        2、内容格式：您的Excel文件中的内容中前十列必须为如下图所示的以“学号”-“姓名”-“身份证号码”-“性别”-“班级”-“寝室及床位”-“联系方式”排列的表头，如果您的表格内容不足七列您需要自行创建几列(数据可以为空)，但必须保证至少七列，如果您的表格内容还有其他内容需要保证前七列为下图所示的排列方式。
+                        2、内容格式：您的Excel文件中的内容中前十列必须为如下图所示的以“班级”-“老师ID”-“专业ID”-“学院ID”排列的表头，如果您的表格内容不足七列您需要自行创建几列(数据可以为空)，但必须保证至少七列，如果您的表格内容还有其他内容需要保证前七列为下图所示的排列方式。
                     </strong></h4>
                     <h4><strong><br>
                         3、文件类型：您的Excel文件类型必须为97-2003年的以xls为后缀的文件。
@@ -116,7 +116,7 @@
                     <h4><strong><br>
                         4、因为未按照格式上传文件造成系统错误的，与本系统无关。
                     </strong></h4><br>
-                    <img src="/images/a.png" height="350" width="1000"/>
+                    <img src="/images/class.png" height="350" width="1000"/>
 
                 </div>
             </div>

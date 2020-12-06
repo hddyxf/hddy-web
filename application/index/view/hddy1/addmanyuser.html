@@ -104,7 +104,7 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <h3><strong>通过上传Excel表格的方式批量录入大量学生信息时需要您注意以下要求。(如未按要求上传可能会导致数据录入失败或出现错误，甚至导致系统无法正常运行。)</strong></h3>
+                    <h3><strong>通过上传Excel表格的方式批量录入大量用户信息时需要您注意以下要求。(如未按要求上传可能会导致数据录入失败或出现错误，甚至导致系统无法正常运行。)</strong></h3>
                     <h4><strong>
                         1、上传须知：您在上传文件时需保证Excel中的所有信息在本系统是真实存在的。</strong></h4>
                     <h4><strong><br>
@@ -116,7 +116,7 @@
                     <h4><strong><br>
                         4、因为未按照格式上传文件造成系统错误的，与本系统无关。
                     </strong></h4><br>
-                    <img src="/images/a.png" height="350" width="1000"/>
+                    <img src="/images/user.png" height="350" width="1000"/>
                 </div>
             </div>
         </div>
@@ -125,32 +125,32 @@
 
 
 </div>
-<div class="layui-fluid" id="table1" style="display:none">
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-md12">
-            <div class="layui-card">
-                <div class="layui-card-body ">
-                    <strong>各类权限信息：</strong>
-                    <table class="layui-table layui-form"  >
-                        <thead>
-                        <tr >
-                            <td>权限等级</td>
-                            <td>权限类型</td>
-                        </thead>
-                        <tbody>
-                        {volist name='data' id='list'}
-                        <tr>
-                            <td>{$list.jurisdiction}</td>
-                            <td>{$list.jurisdictioninfo}</td>
-                        </tr>
-                        {/volist}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="layui-fluid" id="table1" style="display:none">-->
+<!--    <div class="layui-row layui-col-space15">-->
+<!--        <div class="layui-col-md12">-->
+<!--            <div class="layui-card">-->
+<!--                <div class="layui-card-body ">-->
+<!--                    <strong>各类权限信息：</strong>-->
+<!--                    <table class="layui-table layui-form"  >-->
+<!--                        <thead>-->
+<!--                        <tr >-->
+<!--                            <td>权限等级</td>-->
+<!--                            <td>权限类型</td>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        {volist name='data' id='list'}-->
+<!--                        <tr>-->
+<!--                            <td>{$list.jurisdiction}</td>-->
+<!--                            <td>{$list.jurisdictioninfo}</td>-->
+<!--                        </tr>-->
+<!--                        {/volist}-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 </body>
 </html>
