@@ -6,14 +6,38 @@
   
     <title>学生查询</title>
     <link rel="shortcut icon" href="../../logo.ico" />
-    <link rel="stylesheet" href="/css/bootstrap.css" >
+<!--    <link rel="stylesheet" href="/css/bootstrap.css" >-->
     <link rel="stylesheet" href="/css/xg.css"  >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <style type="text/css">
     .imgPlace{ position:relative; top:25px; left:10px;}
 
     </style>
 </head>
 <body>
+<script>
+    $('document').ready(function () {
+        $('#ctrl').hide();
+        $('#type').change(function () {
+            console.log($('#type').val());
+            if ($('#type').val()=='2'){
+                $('#ctrl').hide();
+                // $('#grade').attr({"readonly":"readonly"})
+                // $('#term').attr({"readonly":"readonly"})
+                // $('#enrol').attr({"readonly":"readonly"})
+            }else if($('#type').val()=='1'){
+                $('#ctrl').show();
+                // $('#grade').attr({"readonly":""})
+                // $('#term').attr({"readonly":""})
+                // $('#enrol').attr({"readonly":""})
+            }
+        })
+    })
+</script>
 <!-- 内容区 -->
 <br>&nbsp&nbsp&nbsp
 <img src="/images/logo1.png" /><img src="/images/logo2.png" class="imgPlace"/>
@@ -41,10 +65,41 @@
                 <div class="row form-s1 checkid">
                 	<form action="scorecheck" method="post">
                     <div class="col-sm-4 col-md-2"><label>学生信息：</label></div>
-                    <div class="col-sm-8 col-md-5"><input class="form-control" placeholder="请输学号"  type="text" value="" name="u_id"></div>
-                    <div class="col-sm-8 col-md-5"><input class="form-control" placeholder="请输身份证号码"  type="text" value="" name="proid" maxlength="18"></div><br><br><br>
+                    <div class="col-sm-8 col-md-3"><input class="form-control" placeholder="请输学号"  type="text" value="" name="u_id"></div>
+                    <div class="col-sm-8 col-md-3"><input class="form-control" placeholder="请输身份证号码"  type="text" value="" name="proid" maxlength="18"></div>
+                        <div class="col-sm-8 col-md-3"><select class="form-control" id="type" name="type">
+                            <option value="">是否开启单一学期查询</option>
+                            <option value="1">开启</option>
+                            <option value="2">关闭</option>
+                        </select></div>
+<!--                        <input  placeholder="请输身份证号码"  type="text" value="" name="proid" maxlength="18" hidden>-->
+                        <br><br>
+                        <div id="ctrl">
+                        <div class="col-md-2"> <label >学期信息：</label></div>
+                        <div class="col-sm-8 col-md-3 col-xs-5">
+                        <select class="form-control" id="grade" name="grade">
+                        <option value="0">大一</option>
+                        <option value="1">大二</option>
+                        <option value="2">大三</option>
+                            <option value="3">大四</option>
+                    </select></div>
+                        <div class="col-sm-8 col-md-3 col-xs-5">
+                            <select class="form-control" id="enrol" name="enrol">
+                                <option value="2017">未选择</option>
+                                <option value="2017">2017届</option>
+                                <option value="2018">2018届</option>
+                                <option value="1920">2019届</option>
+                                <option value="2020">2020届</option>
+                            </select></div>
+                        <div class="col-sm-8 col-md-3 col-xs-5">
+                            <select class="form-control" id="term" name="term">
+                                <option value="0,8">上学期</option>
+                                <option value="1,3">下学期</option>
+                            </select></div>
+                        </div>
+                        <br>
+                        <br>
                     <div  align="center"><button type="submit" class="btn btn-default blue30 btn-blue ">&nbsp&nbsp&nbsp查询学分&nbsp&nbsp&nbsp</button></div>
-                </div>
                 </form>
                 <div class="remark mt20 row">
                     <div class="col-sm-3  col-xs-1 text-right">注:</div>
@@ -60,6 +115,15 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+    //     $('.selectpicker').selectpicker({
+    //     });
+    //
+    //     $('.selectpicker').val('Mustard');
+    //     $('.selectpicker').selectpicker('render');
+    // });
+</script>
 <script src="..//js/jquery-1.7.1.min.js"></script>
 <script src="..//js/bootstrap.min.js"></script>
 <script src="..//js/datepicker/laydate.js"></script>

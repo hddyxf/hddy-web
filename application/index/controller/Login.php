@@ -13,6 +13,7 @@ class Login extends Controller
     public function login()
     {
         $date = input('post.');
+
         session('ip',$_SERVER['HTTP_HOST']);
 //        return json(session('url'));
 //        $dateinfo=Db::name('user')
@@ -45,20 +46,23 @@ class Login extends Controller
                     ->find();
                 if ($result) {
                     if ($result['password'] === md5($date['password'])) {
-
                         session('username', $date['username']);
                         $syslog = [
                             'ip' => $ip = request()->ip(),
                             'datetime' => $time = date('Y-m-d H:i:s'),
                             'info' => '登陆系统。',
-                            'state' => '异常',
+                            'state' => '正常',
                             'username' => $date['username'],
                         ];
                         Db::table('systemlog')->insert($syslog);
                         $qxcheck = Db::table('user')
                             ->where('username', $date['username'])
                             ->find();
-                        if ($qxcheck['jurisdiction'] == '1') {
+                        if ($qxcheck['jurisdiction'] == '1'||$qxcheck['jurisdiction'] == '11') {
+                            if ($qxcheck['jurisdiction'] == '11'){
+                                $this->success("登陆成功!  欢迎：{$date['username']}。", 'Define/hddy');
+                                session('qx',$qxcheck['jurisdiction']);
+                            }
                             $this->success("登陆成功!  欢迎：{$date['username']}。", 'Hddy1/hddy');
                             session('username', $date['username']);
                             session('login_url',$_SERVER['HTTP_HOST']);

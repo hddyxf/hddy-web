@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta charset="UTF-8">
+        <title>欢迎使用学生德育学分管理系统</title>
+        <link rel="shortcut icon" href="../../logo.ico" />
+        <link rel="stylesheet" href="/css/font.css">
+         <link rel="stylesheet" href="/css/xadmin.css">
+        <link rel="stylesheet" href="/css/theme.css">
+        <script src="/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script>
+            function addscorefir(){
+		layer.open({
+        	//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type:2,
+            title:"添加学分操作一级分类信息",
+            area: ['90%','80%'],
+            shade: 0.4,
+            content:"addscorefir"
+        });
+	}
+        </script>
+        <script>
+            function addscoresec(){
+		layer.open({
+        	//layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+            type:2,
+            title:"添加学分操作二级分类信息",
+            area: ['90%','80%'],
+            shade: 0.4,
+            content:"addscoresec"
+        });
+	}
+        </script>
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a>首页</a>
+                <a>系统参数管理</a>
+                <a>
+                    <cite>学分操作管理</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right;background-color:#4682B4" onclick="location.reload()" title="刷新" >
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px" ></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">          
+                             <h4><button class="layui-btn layui-btn-sm" onclick="addscorefir()" style="background-color:#4682B4">
+                               <i class="layui-icon">&#xe608;</i> &nbsp添加学分操作一级分类</button>
+                               <button class="layui-btn layui-btn-sm" onclick="addscoresec()" style="background-color:#4682B4">
+                               <i class="layui-icon">&#xe608;</i> &nbsp添加学分操作二级分类</button>
+                               <i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp</i> 
+                               <strong>需要新增学分操作分类时请点击相应按钮。</strong></h4>                     
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15" >
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <div class="layui-inline layui-show-xs-block">
+                                    
+                                    <input type="text"  placeholder="关键字查询" autocomplete="off" class="layui-input" name="ssk" id="ssk" ></div>
+                                <div class="layui-inline layui-show-xs-block">
+                                <div class="layui-btn layui-btn-sm" lay-submit="" data-type="reload" id="tj" lay-filter="sreach" style="background-color:#4682B4" type="button">
+                                        <i class="layui-icon">&#xe615;</i></div>
+                                         <strong>&nbsp&nbsp一级分类列表</strong><i class="layui-icon">&nbsp&nbsp&#xe625;&nbsp</i>      
+                                         <strong><i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp支持所属单位及一级分类具体内容的精确及模糊查询。(输入“_”可查询所有信息)</i> </strong>
+                               
+                                        </div>
+                            </form>
+                        </div>
+                        <table id="demo" lay-filter="test" class="layui-card-body " ></table>
+                        <script type="text/html" id="barDemo">
+                            <a class="layui-btn layui-btn-normal" lay-event="detail" style="background-color:#708090">查看/编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del1">删除</a> 
+                        </script>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="layui-row layui-col-space15" >
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text"  placeholder="关键字查询" autocomplete="off" class="layui-input" name="ssk2" id="ssk2" ></div>
+                                <div class="layui-inline layui-show-xs-block">
+                                <div class="layui-btn layui-btn-sm" lay-submit="" data-type="reload" id="tj2" lay-filter="sreach" style="background-color:#4682B4" type="button">
+                                    <i class="layui-icon">&#xe615;</i></div>
+                                    <strong>&nbsp&nbsp二级分类列表</strong><i class="layui-icon">&nbsp&nbsp&#xe625;&nbsp</i>      
+                                    <strong><i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp支持所属一级分类名及二级分类具体内容的精确及模糊查询。(输入“_”可查询所有信息)</i> </strong>
+                               
+                                </div>
+                                </div>
+                            </form>
+                             <table id="demo2" lay-filter="test2" class="layui-card-body " ></table>
+                        </div>
+                       
+                        <script type="text/html" id="barDemo2">
+                            <a class="layui-btn layui-btn-normal" lay-event="detail" style="background-color:#708090">查看/编辑</a
+  二级分类列表 >
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del2">删除</a> 
+                        </script>
+                    </div>
+                </div>
+            本系统由 数据科学与人工智能学院 软件工程系 创客实验室  提供技术支持，并持有版权。
+            </div>
+               
+        
+        
+         
+    </body>
+    <script>layui.use('laydate',
+        function() {
+            var laydate = layui.laydate;
+            
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+            
+
+        });</script>
+<script>
+  layui.use('table', function(){
+  var table = layui.table;
+  var index = layer.load(2);
+  table.render({
+    elem: '#demo'
+    ,url:'scorefirlist'
+    ,toolbar: '#toolbarDemo'
+    ,title: '用户数据表'
+    ,cols: [[
+    {type:'numbers',title:'序号',},
+       {field:'collegeinfo', title:'所属单位',width:180}
+      ,{field:'scoreinfo', title:'描述',}
+      ,{ field:'1',title:'操作', toolbar: '#barDemo', width:180}
+      
+  ]]
+    ,page: true
+    ,done:function () {
+                        layer.close(index) //加载完数据
+                    }
+  });
+       
+
+        var active = {
+            reload: function(){
+                var index = layer.load(2);
+                var scoreinfo = $('#ssk').val(); //传入搜索值 
+                //console.log((username));验证值是否获取
+                //执行重载
+                table.reload('demo', {
+                    url : 'scorefircheck',
+                    method:'post',
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: { //类似于 data
+                         scoreinfo:scoreinfo //传入日期参数
+                         ,done:function () {
+                        layer.close(index) //加载完数据
+                    }
+                        
+                    }
+                });
+            }
+        };
+           
+           
+      var table = layui.table;
+      
+      //监听单元格编辑
+     table.on('tool(test)', function(obj){
+    var data = obj.data;
+   
+    if(obj.event === 'detail'){
+         layer.open({
+    type: 2,
+    title: '查看一级分类详情',
+    shadeClose: true,
+    shade: 0.4,
+    area: ['90%', '80%'],
+    
+    content: 'showscorefir?id='+data.scoreid //iframe的url
+  });
+    }
+    if(obj.event === 'del1'){
+        layer.confirm('确定删除一级分类:  ' + data.scoreinfo + '  吗？', function (index) {
+            obj.del();  //页面表格内部删除
+                    $.ajax({
+                        url: "delfirscore",
+                        type: "POST",
+                        data: {'scoreid': data.scoreid,},
+                        async: false,
+                        success: function (data) {
+                            var res = JSON.parse(data)
+                            var status = parseInt(res.status);
+                            if (status == 1) {
+                                layer.msg('操作失败！', {icon: 0})
+                            }  else {
+                                layer.msg('操作成功！', {icon: 1})
+                            }
+                        }
+                    })
+                    layer.close(index);
+                    PowerTable.reload(); //重新加载表格
+                });
+    }
+    
+    else{
+    console.log(('111'));
+    }
+  });
+    
+        $('#tj').on('click', function(){
+            var type = $(this).data('type');
+            //不能为空验证
+            if( $('#ssk').val()==""){
+                layer.msg('查询内容不能为空');
+                return false;
+            }
+            active[type] ? active[type].call(this) : '';
+        });
+         });
+         
+</script>
+ <script>
+  layui.use('table', function(){
+  var table = layui.table;
+  var index = layer.load(2);
+  
+  table.render({
+    elem: '#demo2'
+    ,url:'scoreseclist'
+    ,toolbar: '#toolbarDemo'
+    ,title: '用户数据表'
+    ,cols: [[
+    {type:'numbers',title:'序号',},
+      {field:'scoreinfo', title:'所属一级分类',width:220}
+      ,{field:'scoresecinfo', title:'描述',}
+       ,{field:'classinfo', title:'操作类型',width:90}
+        ,{field:'score', title:'操作分值',width:90}
+      ,{ title:'操作', toolbar: '#barDemo2', width:180}
+      
+  ]]
+    ,page: true
+    ,done:function () {
+                        layer.close(index) //加载完数据
+                    }
+  });
+       
+
+        var active = {
+            reload: function(){
+                var index = layer.load(2);
+                var scoresecinfo = $('#ssk2').val(); //传入搜索值 
+                //console.log((username));验证值是否获取
+                //执行重载
+                table.reload('demo2', {
+                    url : 'scoreseccheck',
+                    method:'post',
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: { //类似于 data
+                         scoresecinfo:scoresecinfo //传入日期参数
+                         ,done:function () {
+                        layer.close(index) //加载完数据
+                    }
+                        
+                    }
+                });
+            }
+        };
+           
+           
+      var table = layui.table;
+      
+      //监听单元格编辑
+     table.on('tool(test2)', function(obj){
+    var data = obj.data;
+   
+    if(obj.event === 'detail'){
+         layer.open({
+    type: 2,
+    title: '查看二级分类详情',
+    shadeClose: true,
+    shade: 0.4,
+    area: ['90%', '80%'],
+    
+    content: 'showscoresec?id='+data.scoresecid //iframe的url
+  });
+    }
+    if(obj.event === 'del2'){
+        layer.confirm('确定删除二级分类:  ' + data.scoresecinfo + '  吗？', function (index) {
+            obj.del();  //页面表格内部删除
+                    $.ajax({
+                        url: "delsecscore",
+                        type: "POST",
+                        data: {'scoresecid': data.scoresecid,},
+                        async: false,
+                        success: function (data) {
+                            var res = JSON.parse(data)
+                            var status = parseInt(res.status);
+                            if (status == 1) {
+                                layer.msg('操作失败！', {icon: 0})
+                            }  else {
+                                layer.msg('操作成功！', {icon: 1})
+                            }
+                        }
+                    })
+                    layer.close(index);
+                    PowerTable.reload(); //重新加载表格
+                });
+    }
+    else{
+    console.log(('111'));
+    }
+  });
+    
+        $('#tj2').on('click', function(){
+            var type = $(this).data('type');
+            //不能为空验证
+            if( $('#ssk2').val()==""){
+                layer.msg('查询内容不能为空');
+                return false;
+            }
+            active[type] ? active[type].call(this) : '';
+        });
+    
+    	$(document).on('keydown',function(e){
+          if($('#ssk').val()=="" && $('#ssk2').val()==""){
+            if(e.keyCode == 13){
+              	layer.msg('查询内容不能为空');
+              return false;
+            }
+          }
+        	 if($('#ssk').val()!="" && $('#ssk2').val()==""){
+            if(e.keyCode == 13){
+              	$('#tj').trigger('click');
+              return false;
+            }
+          }
+           if($('#ssk').val()=="" && $('#ssk2').val()!=""){
+            if(e.keyCode == 13){
+              	$('#tj2').trigger('click');
+              return false;
+            }
+          }
+           if($('#ssk').val()!="" && $('#ssk2').val()!=""){
+            if(e.keyCode == 13){
+              	layer.msg('不能同时查询');
+              return false;
+            }
+          }
+        })
+      });
+         
+</script>
+</html>

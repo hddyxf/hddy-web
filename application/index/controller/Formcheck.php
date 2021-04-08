@@ -9,7 +9,7 @@ use think\Controller;
 use think\Db;
 use app\index\model\User;
 
-class Formcheck extends Controller
+class   Formcheck extends Controller
 {
     /*$data为你要查重的数据
      * $table为你要查重的表
@@ -130,5 +130,15 @@ class Formcheck extends Controller
                 ->find();
         }
         return $res;
+    }
+    public static function systemlogs($data){
+        $date=array([
+            'ip' => $data[1],
+                'datetime' => $data[2],
+                'info' => $data[3] . $data[4] . $data[5],
+                'state' => '异常',
+                'username' => session('username'),
+        ]);
+        return $date;
     }
 }

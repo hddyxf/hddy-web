@@ -2258,7 +2258,7 @@ class Apartment extends Controller//权限1
     {
         $date = input('post.');
         $validate = new validate([
-            ['collegeid', 'require|regex:int', '所属单位名称不能为空|参数错误，请返回重试！'],
+            ['collegeid', 'require|regex:int', '所属单位名称不能为空！|参数错误，请返回重试！'],
             ['apartmentinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
         ]);
         if (!$validate->check($date)) {
@@ -2307,7 +2307,7 @@ class Apartment extends Controller//权限1
         $date = input('post.');
         $validate = new validate([
             ['apartmentid', 'require|regex:int', '所属分类名称不能为空|所属分类参数错误，请返回重试！'],
-            ['dormitoryinfo', 'require|regex:int', '操作类型不能为空|操作类型参数错误，请返回重试！'],
+            ['dormitoryinfo', 'require|regex:int', '寝室号不能为空|操作类型参数错误，请返回重试！'],
         ]);
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
@@ -3022,7 +3022,7 @@ class Apartment extends Controller//权限1
    public function examinerun()//审核操作
     {
         $data = input('post.');
-        return json($data);
+//        return json($data);
         $stateupdate = [
             'opstate' => '1',
           ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数

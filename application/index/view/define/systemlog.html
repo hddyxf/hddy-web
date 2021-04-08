@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+      
+        <title>欢迎使用学生德育学分管理系统</title>
+        <link rel="shortcut icon" href="../../logo.ico" />
+        <link rel="stylesheet" href="/css/font.css">
+         <link rel="stylesheet" href="/css/xadmin.css">
+         <link rel="stylesheet" href="/css/xadmin.css">
+        <link rel="stylesheet" href="/css/theme.css">
+        <script src="/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a>首页</a>
+                <a>系统日志</a>
+                <a>
+                    <cite>系统操作日志</cite></a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right;background-color:#4682B4" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text"  placeholder="关键字查询" autocomplete="off" class="layui-input" name="ssk" id="ssk" ></div>
+                                <div class="layui-inline layui-show-xs-block">
+<!--                                    添加button-->
+                                    <div class="layui-btn layui-btn-sm" lay-submit="" data-type="reload" id="tj" lay-filter="sreach" style="background-color:#4682B4">
+                                        <i class="layui-icon">&#xe615;</i></div>
+                                        <strong><i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp支持用户名、操作描述的精确及模糊查询。(输入“_”可查询所有信息)</i> </strong>
+                                </div>
+                               
+                            </form>
+                        </div><table id="demo" lay-filter="test" class="layui-card-body " ></table>
+                       
+                    </div>
+                </div>
+            </div>
+             <div >
+                                本系统由 数据科学与人工智能学院 软件工程系 创客实验室 提供技术支持，并持有版权。
+                        </div>
+        </div>
+        
+    </body>
+    <script type="text/html" id="sexTpl">
+        {{#  if(d.state === '重要'){ }}
+    <span style="color:#FF3333;">{{ d.state }}</span>
+  {{#  } else { }}
+  {{#  if(d.state === '异常'){ }}
+    <span style="color:#DAA520;">{{ d.state }}</span>
+    {{#  } else { }}
+    <span style="color:#228B22;">{{ d.state }}</span>
+  {{#  } } }}
+      </script>
+      
+    <script>layui.use('laydate',
+        function() {
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+            
+
+        });</script>
+<script>
+  layui.use('table', function(){
+  var table = layui.table;
+  var index = layer.load(2);
+  
+  table.render({
+    elem: '#demo'
+    ,url:'systemloglist'
+    ,toolbar: '#toolbarDemo'
+    ,title: '用户数据表'
+    ,cols: [[
+    
+       {field:'datetime', title:'时间',width:145}
+      ,{field:'username', title:'用户名',width:100}
+      ,{field:'info', title:'描述',}
+      ,{field:'ip', title:'IP',width:125}
+      ,{field:'state', title:'状态',templet: '#sexTpl',width:55}
+
+  ]]
+    ,page: true
+    ,done:function () {
+                        layer.close(index) //加载完数据
+                    }
+
+  });
+       
+  
+        var active = {
+            reload: function(){
+                var index = layer.load(2);
+                var id = $('#ssk').val(); //传入搜索值 
+                //console.log((username));验证值是否获取
+                //执行重载
+                table.reload('demo', {
+                    url : 'systemlogload',
+                    method:'post',
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: { //类似于 data
+                         id:id //传入日期参数
+                         ,done:function () {
+                        layer.close(index) //加载完数据
+                    }
+                        
+                    }
+                });
+            }
+        };
+           
+           
+      var table = layui.table;
+      
+      //监听单元格编辑
+     table.on('tool(test)', function(obj){
+    var data = obj.data;
+  
+  });
+        $('#tj').on('click', function(event){
+                var type = $(this).data('type');
+                //不能为空验证
+                if( $('#ssk').val()==""){
+                    layer.msg('查询内容不能为空');
+                    return false;
+                }
+                active[type] ? active[type].call(this) : '';
+
+
+        });
+     $(document).on('keydown',function(e){
+      if(e.keyCode == 13){
+        $('#tj').trigger('click');
+        return false;
+      }
+        })
+
+         });
+         
+</script>
+ 
+</html>

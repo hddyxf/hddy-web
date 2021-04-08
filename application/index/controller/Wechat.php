@@ -136,6 +136,16 @@ class Wechat extends Controller
         return json($res);
     }
 
+    public function examination(){
+        $data=request()->param();
+        Db::name('score_view')
+            ->where('opstate',$opstate)
+            ->where($range,$limite_range)
+            ->find();
+
+
+    }
+
 
     public function test1(){
         $students=Student::get(1);
@@ -188,7 +198,7 @@ class Wechat extends Controller
                 'otherstate' => '0',
             ];
             $data = $date + $operinfo;
-            $score1 = number_format($score['score']);//转字符为number类型
+            $score1 = number_format($score['score']);//
 //        $date=array('opscoreclass'=>2,'score'=>10,'stuid'=>1180131231);
 //        $score=0;
             if ($date['opscoreclass'] == '1' && ($score1 >= 100 || ($date['score'] + $score1) > 100)) {
@@ -204,7 +214,6 @@ class Wechat extends Controller
                     ->update(['score' => '0']);
                 return json(array('msg' => '德育学分已扣完', 'info2' => $date, 'info3' => $score1));
             } else {
-
                 $scorenumcheck = Db::name("scoresec")
                     ->where('scoresecid', $date['opscoresec'])
                     ->find();

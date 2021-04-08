@@ -1831,9 +1831,25 @@ class College extends Controller//权限11170131315
 
     public function scoreoperationlist()//初始化学分操作页面表格
     {
+        $usrname = session('username');
+        $page = input("get.page") ? input("get.page") : 1;
+        $page = intval($page);
+        $limit = input("get.limit") ? input("get.limit") : 1;
+        $limit = intval($limit);
+        $start = $limit * ($page - 1);
+        //分页查询
+        $count = Db::name("oper_view")
+            ->where('username', $usrname)
+            ->count("id");
+        $cate_list = Db::name("oper_view")
+            ->limit($start, $limit)
+            ->where('username', $usrname)
+            ->order('id desc')
+            ->select();
         $list["msg"] = "";
         $list["code"] = 0;
-        $list["count"] = "0";
+        $list["count"] = $count;
+        $list["data"] = $cate_list;
         return json($list);
     }
 
@@ -2143,22 +2159,24 @@ class College extends Controller//权限11170131315
         $usrinfo = Db::table('user')
             ->where('username', $usrname)
             ->find();
-        $usrcollege = $usrinfo['u_classinfo'];
-        $usrname = session('username');
+        $usrcollege =intval($usrinfo['u_classinfo']);
+//        return json(gettype($usrcollege));
+//        $usrname = session('username');
         $page = input("get.page") ? input("get.page") : 1;
         $page = intval($page);
         $limit = input("get.limit") ? input("get.limit") : 1;
         $limit = intval($limit);
-        $start = $limit * ($page - 1);
-        //分页查询
+        $start = $limit * ($page - 1);//分页查询
         $count = Db::name("oper_view")
-            ->where('collegeid', $usrcollege)
+//            ->where('college_0', $usrcollege)
             ->count("id");
+//        return json($count);
         $cate_list = Db::name("oper_view")
-            ->where('collegeid', $usrcollege)
+            ->where('college_0', $usrcollege)
             ->limit($start, $limit)
             ->order('datetime desc')
             ->select();
+
         $list["msg"] = "";
         $list["code"] = 0;
         $list["count"] = $count;

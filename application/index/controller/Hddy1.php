@@ -2,7 +2,9 @@
 
 namespace app\index\controller;
 
+use app\index\model\Systemlog;
 use app\index\model\Users;
+use app\index\validate\Scoreoperation;
 use think\Controller;
 use think\Db;
 use app\index\model\User as UserModel;
@@ -13,6 +15,7 @@ use think\View;
 use think\Loader;
 use app\index\model\Students;
 use app\index\controller\Formcheck;
+use app\index\controller\Translate;
 
 //代码中具体分页代码及表格重载代码解释参照layui官方手册
 class Hddy1 extends Controller//权限1
@@ -20,14 +23,14 @@ class Hddy1 extends Controller//权限1
     protected function _initialize()
     {
         $usrname = session('username');
+//        return json($usrname);
         if (empty($usrname)) {
-
             echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:83" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到系统环境异常！系统将在5秒后正在自动跳转。<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是非法登陆或登陆超时导致，您可尝试重新登陆系统。<br/></body></html>';
             exit;
         } else {
             $result = Db::table('user')
                 ->where('username', $usrname)
-                ->where('jurisdiction', '1')
+                ->where('jurisdiction', 'in',[1,11])
                 ->where('state', '1')
                 ->select();//通过session查询个人信息
             if ($result == false) {
@@ -45,7 +48,13 @@ class Hddy1 extends Controller//权限1
 
     public function hddy()//首页左边栏
     {
-
+//        if(session('qx')==11){
+            $all=Db::table('user')
+                ->where('username',session('username'))
+                ->find();
+            $this->assign('allfrt',$all['allfrt']);
+            $this->assign('allsec',$all['allsec']);
+//        }
         $result = Db::table('system')
             ->where('id', '1')
             ->find();//通过session查询个人信息
@@ -54,6 +63,8 @@ class Hddy1 extends Controller//权限1
         // if ($num1 != 0) {
         $this->assign('data1', $num1);
         $this->assign('data', $result);
+//        $this->assign('allfrt',null);
+//        $this->assign('allsec',null);
         return $this->fetch();
     }
 
@@ -79,6 +90,7 @@ class Hddy1 extends Controller//权限1
             ->where('username', $usrname)
             ->select();//通过session查询个人信息
         $rs1 = json($result);
+//        var_dump($usrname);
         $this->assign('data', $result);
         return $this->fetch();
     }
@@ -359,6 +371,13 @@ class Hddy1 extends Controller//权限1
             return $this->fetch();
         }
     }
+    public function editauth(){
+        $data=Db::table('user')
+            ->where('username',session('username'))
+            ->find();
+            $this->assign('data',$data);
+            return $this->fetch();
+    }
 
     public function editpersonallogrun()//学分编辑操作
     {
@@ -443,10 +462,22 @@ class Hddy1 extends Controller//权限1
             echo "<option value='{$value['collegeid']}'>{$value['collegeinfo']}</option></select>";
         }
     }
-
+    public function auth(){
+        $data=input('post.');
+        $res=Db::name('diy_auth')
+            ->where('user',$data['                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              '])
+            ->find();
+        return json($res);
+    }
     public function adduserrun()//添加用户操作
     {
         $data = input('post.');
+
+        $allfrt=$data['allfrt'];
+        $allsec=$data['allsec'];
+//        $allfrt=explode(",",$data['allfrt']);
+//        $allsec=explode(",",$data['allsec']);
+        $data2=array('user'=>$data['username'],'allfrt'=>$allfrt,'allsec'=>$allsec);
         $pwd = [
             'password' => '123456'
         ];
@@ -466,6 +497,7 @@ class Hddy1 extends Controller//权限1
             ['jurisdiction', 'require|regex:int', '权限未分配|账号权限选项参数异常！'],
             ['password', 'require|regex:int|max:6', '用户密码初始化失败！|用户密码初始化失败！|用户密码初始化失败！'],
 ]);
+//        !$validate->check($date)
         if (!$validate->check($date)) {
             $msg = $validate->getError();
             $syslog = ['ip' => $ip = request()->ip(),
@@ -478,9 +510,12 @@ class Hddy1 extends Controller//权限1
             exit;//判断数据是否合法
         } else {
 //            var_dump($date);
+
             $cd=new Formcheck();
             $checkey=array('username','user_id','add','qq','vx','u_mail');
+
             $cd_res=$cd->check_addstu($date,'user',$checkey);
+
             if ($cd_res['code']==1){
                 $err_msg=$cd_res['msg'];
                 echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
@@ -489,6 +524,7 @@ class Hddy1 extends Controller//权限1
             $result = Db::table('user')
                 ->where('username', $date['username'])
                 ->select();//用户名重复性检测
+//            $result
             if ($result) {
                 echo "<script type='text/javascript'>parent.layer.alert('用户名已存在，请返回重试！');parent.history.go(-1);</script>";
             } else {
@@ -596,10 +632,18 @@ class Hddy1 extends Controller//权限1
             $result1 = Db::table('user_view')
                 ->where('u_id', $date['id'])
                 ->find();//通过session查询个人信息
+            if ($result1['jurisdiction']==7){
+               $result3= Db::table('students')
+                    ->where('s_proid', $result1['user_id'])
+                    ->value('s_class');
+            }else{
+                $result3='仅班长可见';
+            }
             $result2 = Db::table('college')
                 ->select();//通过session查询个人信息
             $this->assign('data', $result1);
             $this->assign('data2', $result2);
+            $this->assign('data3', $result3);
             return $this->fetch();
         }
     }
@@ -934,6 +978,7 @@ class Hddy1 extends Controller//权限1
             }
             // Db::table("students")->insert($data);
         }
+        $translate=new Translate();
         for ($i = 2; $i <= $row_num; $i++) {
             // var_dump($sheet->getCell("A".$i)->getValue());exit;
             $data['s_id'] = $sheet->getCell("A" . $i)->getValue();
@@ -943,11 +988,13 @@ class Hddy1 extends Controller//权限1
             $data['s_class'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
             $data['s_room'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
             $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
+            $data['apartment'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+            $data['dormitory'] = $excel->getActiveSheet()->getCell("I".$i)->getValue();
             $data['s_apartment'] = Db::table('apartment')->where('apartmentinfo',$data['apartment'])->value('apartmentid');
             $data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $data['dormitory'])->value('dormitoryid');
-            $data['collegeid'] = $excel->getActiveSheet()->getCell("J".$i)->getValue();
-            $data['majorid'] = $excel->getActiveSheet()->getCell("K".$i)->getValue();
-            $data['teacherid'] = $excel->getActiveSheet()->getCell("L".$i)->getValue();
+            $data['collegeid'] =$translate->translateinfo('re_college',$excel->getActiveSheet()->getCell("J".$i)->getValue());
+            $data['majorid'] =$translate->translateinfo('re_major', $excel->getActiveSheet()->getCell("K".$i)->getValue());
+            $data['teacherid'] =$translate->translateinfo('re_teacher', $excel->getActiveSheet()->getCell("L".$i)->getValue());
             $gomany = Db::table('students')->insert($data);
             if ($gomany == false) {
                 $this->error("发生未知错误，请联系管理员");//数据为空返回错误
@@ -963,7 +1010,6 @@ class Hddy1 extends Controller//权限1
             'username' => $usrlogo = session('username'),];
         Db::table('systemlog')->insert($syslog);
         $this->success("共 {$num} 条学生信息导入成功！");
-
         if ($this) {
             echo "<tr>";
             for ($i = 2; $i <= $row_num; $i++) {
@@ -1247,7 +1293,7 @@ class Hddy1 extends Controller//权限1
                 ['add','regex:int','手机号码格式错误'],
                 ['u_classinfo','regex:int','所属学院编号格式错误'],
                 ['jurisdiction','regex:int','权限级别格式错误'],
-                ['user_id','regex:int','身份证号格式错误'],
+                ['user_id','[0-9]{17}[0-9xX]','身份证号格式错误'],
                 ['u_class','regex:int','部门ID格式错误']
             ]);
             if (!$validate->check($data)){
@@ -1469,7 +1515,6 @@ class Hddy1 extends Controller//权限1
                     's_room' => $date['s_room'],
                 ]);//修改操作
             if ($this) {
-                echo 1;
                 $syslog = ['ip' => $ip = request()->ip(),
                     'datetime' => $time = date('Y-m-d H:i:s'),
                     'info' => '修改学号为：' . $date['s_id'] . ' 的信息。',
@@ -1477,9 +1522,6 @@ class Hddy1 extends Controller//权限1
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
                 echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
-//                ,function(index){
-//                    window.parent.location.reload();
-//                    layer.close(index);
                 exit;
             } else {
                 echo "<script type='text/javascript'>parent.layer.alert('保存参数错误，请返回重试！');parent.history.go(-1);</script>";
@@ -3390,6 +3432,7 @@ class Hddy1 extends Controller//权限1
         $list["msg"] = "";
         $list["code"] = 0;
         $list["count"] = "0";
+        $list["data"] = '';
         return json($list);
     }
 
@@ -3594,7 +3637,6 @@ class Hddy1 extends Controller//权限1
         $list["code"] = 0;
         $list["count"] = $count;
         $list["data"] = $cate_list;
-
         return json($list);
     }
 
@@ -3647,65 +3689,55 @@ class Hddy1 extends Controller//权限1
 
     public function examinerun()//审核操作
     {
-        $data = input('post.');
+        $data = \request()->param();//获取请求对象中的成员参数，包括get和post形式发送的参数
         $stateupdate = [
             'opstate' => '1',
         ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
-        $date = $data + $stateupdate;
-        $validate = new validate([
-            ['opstate', 'require|regex:int', '请选择操作类型！|操作当前状态参数异常，请返回重试！'],
-            ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
-            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
-            ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
-            ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
-        ]);
-        if (!$validate->check($date)) {
-            $syslog = ['ip' => $ip = request()->ip(),
-                'datetime' => $time = date('Y-m-d H:i:s'),
-                'info' => '审核学分操作流水号为：' . $date['id'] . '的信息时输入非法字符。',
-                'state' => '异常',
-                'username' => $usrlogo = session('username'),];
-            Db::table('systemlog')->insert($syslog);
-            $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
-            exit;//判断数据是否合法
+        $date = $data + $stateupdate;//组合为一个统一的数组便于数据格式验证
+        $validate = Loader::validate('Scoreoperation');//静态加载以validate为原型（继承了validate验证器类的）的scoreoperation类
+        if (!$validate->check($date)) {//数据验证
+           $syslogdata= Formcheck::systemlogs(array(request()->ip(),date('Y-m-d H:i:s'),'审核学分操作流水号为：',$date['id'],'的信息时输入非法字符。'));
+           //传入系统日志的相关参数转化为符合系统日志表格式的数组数据
+            $syslog= new Systemlog($syslogdata);//创建系统日志表的模型类并载入要赋值的数组
+            $syslog->save();//插入数据
+            echo "<script type='text/javascript'>parent.layer.alert($validate->getError());parent.history.go(-1)</script>";
+            //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
+            exit;//停止执行PHP方法
         } else {
-            $checkclass = Db::table('scoreoperation')
-                ->where('opstate', '1')
-                ->where('id', $date['id'])
-                ->select();//用户名重复性检测
-            if ($checkclass) {
+            $checkclass = Scoreoperation::get(date['id']);//根据id静态调用Scoreoperation表模型的查询方法
+            if ($checkclass) {//如果结果已存在
                 echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');parent.history.go(-1)</script>";
-            } else {
-                $checkusr = Db::table('user')
-                    ->where('username', $date['username'])
-                    ->where('u_name', $date['othername'])
-                    ->select();//用户名重复性检测
-                if ($checkusr) {
-                    $time = date('Y-m-d H:i:s');
-                    $editscore = Db::table('scoreoperation')
-                        ->where('id', $date['id'])
-                        ->update([
-                            'opstate' => '1',
-                            'othername' => $date['othername'],
-                            'othertime' => $time,
-                            'otherstate' => '1',
-                            'info' => $date['info']]);//修改操作
-                    if ($editscore) {
-                        $syslog = ['ip' => $ip = request()->ip(),
-                            'datetime' => $time = date('Y-m-d H:i:s'),
-                            'info' => '对学生操作流水号为为：' . $date['id'] . ' 进行了操作。',
-                            'state' => '重要',
-                            'username' => $usrlogo = session('username'),];
-                        Db::table('systemlog')->insert($syslog);
+                //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
+            } else {//如果结果不存在
+                $checkusr = Scoreoperation::get([
+                    'username'=>date['id'],
+                    'u_name'=>$date['othername']
+                ]);//根据管理员用户名和用户姓名静态调用Scoreoperation表模型的查询方法
+                if ($checkusr) {//如果用户存在
+                    $editscore= Scoreoperation::save([
+                        'opstate' => '1',
+                        'othername' => $date['othername'],
+                        'othertime' => date('Y-m-d H:i:s'),
+                        'otherstate' => '1',
+                        'info' => $date['info'],['id'=>$date['id']]]);//静态调用Scoreoperation表的实例模型并保存数据
+                    if ($editscore) {//如果操作成功
+                        //传入系统日志的相关参数转化为符合系统日志表格式的数组数据
+                        $syslogdata= Formcheck::systemlogs(array(request()->ip(),date('Y-m-d H:i:s'),'对学生操作流水号为为：',$date['id'],'进行了操作。'));
+                        //创建系统日志表的模型类并载入要赋值的数组
+                        $syslog= new Systemlog($syslogdata);
+                        //插入数据
+                        $syslog->save();
                         echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                        //向最小层级的网页发送成功消息，并返回浏览器页面栈中的上一个页面
                         exit;
                     } else {
                         echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                        //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
                         exit;//判断更新操作是否成功
                     }
                 } else {
                     echo "<script type='text/javascript'>parent.layer.alert('参数错误！');parent.history.go(-1);</script>";
+                    //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
                     exit;
                 }
             }
@@ -3792,6 +3824,7 @@ class Hddy1 extends Controller//权限1
         //分页查询
         $count = Db::name("oper_view")
             ->count("id");
+
         $cate_list = Db::name("oper_view")
             ->limit($start, $limit)
             ->order('id desc')

@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
+    <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
+    <script>
+            function showCustomer(str)
+            {
+              var xmlhttp;    
+              if (str=="")
+              {
+                document.getElementById("txtHint").innerHTML="";
+                return;
+              }
+              if (window.XMLHttpRequest)
+              {
+                // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp=new XMLHttpRequest();
+              }
+              else
+              {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+              }
+              xmlhttp.onreadystatechange=function()
+              {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                  document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+                }
+              }
+              xmlhttp.open("GET","classmore?q="+str,true);
+              xmlhttp.send();
+            }
+            </script>
+</head>
+<body>
+    
+    <table class="table table-striped table-bordered table-condensed list">
+        <thead>
+            <tr>
+                <td colspan="6"><b>学生基本信息</b></td>
+            </tr>
+        </thead>
+        <form method="post" action="editstuinforun">
+        <tbody>
+           
+            <tr>
+                <td >学号：<font color="FF0000">*</font></td>
+                <td >
+                    <input name="s_id" value="{$data.s_id}" type="text" readonly/>
+                </td>
+                <td >姓名：<font color="FF0000">*</font></td>
+                <td >
+                    <input name="s_name" value="{$data.s_name}" type="text" placeholder="5位以内全汉字"/></td>
+                <td >性别：</td>
+                <td >
+                        
+                        <select name="s_sex" >
+                                <option value="{$data.s_sex}">当前:{$data.s_sex}</option>
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                </td>
+            </tr>
+            <tr>
+                <td >身份证号码：<font color="FF0000">*</font></td>
+                <td >
+                    <input name="s_proid" value="{$data.s_proid}" type="text" placeholder="18位全数字，最后一位可以为X" readonly maxlength="18"/>
+                </td>
+                <td >学生手机号码：</td>
+                <td ><input name="s_add" value="{$data.s_add}" type="text" placeholder="11位全数字"/>
+                    </td>
+                <td >家庭住址：</td>
+                <td >
+                   <input name="s_home" value="{$data.s_home}" type="text"  placeholder="支持中英文、数字、逗号、句号，且不能超过100个字符"/>
+                    </td>
+            </tr>
+            <tr>
+                    <td >当前班级辅导员：<font color="FF0000">*</font></td>
+                    <td >
+                            {$data.teacherinfo}
+                    </td>
+                    <td >当前所在专业：</td>
+                    <td >{$data.majorinfo}
+                        </td>
+                    <td >当前所在学院：</td>
+                    <td >
+                            {$data.collegeinfo}
+                        </td>
+                </tr>
+            <tr>
+                    <td >行政班：<font color="FF0000">*</font></td>
+                    <td > 
+                            <!--辅导员权限时直接改为显示班级且不能修改，并修改下方提示语句。班级修改权限只有院长拥有，学工团委均没有-->
+                            <select name="s_class" onchange="showCustomer(this.value)" >
+                                    <option value="{$data.s_class}">当前:{$data.s_class}</option>
+                                     {volist name='data1' id='list'}
+                                    <option value="{$list.class}">{$list.class}</option>
+                                     {/volist}
+                                </select>
+                    </td>
+                    <td >寝室号及床位：<font color="FF0000">*</font></td>
+                    <td colspan="3">
+                    <input name="s_room" value="{$data.s_room}" type="text" placeholder="5110-1，即5公寓1楼10号寝室1床"/>
+                    </td>
+                </tr>
+             <tr id="txtHint">
+                    <td colspan="6">当需要变更班级、学院、专业、辅导员信息时在行政班的下拉框中选取班级后，相关信息将会显示。</td>
+            <tr>
+                <td >父亲姓名：</td>
+                <td >
+                    <input name="s_dadname" value="{$data.s_dadname}" type="text" placeholder="5位以内全汉字"/>
+                </td>
+                <td >父亲手机号码：</td>
+                <td colspan="3">
+                    <input name="s_dadadd" value="{$data.s_dadadd}" type="text" placeholder="11位全数字"/></td>
+            </tr>
+            <tr>
+                <td >母亲姓名：</td>
+                <td >
+                    <input name="s_mumname" value="{$data.s_mumname}" type="text"  placeholder="5位以内全汉字"/>
+                </td>
+                <td >母亲手机号码：</td>
+                <td colspan="3">
+                    <input name="s_mumadd" value="{$data.s_mumadd}" type="text" placeholder="11位全数字"/></td>
+            </tr>
+            
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+<!--                    <a href="help" class="btn btn-inverse">保存</a>-->
+                    <input class="btn btn-inverse" type="submit" value="提交" />
+                    <input class="btn btn-inverse" id="try" type="button" value="刷新" onclick="location.reload()"/>
+<!--                     <input class="btn btn-inverse" type="button" value="取消" /></td> -->
+&nbsp&nbsp&nbsp&nbsp信息保存成功如页面信息未更新请点击刷新按钮。
+    
+
+            </tr>
+        </tfoot>
+    </form>
+    </table>
+</body>
+</html>
