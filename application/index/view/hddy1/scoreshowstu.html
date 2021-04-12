@@ -85,7 +85,9 @@
                 $('#score').removeAttr('readonly')
             })
             $('#score').change(function () {
-                if ($('#score').val()>limit_score){
+                console.log(limit_score)
+                console.log($('#score').val)
+                if (parseInt($('#score').val())>parseInt(limit_score)){
                     $('#score').val(null)
                     parent.layer.alert("超过学分上限");
                 }

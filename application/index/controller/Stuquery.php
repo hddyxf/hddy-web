@@ -26,7 +26,7 @@ class Stuquery extends Controller
           ]);
       if (!$validate->check($date)){
          $msg = $validate->getError();
-          echo  "<script>alert('$msg');parent.history.go(-1)</script>";
+          echo  "<script>alert('$msg');self.location=document.referrer;</script>";
         //判断数据是否合法
       } else {
           //首先要组成时间区间

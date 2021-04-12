@@ -206,7 +206,7 @@ class Wechat extends Controller
                     ->where('s_id', $date['stuid'])
                     ->update(['score' => '100']);
                 return json(array('德育学分已满分'));
-                echo "<script type='text/javascript'>parent.layer.alert('德育学分已满分');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('德育学分已满分');self.location=document.referrer;;</script>";
             } else if ($date['opscoreclass'] == '2' && ($score1 <= 0 || ($score1 - $date['score']) < 0)) {
                 //            return json('进入减分判断');
                 $score_update = Db::name('students')
@@ -309,7 +309,7 @@ class Wechat extends Controller
                 ->where('id', $date['id'])
                 ->select();//用户名重复性检测
             if ($checkclass) {
-                echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');parent.history.go(-1)</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');self.location=document.referrer;</script>";
             } else {
                 $checkusr = Db::table('user')
                     ->where('username', $date['username'])
@@ -332,14 +332,14 @@ class Wechat extends Controller
                             'state' => '重要',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
-                        echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                         exit;
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                         exit;//判断更新操作是否成功
                     }
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');self.location=document.referrer;;</script>";
                     exit;
                 }
         }

@@ -89,6 +89,7 @@
 <script>
         function showCustomer(str)
         {
+            console.log(111111);
           var xmlhttp;    
           if (str=="")
           {
@@ -110,6 +111,7 @@
             if (xmlhttp.readyState==4 && xmlhttp.status==200)
             {
               document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+                console.log(xmlhttp.responseText);
             }
           }
           xmlhttp.open("GET","userclassmore?q="+str,true);
@@ -125,7 +127,8 @@
             })
         </script>
 <body>
-    <div class="layui-form">
+<!--layui-form-->
+    <div class="">
     <table class="table table-striped table-bordered table-condensed list layui-table" lay-skin="nob">
         <thead>
             <tr>

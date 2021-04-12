@@ -90,7 +90,7 @@ class Instructordoub extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $cd=new Formcheck();
@@ -99,7 +99,7 @@ class Instructordoub extends Controller//权限1
             var_dump($cd_res);
             if ($cd_res){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             $username = session('username');
@@ -120,14 +120,14 @@ class Instructordoub extends Controller//权限1
                         'username' => $usrlogo = session('username'),
                     ];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script>parent.layer.alert('修改成功！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('修改成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
         }
@@ -145,7 +145,7 @@ class Instructordoub extends Controller//权限1
             ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $usrname = session('username');
@@ -156,12 +156,12 @@ class Instructordoub extends Controller//权限1
                     if ($result['password'] === md5($date['password'])) {
                         echo '<script>window.location="newpwd";</script>';
                     } else {
-                        echo "<script>parent.layer.alert('原密码验证失败，请返回重试！');parent.history.go(-1);</script>";
+                        echo "<script>parent.layer.alert('原密码验证失败，请返回重试！');self.location=document.referrer;;</script>";
                         exit;
                     }
                 }
             } else {
-                echo "<script>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
         }
@@ -194,7 +194,7 @@ class Instructordoub extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
 //            return json(array(['code'=>2,'judge'=>$validate->check($date)]));
@@ -219,15 +219,15 @@ class Instructordoub extends Controller//权限1
                         exit;
 
                     } else {
-                        echo "<script>parent.layer.alert('修改失败，请返回重试！');parent.history.go(-1);</script>";
+                        echo "<script>parent.layer.alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
                     }
 
                 } else {
-                    echo "<script>parent.layer.alert('密码不一致，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
                 }
 
             } else {
-                echo "<script>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -308,7 +308,7 @@ class Instructordoub extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result = Db::table('zlog_view')
@@ -336,7 +336,7 @@ class Instructordoub extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $classid = Db::table('user')->where('username', $usrname)->value('u_classinfo');
@@ -366,7 +366,7 @@ class Instructordoub extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checkclass = Db::table('scoreoperation')
@@ -374,7 +374,7 @@ class Instructordoub extends Controller//权限1
                 ->where('id', $date['id'])
                 ->select();//用户名重复性检测
             if ($checkclass) {
-                echo "<script>parent.layer.alert('该操作已被撤销，请勿重复提交相同操作！');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('该操作已被撤销，请勿重复提交相同操作！');self.location=document.referrer;</script>";
             } else {
                 $checkusr = Db::table('user')
                     ->where('username', $date['username'])
@@ -397,14 +397,14 @@ class Instructordoub extends Controller//权限1
                             'state' => '重要',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
-                        echo "<script>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                        echo "<script>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                         exit;
                     } else {
-                        echo "<script>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                        echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                         exit;//判断更新操作是否成功
                     }
                 } else {
-                    echo "<script>parent.layer.alert('参数错误！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('参数错误！');self.location=document.referrer;;</script>";
                     exit;
                 }
             }
@@ -491,7 +491,7 @@ class Instructordoub extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $cd=new Formcheck();
@@ -499,21 +499,21 @@ class Instructordoub extends Controller//权限1
             $cd_res=$cd->check_addstu($date,'students',$checkey);
             if ($cd_res['code']==1){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             $result = Db::table('students')
                 ->where('s_id', $date['s_id'])
                 ->select();//用户名重复性检测
             if ($result) {
-                echo "<script>parent.layer.alert('该学生信息已经存在，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script>parent.layer.alert('该学生信息已经存在，请返回重试！');self.location=document.referrer;;</script>";
             } else {
                 Db::table('students')->insert($date);
                 if ($this) {
 
-                    echo "<script>parent.layer.alert('学生信息添加成功！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('学生信息添加成功！');self.location=document.referrer;;</script>";
                 } else {
-                    echo "<script>parent.layer.alert('学生信息添加失败！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('学生信息添加失败！');self.location=document.referrer;;</script>";
                 }
             }
         }
@@ -671,7 +671,7 @@ class Instructordoub extends Controller//权限1
             }
             echo "</tr>";
         } else {
-            echo "<script>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
+            echo "<script>parent.layer.alert('数据导入失败，请返回重试！');self.location=document.referrer;;</script>";
         }
     }
 
@@ -803,7 +803,7 @@ class Instructordoub extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $cd=new Formcheck();
@@ -812,7 +812,7 @@ class Instructordoub extends Controller//权限1
 //            var_dump($cd_res);
             if ($cd_res){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             Db::table('students')
@@ -837,10 +837,10 @@ class Instructordoub extends Controller//权限1
                     'state' => '重要',
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
-                echo "<script>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                echo "<script>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                 exit;
             } else {
-                echo "<script>parent.layer.alert('保存参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script>parent.layer.alert('保存参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;//判断更新操作是否成功
             }
         }
@@ -946,19 +946,123 @@ class Instructordoub extends Controller//权限1
         echo "</select>";
     }
 
+//    public function scoreoperationrun()//学分操作后台
+//    {
+//        $date = input('post.');
+//        if($date['opscoreclass']=="加分"){
+//            $date['opscoreclass']='1';
+//        }else if($date['opscoreclass']=="减分"){
+//            $date['opscoreclass']='2';
+//        }
+//        $time = date('Y-m-d H:i:s');
+//        $ip = request()->ip();
+//        $operinfo = [
+//            'ip' => $ip,
+//            'datetime' => $time,
+//            'opstate' => '1',
+//            'otherstate' => '0',
+//        ];
+//        $data = $date + $operinfo;
+//        $validate = new validate([
+//            ['stuid', 'require|regex:int|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
+//            ['opusername', 'require|alphaDash|max:15', '操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！'],
+//            ['opscorefir', 'require|regex:int', '请选择一级分类！|一级分类参数错误，请返回重试！'],
+//            ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类参数错误，请返回重试！'],
+//            ['opscoreclass', 'require|regex:int', '请选择操作类型！|操作类型参数错误，请返回重试！'],
+//            ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
+//        ]);
+//        if (!$validate->check($date)) {
+//            $msg = $validate->getError();
+//            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
+//            exit;//判断数据是否合法
+//        } else {
+//
+//            $scorenumcheck = Db::name("scoresec")
+//                ->where('scoresecid', $date['opscoresec'])
+//                ->find();
+//            if ($scorenumcheck['score'] >= $date['score']) {
+//
+//                $scoreopartion = Db::table('scoreoperation')->insert($data);
+//                if ($data['opscoreclass'] == '1') {
+//                    $opres = Db::table('students')->where('s_id', $date['stuid'])->setInc('score', $date['score']);
+//                } else {
+//                    $opres = Db::table('students')->where('s_id', $date['stuid'])->setDec('score', $date['score']);
+//                }
+//                if ($scoreopartion) {
+//                    $syslog = ['ip' => $ip = request()->ip(),
+//                        'datetime' => $time = date('Y-m-d H:i:s'),
+//                        'info' => '对学生学号为：' . $date['stuid'] . ' 进行学分操作。',
+//                        'state' => '重要',
+//                        'username' => $usrlogo = session('username'),];
+//                    Db::table('systemlog')->insert($syslog);
+//                    $this->success("对学号：{$date['stuid']} 的学生操作已被确认！");
+//                } else {
+//                    echo "<script>parent.layer.alert('操作失败，请稍后再试！');self.location=document.referrer;;</script>";
+//                }
+//            } else {
+//                echo "<script>parent.layer.alert('操作分数不能高于该操作分数上限！');self.location=document.referrer;;</script>";
+//            }
+//        }
+//    }
+
+    //学分操作区域----------------------------------》开始
+
+    public function scoreOperRange($opscoresec, $score)
+    {
+        return number_format(Db::name("scoresec")->where('scoresecid', $opscoresec)->value('score')) >= $score;
+    }
+
+    public function scoreoper($stuid, $score, $opscoreclass)
+    {
+        //获取当前学生的分数
+//        halt($opscoreclass);
+        $score = number_format(Db::name('students')->where('s_id', $stuid)->value('score'));
+        if ($this->exchg[$opscoreclass]) {
+            Db::name('students')->where('s_id', $stuid)->setInc('score');//先加分
+            //再判断界限
+            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
+                //保持临界值
+                Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
+                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
+                exit();
+            };
+        } elseif (!$this->exchg[$opscoreclass]) {
+            Db::name('students')->where('s_id', $stuid)->setDec('score');//先减分
+            //再判断界限
+            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
+                //保持临界值
+                Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
+                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
+                exit();
+            }
+        }
+    }
+
+    private $exchg = [
+        '加分' => true,
+        '减分' => false
+    ];
+    private $ls_exchg=[
+        '加分'=>'1',
+        '减分'=>'2'
+    ];
     public function scoreoperationrun()//学分操作后台
     {
+        //接收数据
         $date = input('post.');
-        if($date['opscoreclass']=="加分"){
-            $date['opscoreclass']='1';
-        }else if($date['opscoreclass']=="减分"){
-            $date['opscoreclass']='2';
-        }
-        $time = date('Y-m-d H:i:s');
-        $ip = request()->ip();
+        //加减分转换
+//        dump($date['opscoreclass']);
+//        halt($date['opscoreclass']);
+//        $time = date('Y-m-d H:i:s');
+//        $ip = request()->ip();
+        //查询学生学分用于学分上限判断
+        $score = Db::name('students')
+            ->where('s_id', $date['stuid'])
+            ->find();
+        //准备操作参数数据用于插入学分操作表
         $operinfo = [
-            'ip' => $ip,
-            'datetime' => $time,
+            'ip' => request()->ip(),
+            'datetime' => date('Y-m-d H:i:s'),
             'opstate' => '1',
             'otherstate' => '0',
         ];
@@ -968,42 +1072,70 @@ class Instructordoub extends Controller//权限1
             ['opusername', 'require|alphaDash|max:15', '操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！'],
             ['opscorefir', 'require|regex:int', '请选择一级分类！|一级分类参数错误，请返回重试！'],
             ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类参数错误，请返回重试！'],
-            ['opscoreclass', 'require|regex:int', '请选择操作类型！|操作类型参数错误，请返回重试！'],
+            ['opscoreclass', 'require', '请选择操作类型！'],
             ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
         ]);
+        $score1 = number_format($score['score']);//转字符为number类型
+//        $date=array('opscoreclass'=>2,'score'=>10,'stuid'=>1180131231);
+//        $score=0;
+        //操作分数后是否超出限制
+//        if ($date['opscoreclass']=='1'&&($score1>=100||($date['score']+$score1)>100)){
+//            $score_update=Db::name('students')
+//                ->where('s_id',$date['stuid'])
+//                ->update(['score'=>'100']);
+//            echo "<script type='text/javascript'>parent.layer.alert('德育学分已满分');self.location=document.referrer;;</script>";
+//        }else if ($date['opscoreclass']=='2'&&($score1<=0||($score1-$date['score'])<0)){
+//    //            return json('进入减分判断');
+//            $score_update=Db::name('students')
+//                ->where('s_id',$date['stuid'])
+//                ->update(['score'=>'0']);
+//            echo "<script type='text/javascript'>parent.layer.alert('德育学分已扣完');self.location=document.referrer;;</script>";
+//        }
+//        else {
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
-
-            $scorenumcheck = Db::name("scoresec")
-                ->where('scoresecid', $date['opscoresec'])
-                ->find();
-            if ($scorenumcheck['score'] >= $date['score']) {
-
-                $scoreopartion = Db::table('scoreoperation')->insert($data);
-                if ($data['opscoreclass'] == '1') {
-                    $opres = Db::table('students')->where('s_id', $date['stuid'])->setInc('score', $date['score']);
-                } else {
-                    $opres = Db::table('students')->where('s_id', $date['stuid'])->setDec('score', $date['score']);
-                }
-                if ($scoreopartion) {
-                    $syslog = ['ip' => $ip = request()->ip(),
-                        'datetime' => $time = date('Y-m-d H:i:s'),
-                        'info' => '对学生学号为：' . $date['stuid'] . ' 进行学分操作。',
-                        'state' => '重要',
-                        'username' => $usrlogo = session('username'),];
-                    Db::table('systemlog')->insert($syslog);
-                    $this->success("对学号：{$date['stuid']} 的学生操作已被确认！");
-                } else {
-                    echo "<script>parent.layer.alert('操作失败，请稍后再试！');parent.history.go(-1);</script>";
-                }
-            } else {
-                echo "<script>parent.layer.alert('操作分数不能高于该操作分数上限！');parent.history.go(-1);</script>";
+            //操作分数是否超出限制
+//                $scorenumcheck = Db::name("scoresec")
+//                    ->where('scoresecid', $date['opscoresec'])
+//                    ->find();
+//                if ($scorenumcheck['score'] >= $date['score']) {
+//
+//                    if ($data['opscoreclass'] == '1') {
+//                        $opres = Db::table('students')->where('s_id', $date['stuid'])->setInc('score', $date['score']);
+//                    } else {
+//                        $opres = Db::table('students')->where('s_id', $date['stuid'])->setDec('score', $date['score']);
+//                    }
+            if ($this->scoreOperRange($date['opscoresec'], $date['score'])) {
+                $scoreopartion = $this->scoreoper($date['stuid'], $date['score'], $date['opscoreclass']);
+            }elseif (!$this->scoreOperRange($date['opscoresec'], $date['score'])){
+                echo "<script type='text/javascript'>parent.layer.alert('学分操作超出限制');self.location=document.referrer;;;;</script>";
+                exit();
             }
+            $data['opscoreclass'] = $this->ls_exchg[$data['opscoreclass']];
+            $scoreopartion = Db::table('scoreoperation')->insert($data);
+            if ($scoreopartion) {
+                //更新系统操作日志
+                $syslog = ['ip' => request()->ip(),
+                    'datetime' => date('Y-m-d H:i:s'),
+                    'info' => '对学生学号为：' . $date['stuid'] . ' 进行学分操作。',
+                    'state' => '重要',
+                    'username' => $usrlogo = session('username'),];
+                Db::table('systemlog')->insert($syslog);
+                //$this->success("对学号：{$date['stuid']} 的学生操作已被确认！");
+                echo "<script type='text/javascript'>parent.layer.alert('{$date["stuid"]}的学生操作已被确认！');self.location=document.referrer;;;;</script>";
+            } else {
+                echo "<script type='text/javascript'>parent.layer.alert('操作失败，请稍后再试！');self.location=document.referrer;;</script>";
+            }
+//        else {
+//                echo "<script type='text/javascript'>parent.layer.alert('操作分数不能高于该操作分数上限！');self.location=document.referrer;;</script>";
+////                }
+//            }
         }
     }
+    //学分操作区域----------------------------------》结束
 
     public function examine()//待审核操作页面
     {
@@ -1090,7 +1222,7 @@ class Instructordoub extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result = Db::table('zlog_view')
@@ -1122,18 +1254,18 @@ class Instructordoub extends Controller//权限1
         if (!$validate->check($date)) {
 
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checkclass = Db::table('scoreoperation')
                 ->where('id', $date['id'])
                 ->find();
             if ($checkclass['opstate'] == '1') {
-                echo "<script>parent.layer.alert('系统不允许重复操作！');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('系统不允许重复操作！');self.location=document.referrer;</script>";
                 exit;
             } else {
                 if ($checkclass['opstate'] == '5') {
-                    echo "<script>parent.layer.alert('系统不允许重复操作！');parent.history.go(-1)</script>";
+                    echo "<script>parent.layer.alert('系统不允许重复操作！');self.location=document.referrer;</script>";
                     exit;
                 }
             }
@@ -1156,26 +1288,26 @@ class Instructordoub extends Controller//权限1
                     if ($date['opstate'] == '1') {
                         if ($date['classinfo'] == '加分') {
                             $opres = Db::table('students')->where('s_id', $date['s_id'])->setInc('score', $date['score']);
-                            echo "<script>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                            echo "<script>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                             exit;
                         } else {
                             $opres = Db::table('students')->where('s_id', $date['s_id'])->setDec('score', $date['score']);
-                            echo "<script>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                            echo "<script>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                             exit;
                         }
                     }
                     if ($date['opstate'] == '5') {
                         $opres = Db::table('students')->where('s_id', $date['s_id'])->setInc('score', 0);
-                        echo "<script>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                        echo "<script>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                         exit;
 
                     }
                 } else {
-                    echo "<script>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script>parent.layer.alert('参数错误！');parent.history.go(-1);</script>";
+                echo "<script>parent.layer.alert('参数错误！');self.location=document.referrer;;</script>";
                 exit;
             }
 
@@ -1256,7 +1388,7 @@ class Instructordoub extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result = Db::table('zlog_view')
@@ -1283,7 +1415,7 @@ class Instructordoub extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checkclass = Db::table('scoreoperation')
@@ -1291,7 +1423,7 @@ class Instructordoub extends Controller//权限1
                 ->where('id', $date['id'])
                 ->select();
             if ($checkclass) {
-                echo "<script>parent.layer.alert('该操作已被撤销，请勿重复提交相同操作！');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('该操作已被撤销，请勿重复提交相同操作！');self.location=document.referrer;</script>";
             } else {
                 if ($date['opclass'] == '加分') {
                     $opres = Db::table('students')->where('s_id', $date['s_id'])->setDec('score', $date['score']);
@@ -1316,10 +1448,10 @@ class Instructordoub extends Controller//权限1
                         'state' => '异常',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
 

@@ -39,6 +39,18 @@
         });
 	}
         </script>
+        <script>
+            function adddormitory(){
+                layer.open({
+                    //layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                    type:2,
+                    title:"批量添加学生寝室信息",
+                    area: ['90%','80%'],
+                    shade: 0.4,
+                    content:"addmanapart"
+                });
+            }
+        </script>
     </head>
     
     <body>
@@ -62,6 +74,8 @@
                                <i class="layui-icon">&#xe608;</i> &nbsp添加公寓楼号</button>
                                <button class="layui-btn layui-btn-sm" onclick="adddormitory()" style="background-color:#4682B4">
                                <i class="layui-icon">&#xe608;</i> &nbsp添加学生寝室</button>
+                                 <button class="layui-btn layui-btn-sm" onclick="adddormitory()" style="background-color:#4682B4">
+                                     <i class="layui-icon">&#xe608;</i> &nbsp批量添加学生寝室</button>
                                <i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp</i> 
                                <strong>需要新增学生寝室时请点击相应按钮。</strong></h4>
                         </div>
@@ -107,7 +121,7 @@
                                 <div class="layui-btn layui-btn-sm" lay-submit="" data-type="reload" id="tj2" lay-filter="sreach" style="background-color:#4682B4" type="button">
                                     <i class="layui-icon">&#xe615;</i></div>
                                     <strong>&nbsp&nbsp二级分类列表</strong><i class="layui-icon">&nbsp&nbsp&#xe625;&nbsp</i>      
-                                    <strong><i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp支持所属一级分类名及二级分类具体内容的精确及模糊查询。(输入“_”可查询所有信息)</i> </strong>
+                                    <strong><i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp支持所属公寓名及寝室号具体内容的精确及模糊查询。(输入“_”可查询所有信息)</i> </strong>
                                
                                 </div>
                                 </div>

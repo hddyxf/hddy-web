@@ -75,10 +75,11 @@
                 $('#score').removeAttr('readonly')
             })
             $('#score').change(function () {
-                if ($('#score').val()>limit_score){
-                    $('#score').val(null)
-                    parent.layer.alert("超过学分上限");
-                }
+                console.log(parseInt($('#score').val())>parseInt(limit_score))
+                // if (parseInt($('#score').val())>parseInt(limit_score)){
+                //     $('#score').val(null)
+                //     parent.layer.alert("超过学分上限");
+                // }
             })
         })
     </script>

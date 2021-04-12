@@ -176,7 +176,7 @@ class Student extends Controller//权限1
         $start = $limit * ($page - 1);
         //分页查询
         $count = Db::name("stu_view")
-//             ->where('collegeid',$usrcollege)
+            ->where('apartmentid',$userinfo_2['apartmentid'])
             ->where('s_id|s_name|s_class|dormitoryinfo', 'like', "%" . $date["stuname"] . "%")
             ->count("s_id");
         if ($flag) {
@@ -342,7 +342,7 @@ class Student extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
 
@@ -361,10 +361,10 @@ class Student extends Controller//权限1
                     Db::table('systemlog')->insert($syslog);
                     $this->success("对学号：{$date['stuid']} 的学生操作已被确认！");
                 } else {
-                    echo "<script>parent.layer.alert('操作失败，请稍后再试！');parent.history.go(-1);</script>";
+                    echo "<script>parent.layer.alert('操作失败，请稍后再试！');self.location=document.referrer;;</script>";
                 }
             } else {
-                echo "<script>parent.layer.alert('操作分数不能高于该操作分数上限！');parent.history.go(-1);</script>";
+                echo "<script>parent.layer.alert('操作分数不能高于该操作分数上限！');self.location=document.referrer;;</script>";
             }
         }
     }

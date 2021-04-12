@@ -118,9 +118,10 @@
                 , {field: 'apartmentinfo', title: '公寓号', width: 90}
                 , {field: 'dormitoryinfo', title: '寝室号', width: 90}
                 , {field: '1', title: '操作', toolbar: '#barDemo', width: 160}]]
-            , limit: 40
+            , limit: 50
             , page: true
-            , done: function () {
+            , done: function (res) {
+                console.log(res)
                 layer.close(index) //加载完数据
             }
         });
@@ -140,7 +141,8 @@
                     }
                     , where: { //类似于 data
                         stuname: stuname //传入日期参数
-                        , done: function () {
+                        , done: function (res) {
+                            console.log(res)
                             layer.close(index) //加载完数据
                         }
                     }

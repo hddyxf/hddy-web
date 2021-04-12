@@ -18,7 +18,7 @@
         var form=layui.form;
         var table=layui.table;
         form.render();
-        table.render();
+      table.render();
   })
 </script>
 <!--<div class="layui-table">-->
@@ -117,12 +117,38 @@
                 <input name="vx" value="{$value.vx}" type="text" placeholder=""/>
             </td>
             <td>账号状态：</td>
-            <td colspan="3">
+            <td >
+                <input name="" value="{$value.stateinfo}" type="hidden" readonly/>
+                {$value.stateinfo}
+            </td>
+            <td>角色名称：</td>
+            <td >
                 <input name="" value="{$value.stateinfo}" type="hidden" readonly/>
                 {$value.stateinfo}
             </td>
         </tr>
         </tbody>
+        <table class="layui-table">
+            <colgroup>
+                <col width="150">
+                <col width="200">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>权限范围</th>
+                <th>二级权限</th>
+                <th>二级权限范围</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>个人信息管理</td>
+                <td>个人信息、修改密码、个人操作日志</td>
+                <td>数据学院</td>
+            </tr>
+            </tbody>
+        </table>
 
         <tfoot>
         <tr>

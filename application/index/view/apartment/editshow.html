@@ -13,6 +13,7 @@
           var xmlhttp;    
           if (str=="")
           {
+              console.log(2)
             document.getElementById("txtHint").innerHTML="";
             return;
           }
@@ -30,7 +31,9 @@
           {
             if (xmlhttp.readyState==4 && xmlhttp.status==200)
             {
+                console.log(3)
               document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+              console.log(xmlhttp.responseText)
             }
           }
           xmlhttp.open("GET","userclassmore?q="+str,true);

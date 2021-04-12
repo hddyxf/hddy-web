@@ -111,7 +111,7 @@ class Define extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             //如果数据合法就需要查重,对手机号码，微信号码，邮箱地址，QQ号码进行查重
@@ -121,7 +121,7 @@ class Define extends Controller//权限1
 //            var_dump($cd_res);
             if ($cd_res){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
 //            if ()
@@ -143,14 +143,14 @@ class Define extends Controller//权限1
                         'username' => $usrlogo = session('username'),
                     ];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('修改成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('修改成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
         }
@@ -168,7 +168,7 @@ class Define extends Controller//权限1
             ['password', 'require|min:5|max:20|alphaDash', '密码不能为空!|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $usrname = session('username');
@@ -179,7 +179,7 @@ class Define extends Controller//权限1
                     if ($result['password'] === md5($date['password'])) {
                         echo '<script>window.location="newpwd";</script>';
                     } else {
-                        echo "<script>parent.layer.alert('原密码验证失败，请返回重试！');parent.history.go(-1);</script>";
+                        echo "<script>parent.layer.alert('原密码验证失败，请返回重试！');self.location=document.referrer;;</script>";
                         exit;
                     }
                 }
@@ -209,7 +209,7 @@ class Define extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $usrname = session('username');
@@ -236,19 +236,19 @@ class Define extends Controller//权限1
                         //                        echo "<script type='text/javascript'>parent.layer.alert('密码修改成功',function(index) {
 ////                            window.parent.location.href='Index/index';
 //                       layer.close(index);
-//                        });parent.history.go(-1);window.parent.location.href='$ip';</script>";
+//                        });self.location=document.referrer;;window.parent.location.href='$ip';</script>";
 //                        $this->goout();
                         exit;
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('修改失败，请返回重试！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
                     }
 
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('密码不一致，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
                 }
 
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -329,7 +329,7 @@ class Define extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result = Db::table('zlog_view')
@@ -357,7 +357,7 @@ class Define extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result = Db::table('zlog_view')
@@ -392,7 +392,7 @@ class Define extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checkclass = Db::table('scoreoperation')
@@ -400,7 +400,7 @@ class Define extends Controller//权限1
                 ->where('id', $date['id'])
                 ->select();//用户名重复性检测
             if ($checkclass) {
-                echo "<script type='text/javascript'>parent.layer.alert('该操作已被撤销，请勿重复提交相同操作！');parent.history.go(-1)</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该操作已被撤销，请勿重复提交相同操作！');self.location=document.referrer;</script>";
             } else {
                 $checkusr = Db::table('user')
                     ->where('username', $date['username'])
@@ -423,10 +423,10 @@ class Define extends Controller//权限1
                             'state' => '重要',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
-                        echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.parent.parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;;;</script>";
                         exit;
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                         exit;//判断更新操作是否成功
                     }
                 } else {
@@ -506,7 +506,7 @@ class Define extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
 //            var_dump($date);
@@ -518,7 +518,7 @@ class Define extends Controller//权限1
 
             if ($cd_res['code']==1){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             $result = Db::table('user')
@@ -526,7 +526,7 @@ class Define extends Controller//权限1
                 ->select();//用户名重复性检测
 //            $result
             if ($result) {
-                echo "<script type='text/javascript'>parent.layer.alert('用户名已存在，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('用户名已存在，请返回重试！');self.location=document.referrer;;</script>";
             } else {
                 if ($date['password'] == '123456') {
                     $user = new UserModel($date);
@@ -540,10 +540,10 @@ class Define extends Controller//权限1
                         Db::table('systemlog')->insert($syslog);
                         $this->success("用户 {$date['username']} 添加成功！");
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('用户添加失败！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('用户添加失败！');self.location=document.referrer;;</script>";
                     }
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('用户密码初始化失败！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('用户密码初始化失败！');self.location=document.referrer;;</script>";
                 }
             }
         }
@@ -626,7 +626,7 @@ class Define extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result1 = Db::table('user_view')
@@ -696,7 +696,7 @@ class Define extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $cd=new Formcheck();
@@ -705,7 +705,7 @@ class Define extends Controller//权限1
 //            var_dump($cd_res);
             if ($cd_res){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             $userinfocheck = Db::table('user')
@@ -737,11 +737,11 @@ class Define extends Controller//权限1
                     $this->success("{$date['username']} 的信息修改成功！");
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -834,7 +834,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         }
         else {
@@ -843,7 +843,7 @@ class Define extends Controller//权限1
             $cd_res=$cd->check_addstu($date,'students',$checkey);
             if ($cd_res['code']==1){
                 $err_msg=$cd_res['msg'];
-                                    echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                                    echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                                     exit;
             }
             $date['apartment'] = Db::table('apartment')->where('apartmentid', $date['s_apartment'])->value('apartmentinfo');
@@ -853,7 +853,7 @@ class Define extends Controller//权限1
                 ->whereOr('s_proid', $date['s_proid'])
                 ->select();//用户名重复性检测
             if ($result) {
-                echo "<script type='text/javascript'>parent.layer.alert('该学生信息已经存在，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该学生信息已经存在，请返回重试！');self.location=document.referrer;;</script>";
             } else {
                 Db::table('students')->insert($date);
                 if ($this) {
@@ -863,9 +863,9 @@ class Define extends Controller//权限1
                         'state' => '正常',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('学生信息添加成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('学生信息添加成功！');self.location=document.referrer;;</script>";
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('学生信息添加失败！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('学生信息添加失败！');self.location=document.referrer;;</script>";
                 }
             }
         }
@@ -1031,7 +1031,7 @@ class Define extends Controller//权限1
             }
             echo "</tr>";
         } else {
-            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');self.location=document.referrer;;</script>";
         }
     }
 //    public function  test_regex(){
@@ -1148,7 +1148,7 @@ class Define extends Controller//权限1
 //            $cd_res=$cd->check_addstu($data,'user',$checkey);
 //            if ($cd_res['code']==1){
 //                $err_msg=$cd_res['msg'];
-//                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+//                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
 //                exit;
 //            }
             // Db::table("students")->insert($data);
@@ -1192,7 +1192,7 @@ class Define extends Controller//权限1
             }
             echo "</tr>";
         } else {
-            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');self.location=document.referrer;;</script>";
         }
     }
     public function addmanyuserrun(){
@@ -1306,7 +1306,7 @@ class Define extends Controller//权限1
             $cd_res=$cd->check_addstu($data,'user',$checkey);
             if ($cd_res['code']==1){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             // Db::table("students")->insert($data);
@@ -1364,7 +1364,7 @@ class Define extends Controller//权限1
             }
             echo "</tr>";
         } else {
-            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');self.location=document.referrer;;</script>";
         }
     }
     public function showstu()//学生查询页面
@@ -1496,7 +1496,7 @@ class Define extends Controller//权限1
 //            var_dump($cd_res);
             if ($cd_res){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             Db::table('students')
@@ -1521,10 +1521,10 @@ class Define extends Controller//权限1
                     'state' => '重要',
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
-                echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                 exit;
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('保存参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('保存参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;//判断更新操作是否成功
             }
         }
@@ -1635,7 +1635,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             Db::table('teacher')
@@ -1653,10 +1653,10 @@ class Define extends Controller//权限1
                     'state' => '重要',
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
-                echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                 exit;
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('保存失败，请稍后再试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('保存失败，请稍后再试！');self.location=document.referrer;;</script>";
                 exit;//判断更新操作是否成功
             }
         }
@@ -1691,7 +1691,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $cd=new Formcheck();
@@ -1699,14 +1699,14 @@ class Define extends Controller//权限1
             $cd_res=$cd->check_addstu($date,'teacher',$checkey);
             if ($cd_res['code']==1){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             $result = Db::table('teacher')
                 ->where('teacherinfo', $date['teacherinfo'])
                 ->select();//用户名重复性检测
             if ($result) {
-                echo "<script type='text/javascript'>parent.layer.alert('该辅导员信息已经存在，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该辅导员信息已经存在，请返回重试！');self.location=document.referrer;;</script>";
             } else {
                 Db::table('teacher')->insert($date);
                 if ($this) {
@@ -1716,9 +1716,9 @@ class Define extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('辅导员信息添加成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('辅导员信息添加成功！');self.location=document.referrer;;</script>";
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('辅导员信息添加失败！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('辅导员信息添加失败！');self.location=document.referrer;;</script>";
                 }
             }
         }
@@ -1820,7 +1820,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result = Db::table('college')
@@ -1828,7 +1828,7 @@ class Define extends Controller//权限1
                 ->where('class', '1')
                 ->select();//用户名重复性检测
             if ($result) {
-                echo "<script type='text/javascript'>parent.layer.alert('该学院信息已经存在，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该学院信息已经存在，请返回重试！');self.location=document.referrer;;</script>";
             } else {
                 if ($date['class'] == '1') {
                     Db::table('college')->insert($date);
@@ -1839,12 +1839,12 @@ class Define extends Controller//权限1
                             'state' => '重要',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
-                        echo "<script type='text/javascript'>parent.layer.alert('学院信息添加成功！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('学院信息添加成功！');self.location=document.referrer;;</script>";
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('学院信息添加失败！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('学院信息添加失败！');self.location=document.referrer;;</script>";
                     }
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('学院信息参数错误，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('学院信息参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 }
 
             }
@@ -1884,12 +1884,12 @@ class Define extends Controller//权限1
         if (!$validate->check($date)) {
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),
-                'info' => '编辑' . $date[collegeid] . '异常。',
+                'info' => '编辑' . $date['collegeid'] . '异常。',
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $collegecheck = Db::table('college')
@@ -1909,14 +1909,14 @@ class Define extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('学院信息未修改！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('学院信息未修改！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('学院信息参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('学院信息参数错误，请返回重试！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -2016,14 +2016,14 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $majorcheck = Db::table('major')
                 ->where('majorinfo', $date['majorinfo'])
                 ->select();//用户名重复性检测
             if ($majorcheck) {
-                echo "<script type='text/javascript'>parent.layer.alert('该专业信息已经存在，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该专业信息已经存在，请返回重试！');self.location=document.referrer;;</script>";
             } else {
                 $majoradd = Db::table('major')->insert($date);
                 if ($majoradd) {
@@ -2033,9 +2033,9 @@ class Define extends Controller//权限1
                         'state' => '正常',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('专业信息添加成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('专业信息添加成功！');self.location=document.referrer;;</script>";
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('专业信息添加失败！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('专业信息添加失败！');self.location=document.referrer;;</script>";
                 }
             }
         }
@@ -2072,7 +2072,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
 
@@ -2093,14 +2093,14 @@ class Define extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('专业信息未修改！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('专业信息未修改！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('专业信息参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('专业信息参数错误，请返回重试！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -2301,7 +2301,7 @@ class Define extends Controller//权限1
             $cd_res=$cd->check_addstu($data,'class',$checkey);
             if ($cd_res['code']==1){
                 $err_msg=$cd_res['msg'];
-                echo "<script>parent.layer.alert('$err_msg');parent.history.go(-1)</script>";
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
                 exit;
             }
             // Db::table("students")->insert($data);
@@ -2344,7 +2344,7 @@ class Define extends Controller//权限1
 //            }
 //            echo "</tr>";
         } else {
-            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');parent.history.go(-1);</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');self.location=document.referrer;;</script>";
         }
     }
     public function  test_regex(){
@@ -2374,7 +2374,7 @@ class Define extends Controller//权限1
         //通过选择的辅导员在teacher表中获取其对应的学院用以填补所在学院的数据
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
 //            return false;
             $syslog = ['ip' => $ip = request()->ip(),
                 'datetime' => $time = date('Y-m-d H:i:s'),
@@ -2382,14 +2382,14 @@ class Define extends Controller//权限1
                 'state' => '异常',
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $classcheck = Db::table('class')
                 ->where('class', $date['class'])
                 ->select();//用户名重复性检测
             if ($classcheck) {
-                echo "<script type='text/javascript'>parent.layer.alert('该班级信息已经存在，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该班级信息已经存在，请返回重试！');self.location=document.referrer;;</script>";
             } else {
 //                return json('数据完全正确');
                 $classadd = Db::table('class')->insert($date);
@@ -2401,9 +2401,9 @@ class Define extends Controller//权限1
                         'state' => '正常',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('班级信息添加成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('班级信息添加成功！');self.location=document.referrer;;</script>";
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('班级信息添加失败！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('班级信息添加失败！');self.location=document.referrer;;</script>";
                 }
             }
         }
@@ -2449,7 +2449,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $classcheck = Db::table('class')
@@ -2475,18 +2475,18 @@ class Define extends Controller//权限1
                             'state' => '重要',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
-                        echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                         exit;
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('班级信息未修改！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('班级信息未修改！');self.location=document.referrer;;</script>";
                         exit;//判断更新操作是否成功
                     }
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('专业与学院不符！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('专业与学院不符！');self.location=document.referrer;;</script>";
                     exit;
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('班级参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('班级参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
         }
@@ -2653,7 +2653,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checkfirin = Db::table('scorefirst')
@@ -2670,9 +2670,9 @@ class Define extends Controller//权限1
                     'state' => '正常',
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
-                echo "<script type='text/javascript'>parent.layer.alert('学分操作一级分类信息添加成功！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('学分操作一级分类信息添加成功！');self.location=document.referrer;;</script>";
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('学分操作一级分类添加失败！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('学分操作一级分类添加失败！');self.location=document.referrer;;</script>";
             }
         }
 
@@ -2704,7 +2704,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checksecin = Db::table('scoresec')
@@ -2722,9 +2722,9 @@ class Define extends Controller//权限1
                     'state' => '正常',
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
-                echo "<script type='text/javascript'>parent.layer.alert('学分操作二级分类信息添加成功！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('学分操作二级分类信息添加成功！');self.location=document.referrer;;</script>";
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('学分操作二级分类添加失败！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('学分操作二级分类添加失败！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -2757,7 +2757,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
 
@@ -2778,14 +2778,14 @@ class Define extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('一级分类信息未修改！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('一级分类信息未修改！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
 
@@ -2824,7 +2824,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
 
@@ -2847,14 +2847,14 @@ class Define extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('二级分类信息未修改！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('二级分类信息未修改！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
 
@@ -2896,7 +2896,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checkfirin = Db::table('apartment')
@@ -2913,9 +2913,9 @@ class Define extends Controller//权限1
                     'state' => '正常',
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
-                echo "<script type='text/javascript'>parent.layer.alert('公寓楼号添加成功！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('公寓楼号添加成功！');self.location=document.referrer;;</script>";
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('公寓楼号添加失败！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('公寓楼号添加失败！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -2944,7 +2944,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checksecin = Db::table('dormitory')
@@ -2962,9 +2962,9 @@ class Define extends Controller//权限1
                     'state' => '正常',
                     'username' => $usrlogo = session('username'),];
                 Db::table('systemlog')->insert($syslog);
-                echo "<script type='text/javascript'>parent.layer.alert('学生寝室号添加成功！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('学生寝室号添加成功！');self.location=document.referrer;;</script>";
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('学生寝室号添加失败！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('学生寝室号添加失败！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -3100,7 +3100,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
 
@@ -3124,14 +3124,14 @@ class Define extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('公寓信息修改成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('公寓信息修改成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('公寓信息未修改！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('公寓信息未修改！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误或重复，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误或重复，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
 
@@ -3180,7 +3180,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
 
@@ -3202,14 +3202,14 @@ class Define extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('学生寝室信息未修改！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('学生寝室信息未修改！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
 
@@ -3274,7 +3274,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $departmencheck = Db::table('college')
@@ -3282,7 +3282,7 @@ class Define extends Controller//权限1
                 ->where('class', '2')
                 ->select();//用户名重复性检测
             if ($departmencheck) {
-                echo "<script type='text/javascript'>parent.layer.alert('该部门/单位信息已经存在，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该部门/单位信息已经存在，请返回重试！');self.location=document.referrer;;</script>";
             } else {
                 $departmenrun = Db::table('college')->insert($date);
                 if ($departmenrun) {
@@ -3292,9 +3292,9 @@ class Define extends Controller//权限1
                         'state' => '正常',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('部门/单位信息添加成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('部门/单位信息添加成功！');self.location=document.referrer;;</script>";
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('部门/单位信息添加失败！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('部门/单位信息添加失败！');self.location=document.referrer;;</script>";
                 }
             }
         }
@@ -3381,7 +3381,7 @@ class Define extends Controller//权限1
                 'username' => $usrlogo = session('username'),];
             Db::table('systemlog')->insert($syslog);
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $departmentcheck = Db::table('college')
@@ -3401,14 +3401,14 @@ class Define extends Controller//权限1
                         'state' => '重要',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('部门/单位名称未更改！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('部门/单位名称未更改！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('部门/单位参数错误，请返回重试！');parent.history.go(-1);</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('部门/单位参数错误，请返回重试！');self.location=document.referrer;;</script>";
                 exit;
             }
 
@@ -3561,18 +3561,18 @@ class Define extends Controller//权限1
             $score_update=Db::name('students')
                 ->where('s_id',$date['stuid'])
                 ->update(['score'=>'100']);
-            echo "<script type='text/javascript'>parent.layer.alert('德育学分已满分');parent.history.go(-1);</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('德育学分已满分');self.location=document.referrer;;</script>";
         }else if ($date['opscoreclass']=='2'&&($score1<=0||($score1-$date['score'])<0)){
     //            return json('进入减分判断');
             $score_update=Db::name('students')
                 ->where('s_id',$date['stuid'])
                 ->update(['score'=>'0']);
-            echo "<script type='text/javascript'>parent.layer.alert('德育学分已扣完');parent.history.go(-1);</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('德育学分已扣完');self.location=document.referrer;;</script>";
         }
         else {
             if (!$validate->check($date)) {
                 $msg = $validate->getError();
-                echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
                 exit;//判断数据是否合法
             } else {
 
@@ -3595,12 +3595,12 @@ class Define extends Controller//权限1
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
                         //$this->success("对学号：{$date['stuid']} 的学生操作已被确认！");
-                        echo "<script type='text/javascript'>parent.layer.alert('{$date["stuid"]}的学生操作已被确认！');parent.parent.parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('{$date["stuid"]}的学生操作已被确认！');self.location=document.referrer;;;;</script>";
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('操作失败，请稍后再试！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('操作失败，请稍后再试！');self.location=document.referrer;;</script>";
                     }
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('操作分数不能高于该操作分数上限！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('操作分数不能高于该操作分数上限！');self.location=document.referrer;;</script>";
                 }
             }
         }
@@ -3675,7 +3675,7 @@ class Define extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result = Db::name('zlog_view')
@@ -3700,13 +3700,13 @@ class Define extends Controller//权限1
            //传入系统日志的相关参数转化为符合系统日志表格式的数组数据
             $syslog= new Systemlog($syslogdata);//创建系统日志表的模型类并载入要赋值的数组
             $syslog->save();//插入数据
-            echo "<script type='text/javascript'>parent.layer.alert($validate->getError());parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert($validate->getError());self.location=document.referrer;</script>";
             //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
             exit;//停止执行PHP方法
         } else {
             $checkclass = Scoreoperation::get(date['id']);//根据id静态调用Scoreoperation表模型的查询方法
             if ($checkclass) {//如果结果已存在
-                echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');parent.history.go(-1)</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');self.location=document.referrer;</script>";
                 //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
             } else {//如果结果不存在
                 $checkusr = Scoreoperation::get([
@@ -3727,16 +3727,16 @@ class Define extends Controller//权限1
                         $syslog= new Systemlog($syslogdata);
                         //插入数据
                         $syslog->save();
-                        echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                         //向最小层级的网页发送成功消息，并返回浏览器页面栈中的上一个页面
                         exit;
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                         //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
                         exit;//判断更新操作是否成功
                     }
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');self.location=document.referrer;;</script>";
                     //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
                     exit;
                 }
@@ -3868,7 +3868,7 @@ class Define extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $result = Db::table('zlog_view')
@@ -3895,7 +3895,7 @@ class Define extends Controller//权限1
         ]);
         if (!$validate->check($date)) {
             $msg = $validate->getError();
-            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
             $checkclass = Db::table('scoreoperation')
@@ -3903,7 +3903,7 @@ class Define extends Controller//权限1
                 ->where('id', $date['id'])
                 ->select();
             if ($checkclass) {
-                echo "<script type='text/javascript'>parent.layer.alert('该操作已被撤销，请勿重复提交相同操作！');parent.history.go(-1)</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('该操作已被撤销，请勿重复提交相同操作！');self.location=document.referrer;</script>";
             } else {
                 if ($date['opclass'] == '加分') {
                     $opres = Db::table('students')->where('s_id', $date['s_id'])->setDec('score', $date['score']);
@@ -3917,7 +3917,7 @@ class Define extends Controller//权限1
                             ->where('s_id',$date['s_id'])
                             ->update(['score'=>'0']);
 //                        return json($repaire_data);
-                        echo "<script type='text/javascript'>parent.layer.alert('当前学生德育学分已为负');parent.history.go(-1)</script>";
+                        echo "<script type='text/javascript'>parent.layer.alert('当前学生德育学分已为负');self.location=document.referrer;</script>";
                     }
                 } else {
                     $opres = Db::table('students')->where('s_id', $date['s_id'])->setInc('score', $date['score']);
@@ -3939,10 +3939,10 @@ class Define extends Controller//权限1
                         'state' => '异常',
                         'username' => $usrlogo = session('username'),];
                     Db::table('systemlog')->insert($syslog);
-                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('保存成功！');self.location=document.referrer;;</script>";
                     exit;
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
                     exit;//判断更新操作是否成功
                 }
 
