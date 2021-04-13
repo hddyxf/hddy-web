@@ -51,6 +51,7 @@ class Stuquery extends Controller
                 }
         $this -> assign('data',$result2); 
         $this -> assign('date1',$result1);
+        $this -> assign('time',array($time_lmt1,$time_lmt2));
        return $this->fetch(); 
             } else {
                 $this->error("系统中不存在学号 {$date['u_id']} 与身份证号 {$date['proid']} 相匹配的的学生信息。");//数据为空返回错误

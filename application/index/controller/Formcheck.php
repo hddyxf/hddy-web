@@ -32,9 +32,11 @@ class   Formcheck extends Controller
             'u_id'=>'用户ID重复请重新输入',
             'username'=>'用户名重复请重新输入',
             'user_id'=>'身份证号重复请重新输入',
+            'class'=>'班级号重复请重新输入',
         );
+        //遍历
         foreach ($checkey as $key=>$value){
-            if ($data[$value]==null){
+            if ($data[$value]==null){//如果是没有限制的啧更改限制字段为空
                 unset($checkey[$key]);
             }
         }

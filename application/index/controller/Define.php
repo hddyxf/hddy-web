@@ -273,10 +273,10 @@ class Define extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('id desc')

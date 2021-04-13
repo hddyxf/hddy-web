@@ -240,10 +240,10 @@ class Instructor extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('id desc')
@@ -1037,9 +1037,9 @@ class Instructor extends Controller//权限1
     {
         //获取当前学生的分数
 //        halt($opscoreclass);
-        $score = number_format(Db::name('students')->where('s_id', $stuid)->value('score'));
+//        $score = number_format(Db::name('students')->where('s_id', $stuid)->value('score'));
         if ($this->exchg[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setInc('score');//先加分
+            Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
             //再判断界限
             if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
                 //保持临界值
@@ -1048,7 +1048,7 @@ class Instructor extends Controller//权限1
                 exit();
             };
         } elseif (!$this->exchg[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setDec('score');//先减分
+            Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
             //再判断界限
             if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
                 //保持临界值

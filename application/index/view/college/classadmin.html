@@ -26,6 +26,15 @@
             content:"addclass"
         });
 	}
+            function addmanyclass(){
+                layer.open({
+                    type:2,
+                    title:"批量添加班级",
+                    area: ['100%','100%'],
+                    shade: 0.4,
+                    content:"addmanyclass"
+                })
+            }
         </script>
     </head>
     
@@ -46,9 +55,12 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-body ">
-                           
-                             <h4><button class="layui-btn layui-btn-sm" onclick="addteacher()" style="background-color:#4682B4">
-                                        <i class="layui-icon">&#xe608;</i> &nbsp添加班级信息</button><i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp</i> <strong>需要新增班级时请点击添加学院信息按钮。</strong></h4>                     
+
+                            <h4><button class="layui-btn layui-btn-sm" onclick="addteacher()" style="background-color:#4682B4">
+                                <i class="layui-icon">&#xe608;</i> &nbsp添加班级信息</button>
+                            <button class="layui-btn layui-btn-sm" onclick="addmanyclass()" style="background-color:#4682B4">
+                                <i class="layui-icon">&#xe608;</i> &nbsp 批量添加班级信息</button>
+                                <i class="layui-icon">&nbsp&nbsp&#xe609;&nbsp</i> <strong>需要新增班级时请点击添加班级信息按钮。</strong></h4>
                         </div>
                     </div>
                 </div>

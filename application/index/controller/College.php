@@ -6,6 +6,7 @@ use app\index\controller\Formcheck;
 use think\Controller;
 use think\Db;
 use app\index\model\User as UserModel;
+use think\Exception;
 use think\validate;
 use think\Request;
 use think\Env;
@@ -500,6 +501,219 @@ class College extends Controller//权限11170131315
         }
         return json($list);//返回数据给前端
     }
+
+    public function addmanyclass()
+    {
+        return $this->fetch();
+    }
+    //批量添加学生功能模块-------------------------》开始
+    //将老师名转换为教师ID，传入教师名
+    public function convert_TchName($TchName){
+        try {
+            return Db::name('teacher')->where('teacherinfo',$TchName)->value('teacherid');
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
+    //将专业名转换为专业ID，传入专业名
+    public function convert_MajorName($MajorName){
+        try {
+            return Db::name('major')->where('majorinfo',$MajorName)->value('majorid');
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
+    public function convert_CollegeName($collegeName){
+        try {
+            return Db::name('college')->where('collegeinfo',$collegeName)->value('collegeid');
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
+    //将表格中的权限名转换为权限ID的方法，传入权限名
+    public function convert_AuthName($AuthName){
+        try {
+            return Db::name('qxinfo')->where('jurisdictioninfo',$AuthName)->value('jurisdiction');
+        }catch (Exception $e){
+            return false;
+        }
+    }
+
+    //将表格中的公寓名转换为公寓ID的方法，传入公寓名
+    public function convert_ApartName($ApartName){
+        try {
+            return Db::name('apartment')->where('apartmentinfo',$ApartName)->value('apartmentid');
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
+    //将表格中的部门类别名转换为部门ID，传入部门类别名
+    public function convert_UserclassName($UserclassName){
+        try {
+            return Db::name('userclass')->where('userinfo',$UserclassName)->value('userid');
+        }catch(Exception $e){
+            return false;
+        }
+    }
+
+    //
+    public function addmanyclassrun()//批量添加学生后台
+    {
+        $request = \think\Request::instance();
+        vendor("PHPExcel.PHPExcel");//引入导入excel第三方库
+        $file = request()->file('fileUpload');
+
+        if (empty($file)) {
+            $this->error("导入数据失败，可能是数据为空");//数据为空返回错误
+        }
+        $info = $file->validate(['ext' => 'xlsx,xls'])->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if ($info == false) {
+            $this->error("导入数据失败，可能是文件格式或文件类型导致");//数据为空返回错误
+        }
+        //获取上传到后台的文件名
+        $fileName = $info->getSaveName();
+        $syslog = ['ip' => $ip = request()->ip(),
+            'datetime' => $time = date('Y-m-d H:i:s'),
+            'info' => '上传文件批量导入学生信息，文件名为：' . $fileName . '',
+            'state' => '重要',
+            'username' => $usrlogo = session('username'),];
+        Db::table('systemlog')->insert($syslog);
+        //获取文件路径
+        $filePath = 'uploads' . DS . $fileName;
+        //   部署在linux环境下时获取路径需要更改为绝对路径
+        //  509：$filePath = 'uploads'.DS.$fileName;
+//        echo dirname(dirname(dirname(__FILE__)));
+//        exit;
+        //获取文件后缀
+        $suffix = $info->getExtension();
+        //判断哪种类型
+        if ($suffix == "xlsx") {
+            $reader = \PHPExcel_IOFactory::createReader('Excel2007');
+        } else {
+            $reader = \PHPExcel_IOFactory::createReader('Excel5');
+        }
+
+        //载入excel文件
+        $excel = $reader->load("$filePath", $encode = 'utf-8');
+        //读取第一张表
+        $sheet = $excel->getSheet(0);
+        //获取总行数
+        $row_num = $sheet->getHighestRow();
+        //获取总列数
+        $col_num = $sheet->getHighestColumn();
+        $data = []; //数组形式获取表格数据
+        for ($i = 2; $i <= $row_num; $i++) {
+            // var_dump($sheet->getCell("A".$i)->getValue());exit;
+            $data['class'] = $sheet->getCell("A" . $i)->getValue();
+            $data['teacherid'] = $this->convert_TchName($sheet->getCell("B" . $i)->getValue());
+            $data['majorid'] = $this->convert_MajorName($excel->getActiveSheet()->getCell("C" . $i)->getValue());
+            $data['collegeid'] = $this->convert_CollegeName($excel->getActiveSheet()->getCell("D" . $i)->getValue());
+//            $data['s_class'] = $excel->getActiveSheet()->getCell("E" . $i)->getValue();
+//            $data['s_room'] = $excel->getActiveSheet()->getCell("F" . $i)->getValue();
+//            $data['s_add'] = $excel->getActiveSheet()->getCell("G" . $i)->getValue();
+//            $data['apartment'] = $excel->getActiveSheet()->getCell("H".$i)->getValue();
+//            $data['dormitory'] = $excel->getActiveSheet()->getCell("I".$i)->getValue();
+//            $data['collegeid'] = $excel->getActiveSheet()->getCell("J".$i)->getValue();
+//            $data['majorid'] = $excel->getActiveSheet()->getCell("K".$i)->getValue();
+//            $data['teacherid'] = $excel->getActiveSheet()->getCell("L".$i)->getValue();
+            //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+            //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+//            $classcheck = Db::name("class")
+//                ->where('class', $data['s_class'])
+//                ->select();
+//            if ($classcheck == false) {
+//                $this->error("文件中第 {$i} 行的班级：{$data['s_class']} 无法在系统中被找到，请核对重试。");//数据为空返回错误
+//                exit();
+//            }
+//            $sidcheck = Db::name("students")
+//                ->where('s_id', $data['s_id'])
+//                ->select();
+//            if ($sidcheck) {
+//                $this->error("文件中第 {$i} 行的学生学号：{$data['s_id']} 学生信息已经存在，请核对后重试。");//数据为空返回错误
+//                exit();
+//            }
+//            $aidcheck = Db::name("apartment")
+//                ->where('apartmentinfo', $data['apartment'])
+//                ->select();
+//            if(!$aidcheck){
+//                $this->error("文件中第{$i}行的学生对应的公寓楼号：{$data['apartment']}信息不存在，请核对后重试。");
+//                exit();
+//            }
+//            $didcheck = Db::name("dormitory")
+//                ->where("dormitoryinfo",$data['dormitory'])
+//                ->select();
+//            if(!$didcheck){
+//                $this->error("文件中第{$i}行的学生对应的寝室号：{$data['dormitory']}信息不存在，请核对后重试。");
+//                exit();
+//            }
+            $validate = new validate([
+                ['class', 'regex:int', '班级格式错误'],
+                ['teacherid', 'regex:int', '教师ID格式错误'],
+                ['majorid', 'regex:int', '专业ID格式错误'],
+                ['collegeid', 'regex:int', '学院ID格式错误|用户姓名格式错误|用户姓名格式错误'],
+            ]);
+            if (!$validate->check($data)) {
+//                $tes=preg_match("/^[男|女]$/","男");
+                $this->error("第" . $i . '行' . $validate->getError());//数据为空返回错误
+                exit();
+            }
+            $cd = new Formcheck();
+            $checkey = array('class');
+            $cd_res = $cd->check_addstu($data, 'class', $checkey);
+            if ($cd_res['code'] == 1) {
+                $err_msg = $cd_res['msg'];
+                echo "<script>parent.layer.alert('$err_msg');self.location=document.referrer;</script>";
+                exit;
+            }
+            // Db::table("students")->insert($data);
+        }
+        for ($i = 2; $i <= $row_num; $i++) {
+            // var_dump($sheet->getCell("A".$i)->getValue());exit;
+            $data['class'] = $sheet->getCell("A" . $i)->getValue();
+            $data['teacherid'] = $this->convert_TchName($sheet->getCell("B" . $i)->getValue());
+            $data['majorid'] = $this->convert_MajorName($excel->getActiveSheet()->getCell("C" . $i)->getValue());
+            $data['collegeid'] = $this->convert_CollegeName($excel->getActiveSheet()->getCell("D" . $i)->getValue());
+            $gomany = Db::table('class')->insert($data);
+            if ($gomany == false) {
+                $this->error("发生未知错误，请联系管理员");//数据为空返回错误
+                exit;
+            }
+
+        }
+        $num = $row_num - 1;
+        $syslog = ['ip' => $ip = request()->ip(),
+            'datetime' => $time = date('Y-m-d H:i:s'),
+            'info' => '上传文件批量导入了：' . $num . ' 条班级信息，文件名为：' . $fileName . '',
+            'state' => '重要',
+            'username' => $usrlogo = session('username'),];
+        Db::table('systemlog')->insert($syslog);
+        $this->success("共 {$num} 条班级信息导入成功！");
+
+        if ($this) {
+//            echo "<tr>";
+//            for ($i = 2; $i <= $row_num; $i++) {
+//                // var_dump($sheet->getCell("A".$i)->getValue());exit;
+//                $data['class'] = $sheet->getCell("A" . $i)->getValue();
+//                $data['teacherid'] = $sheet->getCell("B" . $i)->getValue();
+//                $data['majorid'] = $excel->getActiveSheet()->getCell("C" . $i)->getValue();
+//                $data['collegeid'] = $excel->getActiveSheet()->getCell("D" . $i)->getValue();
+//                //$data['s_apartment'] = Db::table('apartment')->where('apartmentinfo', $excel->getActiveSheet()->getCell("H" . $i)->getValue())->value('apartmentid');
+//                //$data['s_dormitory'] = Db::table('dormitory')->where('dormitoryinfo', $excel->getMacrosCertificate()->getCell("I" . $i)->getValue())->value('dormitoryid');
+////                echo "<td> " . $data['s_id'] . " " . $data['s_name'] . " " . $data['s_proid'] . " "
+////                    . $data['s_sex'] . " " . $data['s_class'] . " " . $data['s_room'] . " "
+////                    . $data['s_add'] ." " . $data['apartment'] . " " . $data['dormitory'] ."</td>";
+//            }
+//            echo "</tr>";
+        } else {
+            echo "<script type='text/javascript'>parent.layer.alert('数据导入失败，请返回重试！');self.location=document.referrer;;</script>";
+        }
+    }
+    //批量添加学生功能模块-------------------------》结束
+
 
     public function addclass()//添加班级页面
     {
@@ -1223,10 +1437,10 @@ class College extends Controller//权限11170131315
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('id desc')
@@ -2007,9 +2221,9 @@ class College extends Controller//权限11170131315
     {
         //获取当前学生的分数
 //        halt($opscoreclass);
-        $score = number_format(Db::name('students')->where('s_id', $stuid)->value('score'));
+//        $score = number_format(Db::name('students')->where('s_id', $stuid)->value('score'));
         if ($this->exchg[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setInc('score');//先加分
+            Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
             //再判断界限
             if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
                 //保持临界值
@@ -2018,7 +2232,7 @@ class College extends Controller//权限11170131315
                 exit();
             };
         } elseif (!$this->exchg[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setDec('score');//先减分
+            Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
             //再判断界限
             if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
                 //保持临界值
