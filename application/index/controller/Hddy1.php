@@ -274,10 +274,10 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("oper_view")
+        $count = Db::name("score_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("oper_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('id desc')
@@ -299,11 +299,11 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("oper_view")
+        $count = Db::name("score_view")
             ->where('username', $usrname)
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("oper_view")
+        $cate_list = Db::name("score_view")
             ->where('username', $usrname)
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
@@ -1052,7 +1052,7 @@ class Hddy1 extends Controller//权限1
 //    }
     public function addmanapart()
     {
-        return view();
+        return $this->fetch();
     }
     //批量添加寝室功能模块-------------------------》开始
     public function addmanyapartrun()
@@ -3814,57 +3814,125 @@ class Hddy1 extends Controller//权限1
         }
     }
 
+//    public function examinerun()//审核操作
+//    {
+//        $data = \request()->param();//获取请求对象中的成员参数，包括get和post形式发送的参数
+//        $stateupdate = [
+//            'opstate' => '1',
+//        ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
+//        $date = $data + $stateupdate;//组合为一个统一的数组便于数据格式验证
+//        $validate = Loader::validate('Scoreoperation');//静态加载以validate为原型（继承了validate验证器类的）的scoreoperation类
+//        if (!$validate->check($date)) {//数据验证
+//           $syslogdata= Formcheck::systemlogs(array(request()->ip(),date('Y-m-d H:i:s'),'审核学分操作流水号为：',$date['id'],'的信息时输入非法字符。'));
+//           //传入系统日志的相关参数转化为符合系统日志表格式的数组数据
+//            $syslog= new Systemlog($syslogdata);//创建系统日志表的模型类并载入要赋值的数组
+//            $syslog->save();//插入数据
+//            echo "<script type='text/javascript'>parent.layer.alert($validate->getError());self.location=document.referrer;</script>";
+//            //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
+//            exit;//停止执行PHP方法
+//        } else {
+//            $checkclass = Scoreoperation::get(date['id']);//根据id静态调用Scoreoperation表模型的查询方法
+//            if ($checkclass) {//如果结果已存在
+//                echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');self.location=document.referrer;</script>";
+//                //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
+//            } else {//如果结果不存在
+//                $checkusr = Scoreoperation::get([
+//                    'username'=>date['id'],
+//                    'u_name'=>$date['othername']
+//                ]);//根据管理员用户名和用户姓名静态调用Scoreoperation表模型的查询方法
+//                if ($checkusr) {//如果用户存在
+//                    $editscore= Scoreoperation::save([
+//                        'opstate' => '1',
+//                        'othername' => $date['othername'],
+//                        'othertime' => date('Y-m-d H:i:s'),
+//                        'otherstate' => '1',
+//                        'info' => $date['info'],['id'=>$date['id']]]);//静态调用Scoreoperation表的实例模型并保存数据
+//                    if ($editscore) {//如果操作成功
+//                        //传入系统日志的相关参数转化为符合系统日志表格式的数组数据
+//                        $syslogdata= Formcheck::systemlogs(array(request()->ip(),date('Y-m-d H:i:s'),'对学生操作流水号为为：',$date['id'],'进行了操作。'));
+//                        //创建系统日志表的模型类并载入要赋值的数组
+//                        $syslog= new Systemlog($syslogdata);
+//                        //插入数据
+//                        $syslog->save();
+//                        echo "<script type='text/javascript'>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
+//                        //向最小层级的网页发送成功消息，并返回浏览器页面栈中的上一个页面
+//                        exit;
+//                    } else {
+//                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
+//                        //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
+//                        exit;//判断更新操作是否成功
+//                    }
+//                } else {
+//                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');self.location=document.referrer;;</script>";
+//                    //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
+//                    exit;
+//                }
+//            }
+//        }
+//    }
+
+
     public function examinerun()//审核操作
     {
-        $data = \request()->param();//获取请求对象中的成员参数，包括get和post形式发送的参数
+        $data = input('post.');
         $stateupdate = [
             'opstate' => '1',
         ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
-        $date = $data + $stateupdate;//组合为一个统一的数组便于数据格式验证
-        $validate = Loader::validate('Scoreoperation');//静态加载以validate为原型（继承了validate验证器类的）的scoreoperation类
-        if (!$validate->check($date)) {//数据验证
-           $syslogdata= Formcheck::systemlogs(array(request()->ip(),date('Y-m-d H:i:s'),'审核学分操作流水号为：',$date['id'],'的信息时输入非法字符。'));
-           //传入系统日志的相关参数转化为符合系统日志表格式的数组数据
-            $syslog= new Systemlog($syslogdata);//创建系统日志表的模型类并载入要赋值的数组
-            $syslog->save();//插入数据
-            echo "<script type='text/javascript'>parent.layer.alert($validate->getError());self.location=document.referrer;</script>";
-            //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
-            exit;//停止执行PHP方法
+        $date = $data + $stateupdate;
+        $validate = new validate([
+            ['opstate', 'require|regex:int', '请选择操作类型！|操作当前状态参数异常，请返回重试！'],
+            ['info', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '备注不能为空|备注包含非法字符！|备注最多只能输入100个字符！'],
+            ['id', 'require|regex:int', '请选择操作类型！|参数异常，请返回重试！'],
+            ['username', 'require|alphaDash', '参数异常，请返回重试！|参数异常，请返回重试！'],
+            ['othername', 'require|chs', '参数异常，请返回重试！|参数异常，请返回重试！'],
+        ]);
+        if (!$validate->check($date)) {
+            $syslog = ['ip' => $ip = request()->ip(),
+                'datetime' => $time = date('Y-m-d H:i:s'),
+                'info' => '审核学分操作流水号为：' . $date['id'] . '的信息时输入非法字符。',
+                'state' => '异常',
+                'username' => $usrlogo = session('username'),];
+            Db::table('systemlog')->insert($syslog);
+            $msg = $validate->getError();
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');parent.history.go(-1)</script>";
+            exit;//判断数据是否合法
         } else {
-            $checkclass = Scoreoperation::get(date['id']);//根据id静态调用Scoreoperation表模型的查询方法
-            if ($checkclass) {//如果结果已存在
-                echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');self.location=document.referrer;</script>";
-                //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
-            } else {//如果结果不存在
-                $checkusr = Scoreoperation::get([
-                    'username'=>date['id'],
-                    'u_name'=>$date['othername']
-                ]);//根据管理员用户名和用户姓名静态调用Scoreoperation表模型的查询方法
-                if ($checkusr) {//如果用户存在
-                    $editscore= Scoreoperation::save([
-                        'opstate' => '1',
-                        'othername' => $date['othername'],
-                        'othertime' => date('Y-m-d H:i:s'),
-                        'otherstate' => '1',
-                        'info' => $date['info'],['id'=>$date['id']]]);//静态调用Scoreoperation表的实例模型并保存数据
-                    if ($editscore) {//如果操作成功
-                        //传入系统日志的相关参数转化为符合系统日志表格式的数组数据
-                        $syslogdata= Formcheck::systemlogs(array(request()->ip(),date('Y-m-d H:i:s'),'对学生操作流水号为为：',$date['id'],'进行了操作。'));
-                        //创建系统日志表的模型类并载入要赋值的数组
-                        $syslog= new Systemlog($syslogdata);
-                        //插入数据
-                        $syslog->save();
-                        echo "<script type='text/javascript'>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
-                        //向最小层级的网页发送成功消息，并返回浏览器页面栈中的上一个页面
+            $checkclass = Db::table('scoreoperation')
+                ->where('opstate', '1')
+                ->where('id', $date['id'])
+                ->select();//用户名重复性检测
+            if ($checkclass) {
+                echo "<script type='text/javascript'>parent.layer.alert('该操作已审核通过，请勿重复提交相同操作！');parent.history.go(-1)</script>";
+            } else {
+                $checkusr = Db::table('user')
+                    ->where('username', $date['username'])
+                    ->where('u_name', $date['othername'])
+                    ->select();//用户名重复性检测
+                if ($checkusr) {
+                    $time = date('Y-m-d H:i:s');
+                    $editscore = Db::table('scoreoperation')
+                        ->where('id', $date['id'])
+                        ->update([
+                            'opstate' => '1',
+                            'othername' => $date['othername'],
+                            'othertime' => $time,
+                            'otherstate' => '1',
+                            'info' => $date['info']]);//修改操作
+                    if ($editscore) {
+                        $syslog = ['ip' => $ip = request()->ip(),
+                            'datetime' => $time = date('Y-m-d H:i:s'),
+                            'info' => '对学生操作流水号为为：' . $date['id'] . ' 进行了操作。',
+                            'state' => '重要',
+                            'username' => $usrlogo = session('username'),];
+                        Db::table('systemlog')->insert($syslog);
+                        echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
                         exit;
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
-                        //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
+                        echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
                         exit;//判断更新操作是否成功
                     }
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');self.location=document.referrer;;</script>";
-                    //向最小层级的网页报错，并返回浏览器页面栈中的上一个页面
+                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');parent.history.go(-1);</script>";
                     exit;
                 }
             }
@@ -3949,10 +4017,10 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("oper_view")
+        $count = Db::name("score_view")
             ->count("id");
 
-        $cate_list = Db::name("oper_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->order('id desc')
             ->select();
@@ -3972,10 +4040,10 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("oper_view")
+        $count = Db::name("score_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("oper_view")
+        $cate_list = Db::name("score_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")

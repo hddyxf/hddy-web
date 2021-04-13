@@ -76,10 +76,10 @@
             })
             $('#score').change(function () {
                 console.log(parseInt($('#score').val())>parseInt(limit_score))
-                // if (parseInt($('#score').val())>parseInt(limit_score)){
-                //     $('#score').val(null)
-                //     parent.layer.alert("超过学分上限");
-                // }
+                if (parseInt($('#score').val())>parseInt(limit_score)){
+                    $('#score').val(null)
+                    parent.layer.alert("超过学分上限");
+                }
             })
         })
     </script>

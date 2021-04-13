@@ -133,12 +133,13 @@ class   Formcheck extends Controller
     }
     public static function systemlogs($data){
         $date=array([
-            'ip' => $data[1],
-                'datetime' => $data[2],
-                'info' => $data[3] . $data[4] . $data[5],
+            'ip' => $data[0],
+                'datetime' => $data[1],
+                'info' => $data[2] . $data[3] . $data[4],
                 'state' => '异常',
                 'username' => session('username'),
         ]);
+        halt($date);
         return $date;
     }
 }

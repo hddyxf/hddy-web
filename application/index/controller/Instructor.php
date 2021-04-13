@@ -240,10 +240,10 @@ class Instructor extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("oper_view")
+        $count = Db::name("score_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("oper_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('id desc')
@@ -265,11 +265,11 @@ class Instructor extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("oper_view")
+        $count = Db::name("score_view")
             ->where('username', $usrname)
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("oper_view")
+        $cate_list = Db::name("score_view")
             ->where('username', $usrname)
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
@@ -1361,10 +1361,10 @@ class Instructor extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("oper_view")
+        $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
             ->count("id");
-        $cate_list = Db::name("oper_view")
+        $cate_list = Db::name("score_view")
             ->where('collegeid', $usrcollege)
             ->limit($start, $limit)
             ->order('datetime desc')
@@ -1385,10 +1385,10 @@ class Instructor extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("oper_view")
+        $count = Db::name("score_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("oper_view")
+        $cate_list = Db::name("score_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")
