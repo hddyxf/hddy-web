@@ -294,6 +294,7 @@ class Hddy1 extends Controller//权限1
         $usrname = session('username');
         $date = $request->post();
         $page = input("post.page") ? input("post.page") : 1;
+        $page1=\request()->param('page')?\request()->param('page'):1;
         $page = intval($page);
         $limit = input("post.limit") ? input("post.limit") : 1;
         $limit = intval($limit);
@@ -1486,6 +1487,7 @@ class Hddy1 extends Controller//权限1
             ->find();
         $result2 = Db::table('score_view')
             ->where('s_id', $date["id"])
+            ->order('datetime','desc')
             ->select();
         $this->assign('data', $result1); //返回学生信息
         $this->assign('data1', $result2); //返回学分信息数组供循环
@@ -4016,10 +4018,10 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->count("id");
 
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
             ->order('id desc')
             ->select();

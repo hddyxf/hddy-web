@@ -1439,6 +1439,7 @@ class Define extends Controller//权限1
             ->find();
         $result2 = Db::table('score_view')
             ->where('s_id', $date["id"])
+            ->order('datetime','desc')
             ->select();
         $this->assign('data', $result1); //返回学生信息
         $this->assign('data1', $result2); //返回学分信息数组供循环
@@ -3822,10 +3823,10 @@ class Define extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->count("id");
 
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
             ->order('id desc')
             ->select();
