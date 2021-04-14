@@ -2425,6 +2425,31 @@ class College extends Controller//权限11170131315
         }
     }
 
+    public function ExaminScoreOper($stuid, $score, $opscoreclass)
+    {
+        //获取当前学生的分数
+//        halt(array($stuid,$score,$opscoreclass));
+        if ($this->exchg2[$opscoreclass]) {
+            Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
+            //再判断界限
+            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
+                //保持临界值
+                Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
+                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
+                exit();
+            };
+        } elseif (!$this->exchg2[$opscoreclass]) {
+            Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
+            //再判断界限
+            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
+                //保持临界值
+                Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
+                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
+                exit();
+            }
+        }
+    }
+
     public function examinerun()//审核操作
     {
         $data = input('post.');
@@ -2478,6 +2503,8 @@ class College extends Controller//权限11170131315
                             'state' => '重要',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
+                        $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
+                        $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
                         echo "<script>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                         exit;
                     } else {

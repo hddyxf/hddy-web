@@ -113,6 +113,7 @@ class Wechat extends Controller
         $sessionKey = $code['session_key'];
         $iv = $code['iv'];
         $pc = new \WXBizDataCrypt($appid, $sessionKey); //注意使用\进行转义
+        $data =null;
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
         return json(array('k1'=>$pc,'k2'=>$errCode,'k3'=>$data));
 
@@ -136,7 +137,7 @@ class Wechat extends Controller
         return json($res);
     }
 
-    public function examination(){
+    public function examination($range,$limite_range,$opstate){
         $data=request()->param();
         Db::name('score_view')
             ->where('opstate',$opstate)
@@ -180,7 +181,7 @@ class Wechat extends Controller
     {
         return json(1);
         $date = input('post.');
-        if ($date['jur']!=7) {
+        if ($date['jur'] != 7) {
             if ($date['opscoreclass'] == "加分") {
                 $date['opscoreclass'] = '1';
             } else if ($date['opscoreclass'] == "减分") {
@@ -241,7 +242,7 @@ class Wechat extends Controller
                     return json(array('参数异常'));
                 }
             }
-        }else if ($date['jur']==7){
+        } else if ($date['jur'] == 7) {
             if ($date['opscoreclass'] == "加分") {
                 $date['opscoreclass'] = '1';
             } else if ($date['opscoreclass'] == "减分") {
@@ -264,32 +265,57 @@ class Wechat extends Controller
 //                ['opscoreclass', 'require|regex:int', '请选择操作类型！|操作类型参数错误，请返回重试！'],
 //                ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
 //            ]);
-                $scorenumcheck = Db::name("scoresec")
-                    ->where('scoresecid', $date['opscoresec'])
-                    ->find();
-                if ($scorenumcheck['score'] >= $date['score']) {
+            $scorenumcheck = Db::name("scoresec")
+                ->where('scoresecid', $date['opscoresec'])
+                ->find();
+            if ($scorenumcheck['score'] >= $date['score']) {
 
-                    $scoreopartion = Db::table('scoreoperation')->insert($data);
-                    if ($scoreopartion) {
-                        $syslog = ['ip' => $ip = request()->ip(),
-                            'datetime' => $time = date('Y-m-d H:i:s'),
-                            'info' => '对学生学号为：' . $date['stuid'] . ' 进行学分操作。',
-                            'state' => '重要',
-                            'username' => $usrlogo = session('username'),];
-                        Db::table('systemlog')->insert($syslog);
-                        return json(array('德育学分操作已被确认'));
-                    } else {
-                        return json(array('操作失败'));
-                    }
+                $scoreopartion = Db::table('scoreoperation')->insert($data);
+                if ($scoreopartion) {
+                    $syslog = ['ip' => $ip = request()->ip(),
+                        'datetime' => $time = date('Y-m-d H:i:s'),
+                        'info' => '对学生学号为：' . $date['stuid'] . ' 进行学分操作。',
+                        'state' => '重要',
+                        'username' => $usrlogo = session('username'),];
+                    Db::table('systemlog')->insert($syslog);
+                    return json(array('德育学分操作已被确认'));
                 } else {
-                    return json(array('操作不能超过分数上线'));
+                    return json(array('操作失败'));
                 }
+            } else {
+                return json(array('操作不能超过分数上线'));
+            }
 
-        }else{
+        } else {
             return json(array('参数异常'));
         }
-
     }
+
+        public function ExaminScoreOper($stuid, $score, $opscoreclass)
+    {
+        //获取当前学生的分数
+//        halt(array($stuid,$score,$opscoreclass));
+        if ($this->exchg2[$opscoreclass]) {
+            Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
+            //再判断界限
+            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
+                //保持临界值
+                Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
+                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
+                exit();
+            };
+        } elseif (!$this->exchg2[$opscoreclass]) {
+            Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
+            //再判断界限
+            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
+                //保持临界值
+                Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
+                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
+                exit();
+            }
+        }
+    }
+
     public function examinerun()//审核操作
     {
         $data = input('post.');
@@ -332,6 +358,8 @@ class Wechat extends Controller
                             'state' => '重要',
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
+                        $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
+                        $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
                         echo "<script type='text/javascript'>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                         exit;
                     } else {
