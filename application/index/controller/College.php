@@ -2505,6 +2505,13 @@ class College extends Controller//权限11170131315
                         Db::table('systemlog')->insert($syslog);
                         $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
                         $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
+                        if ($result){
+                            echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                            exit();
+                        }elseif(!$result){
+                            echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                            exit;//判断更新操作是否成功
+                        }
                         echo "<script>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                         exit;
                     } else {
@@ -2551,11 +2558,10 @@ class College extends Controller//权限11170131315
             ->count("id");
 //        return json($count);
         $cate_list = Db::name("zlog_view")
-            ->where('college_0', $usrcollege)
+            ->where('collegeid', $usrcollege)
             ->limit($start, $limit)
-            ->order('id desc')
+            ->order('id','desc')
             ->select();
-
         $list["msg"] = "";
         $list["code"] = 0;
         $list["count"] = $count;

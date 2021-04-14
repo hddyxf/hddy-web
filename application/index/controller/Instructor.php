@@ -1281,6 +1281,11 @@ class Instructor extends Controller//权限1
         }
     }
 
+    private $exchg2=[
+        1=>true,
+        2=>false
+    ];
+
     public function examinerun()//审核操作
     {
         $data = input('post.');
@@ -1333,14 +1338,14 @@ class Instructor extends Controller//权限1
                         'info' => $date['info']]);//修改操作
                 if ($editscore) {
                     if ($date['opstate'] == '1') {
-                        if ($date['classinfo'] == '加分') {
-                            $opres = Db::table('students')->where('s_id', $date['s_id'])->setInc('score', $date['score']);
-                            echo "<script>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
-                            exit;
-                        } else {
-                            $opres = Db::table('students')->where('s_id', $date['s_id'])->setDec('score', $date['score']);
-                            echo "<script>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
-                            exit;
+                        $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
+                        $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
+                        if ($result){
+                            echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                            exit();
+                        }elseif(!$result){
+                            echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                            exit;//判断更新操作是否成功
                         }
                     }if ($date['opstate'] == '5') {
                         $opres = Db::table('students')->where('s_id', $date['s_id'])->setInc('score', 0);
