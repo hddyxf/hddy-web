@@ -2902,7 +2902,7 @@ class Apartment extends Controller//权限1
 //            ['stuid', 'require|regex:int|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
 //            ['opusername', 'require|alphaDash|max:15', '操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！'],
 //            ['opscorefir', 'require|regex:int', '请选择一级分类！|一级分类参数错误，请返回重试！'],
-//            ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类参数错误，请返回重试！'],
+//            ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类错误，请返回重试！'],
 //            ['opscoreclass', 'require|regex:int', '请选择操作类型！|操作类型参数错误，请返回重试！'],
 //            ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
 //        ]);
@@ -3006,7 +3006,7 @@ class Apartment extends Controller//权限1
             ['stuid', 'require|regex:int|max:15', '学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！|学生信息参数错误，请返回重试！'],
             ['opusername', 'require|alphaDash|max:15', '操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！|操作人信息参数错误，请返回重试！'],
             ['opscorefir', 'require|regex:int', '请选择一级分类！|一级分类参数错误，请返回重试！'],
-            ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类参数错误，请返回重试！'],
+            ['opscoresec', 'require|regex:int', '请选择二级分类！|二级分类错误，请返回重试！'],
             ['opscoreclass', 'require', '请选择操作类型！'],
             ['score', 'require|regex:int', '请选择操作分数！|操作分数参数错误，请返回重试！'],
         ]);
@@ -3178,6 +3178,12 @@ class Apartment extends Controller//权限1
             }
         }
     }
+
+
+    private $exchg2=[
+        1=>true,
+        2=>false
+    ];
 
    public function examinerun()//审核操作
     {
@@ -3356,21 +3362,25 @@ class Apartment extends Controller//权限1
 
     public function scorelogload(Request $request)//学分操作日志列表重载
     {
+
         $date = $request->post();
         $page = input("post.page") ? input("post.page") : 1;
         $page = intval($page);
         $limit = input("post.limit") ? input("post.limit") : 1;
         $limit = intval($limit);
         $start = $limit * ($page - 1);
+
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("score_view")
+//        return json($count);
+        $cate_list = Db::name("zlog_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")
             ->select();
+
         $list["msg"] = "";
         $list["code"] = 0;
         $list["count"] = $count;
