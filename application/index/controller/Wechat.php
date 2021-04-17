@@ -14,6 +14,7 @@ use app\index\model\User;
 use app\index\model\Student;
 use app\index\model\Scorefirst;
 use think\Debug;
+use think\Exception;
 use think\Validate;
 
 class Wechat extends Controller
@@ -295,25 +296,31 @@ class Wechat extends Controller
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));
-        if ($this->exchg2[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
-            //再判断界限
-            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
-                //保持临界值
-                Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
-                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
-                exit();
-            };
-        } elseif (!$this->exchg2[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
-            //再判断界限
-            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
-                //保持临界值
-                Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
-                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
-                exit();
+            try {
+                if ($this->exchg2[$opscoreclass]) {
+                    Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
+                    //再判断界限
+                    if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
+                        //保持临界值
+                        Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
+                        echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
+                        exit();
+                    };
+                } elseif (!$this->exchg2[$opscoreclass]) {
+                    Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
+                    //再判断界限
+                    if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
+                        //保持临界值
+                        Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
+                        echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
+                        exit();
+                    }
+                }
+                return true;
+            }catch (Exception $e){
+                return false;
             }
-        }
+
     }
 
     public function examinerun()//审核操作

@@ -300,11 +300,11 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('username', $usrname)
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->where('username', $usrname)
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
@@ -2716,6 +2716,7 @@ class Hddy1 extends Controller//权限1
     public function addscorefirrun()//添加一级分类操作
     {
         $date = input('post.');
+        halt($date);
         $validate = new validate([
             ['collegeid', 'require|regex:int', '所属单位名称不能为空|参数错误，请返回重试！'],
             ['scoreinfo', 'require|/^[A-Za-z0-9，,。.\x{4e00}-\x{9fa5}]+$/u|max:100', '描述内容不能为空！|描述包含非法字符！|描述输入内容过长！'],
@@ -3883,24 +3884,29 @@ class Hddy1 extends Controller//权限1
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));
-        if ($this->exchg2[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
-            //再判断界限
-            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
-                //保持临界值
-                Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
-                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
-                exit();
-            };
-        } elseif (!$this->exchg2[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
-            //再判断界限
-            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
-                //保持临界值
-                Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
-                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
-                exit();
+        try {
+            if ($this->exchg2[$opscoreclass]) {
+                Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
+                //再判断界限
+                if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
+                    //保持临界值
+                    Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
+                    echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
+                    exit();
+                };
+            } elseif (!$this->exchg2[$opscoreclass]) {
+                Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
+                //再判断界限
+                if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
+                    //保持临界值
+                    Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
+                    echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
+                    exit();
+                }
             }
+            return true;
+        }catch (Exception $e){
+            return false;
         }
     }
 
