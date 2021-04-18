@@ -289,6 +289,7 @@ class Student extends Controller//权限1
             $this->assign('data2', $result2);
             $result3 = Db::name("scorefirst")
                 ->where('collegeid', $classid)
+                ->whereOr('collegeid',38)
                 ->select();
             $this->assign('data3', $result3);
             return $this->fetch();
