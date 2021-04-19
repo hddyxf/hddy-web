@@ -65,10 +65,10 @@ class Student extends Controller//权限1
         //分页查询
         $cate_list=Zlog_view::scope('all',$usrname,$start,$limit)->select();
         $count=Zlog_view::scope('all',$usrname,$start,$limit)->count();
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('datetime desc')
@@ -93,11 +93,11 @@ class Student extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('username', $usrname)
             ->where('id|s_name|scoresecinfo|s_id|s_class', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->where('username', $usrname)
             ->where('id|s_name|scoresecinfo|s_id|s_class', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
