@@ -1186,11 +1186,11 @@ class Instructor extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
@@ -1218,12 +1218,12 @@ class Instructor extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('collegeid', $usrcollege)
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
