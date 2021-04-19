@@ -63,8 +63,8 @@ class Student extends Controller//权限1
         $limit = intval($limit);//变成整型
         $start = $limit * ($page - 1);
         //分页查询
-        $cate_list=Zlog_view::scope('all',$usrname,$start,$limit)->select();
-        $count=Zlog_view::scope('all',$usrname,$start,$limit)->count();
+//        $cate_list=Zlog_view::scope('all',$usrname,$start,$limit)->select();
+//        $count=Zlog_view::scope('all',$usrname,$start,$limit)->count();
         $count = Db::name("score_view")
             ->where('username', $usrname)
             ->count("id");

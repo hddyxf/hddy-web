@@ -1249,7 +1249,7 @@ class Instructor extends Controller//权限1
             echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
-            $result = Db::table('score_view')
+            $result = Db::table('zlog_view')
                 ->where('id', $date['id'])
                 ->find();//通过session查询个人信息
 
