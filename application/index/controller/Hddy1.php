@@ -303,11 +303,11 @@ class Hddy1 extends Controller//权限1
         //分页查询
         $count = Db::name("score_view")
             ->where('username', $usrname)
-            ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
+            ->where('id|s_name|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
         $cate_list = Db::name("score_view")
             ->where('username', $usrname)
-            ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
+            ->where('id|s_name|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")
             ->select();
@@ -335,7 +335,7 @@ class Hddy1 extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
-            $result = Db::table('score_view')
+            $result = Db::table('zlog_view')
                 ->where('id', $date['id'])
                 ->find();//通过session查询个人信息
 
@@ -3756,10 +3756,10 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('opstate', '2')//根据权限修改where条件
             ->order('datetime desc')
@@ -3780,11 +3780,11 @@ class Hddy1 extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->limit($start, $limit)
@@ -4090,10 +4090,10 @@ class Hddy1 extends Controller//权限1
         $start = $limit * ($page - 1);
         //分页查询
         $count = Db::name("score_view")
-            ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
+            ->where('id|s_name|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
         $cate_list = Db::name("score_view")
-            ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
+            ->where('id|s_name|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")
             ->select();
@@ -4115,7 +4115,7 @@ class Hddy1 extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
-            $result = Db::table('score_view')
+            $result = Db::table('zlog_view')
                 ->where('id', $date['id'])
                 ->find();//通过session查询个人信息
 
