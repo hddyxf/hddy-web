@@ -90,8 +90,7 @@
        {field:'id', title:'流水号',width:80}
       ,{field:'s_id', title:'学号',width:100}
       ,{field:'s_name', title:'姓名',width:100}
-      ,{field:'majorinfo', title:'专业',}
-      ,{field:'collegeinfo', title:'学院',}
+
       ,{field:'classinfo', title:'操作类型',width:80}
       ,{field:'score', title:'操作分值',width:80}
       ,{field:'scoresecinfo', title:'操作描述',}
@@ -101,7 +100,8 @@
       
   ]]
     ,page: true
-    ,done:function () {
+    ,done:function (res) {
+        console.log(res)
                         layer.close(index) //加载完数据
                     }
 
@@ -122,7 +122,8 @@
                     }
                     ,where: { //类似于 data
                          log:log //传入日期参数
-                         ,done:function () {
+                         ,done:function (res) {
+                             console.log(res)
                         layer.close(index) //加载完数据
                     }
                         

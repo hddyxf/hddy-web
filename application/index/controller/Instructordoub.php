@@ -6,6 +6,7 @@ use think\console\output\descriptor\Console;
 use think\Controller;
 use think\Db;
 use app\index\model\User as UserModel;
+use think\Exception;
 use think\validate;
 use think\Request;
 use think\Env;
@@ -21,7 +22,7 @@ class Instructordoub extends Controller//权限1
         $usrname = session('username');
         if (empty($usrname)) {
 
-            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:83" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到系统环境异常！系统将在5秒后正在自动跳转。<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是非法登陆或登陆超时导致，您可尝试重新登陆系统。<br/></body></html>';
+            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "index" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到系统环境异常！系统将在5秒后正在自动跳转。<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是非法登陆或登陆超时导致，您可尝试重新登陆系统。<br/></body></html>';
             exit;
         } else {
             $result = Db::table('user')
@@ -32,7 +33,7 @@ class Instructordoub extends Controller//权限1
                 ->select();//通过session查询个人信息
             if ($result == false) {
                 session('username', null);
-                echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:83" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到账户异常！系统将在5秒后自动跳转<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是权限不足或您的账户信息已被管理员修改，您可尝试重新登陆系统。<br/></body></html>';
+                echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "index" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到账户异常！系统将在5秒后自动跳转<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是权限不足或您的账户信息已被管理员修改，您可尝试重新登陆系统。<br/></body></html>';
                 exit;
             }
         }
@@ -252,10 +253,10 @@ class Instructordoub extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('id desc')
@@ -279,11 +280,11 @@ class Instructordoub extends Controller//权限1
         //分页查询
         $count = Db::name("score_view")
             ->where('username', $usrname)
-            ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
+            ->where('id|s_name|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
         $cate_list = Db::name("score_view")
             ->where('username', $usrname)
-            ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
+            ->where('id|s_name|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")
             ->select();
@@ -340,7 +341,7 @@ class Instructordoub extends Controller//权限1
             exit;//判断数据是否合法
         } else {
             $classid = Db::table('user')->where('username', $usrname)->value('u_classinfo');
-            $result = Db::table('zlog_view')
+            $result = Db::table('score_view')
                 ->where('id', $date['id'])
                 ->where('u_classinfo', $classid)
                 ->find();//通过session查询个人信息
@@ -922,6 +923,7 @@ class Instructordoub extends Controller//权限1
             $this->assign('data2', $result2);
             $result3 = Db::name("scorefirst")
                 ->where('collegeid', $classid)
+                ->whereOr('collegeid',3)
                 ->select();
             $this->assign('data3', $result3);
             return $this->fetch();
@@ -1163,11 +1165,11 @@ class Instructordoub extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
@@ -1195,12 +1197,12 @@ class Instructordoub extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('collegeid', $usrcollege)
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
@@ -1239,24 +1241,29 @@ class Instructordoub extends Controller//权限1
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));
-        if ($this->exchg2[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
-            //再判断界限
-            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
-                //保持临界值
-                Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
-                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
-                exit();
-            };
-        } elseif (!$this->exchg2[$opscoreclass]) {
-            Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
-            //再判断界限
-            if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
-                //保持临界值
-                Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
-                echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
-                exit();
+        try {
+            if ($this->exchg2[$opscoreclass]) {
+                Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
+                //再判断界限
+                if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
+                    //保持临界值
+                    Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
+                    echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
+                    exit();
+                };
+            } elseif (!$this->exchg2[$opscoreclass]) {
+                Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
+                //再判断界限
+                if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
+                    //保持临界值
+                    Db::name('students')->where('s_id', $stuid)->update(['score' => '0']);
+                    echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最低0分');self.location=document.referrer;;</script>";
+                    exit();
+                }
             }
+            return true;
+        }catch (Exception $e){
+            return false;
         }
     }
 
@@ -1367,10 +1374,10 @@ class Instructordoub extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->where('collegeid', $usrcollege)
             ->limit($start, $limit)
             ->order('datetime desc')
@@ -1391,11 +1398,11 @@ class Instructordoub extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
-            ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
+        $count = Db::name("score_view")
+            ->where('id|s_name|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("zlog_view")
-            ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
+        $cate_list = Db::name("score_view")
+            ->where('id|s_name|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")
             ->select();

@@ -25,7 +25,7 @@ class Define extends Controller//权限1
         $usrname = session('username');
 //        return json($usrname);
         if (empty($usrname)) {
-            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:83" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到系统环境异常！系统将在5秒后正在自动跳转。<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是非法登陆或登陆超时导致，您可尝试重新登陆系统。<br/></body></html>';
+            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "index" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到系统环境异常！系统将在5秒后正在自动跳转。<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是非法登陆或登陆超时导致，您可尝试重新登陆系统。<br/></body></html>';
             exit;
         } else {
             $result = Db::table('user')
@@ -35,7 +35,7 @@ class Define extends Controller//权限1
                 ->select();//通过session查询个人信息
             if ($result == false) {
                 session('username', null);
-                echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:83" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到账户异常！系统将在5秒后自动跳转<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是权限不足或您的账户信息已被管理员修改，您可尝试重新登陆系统。<br/></body></html>';
+                echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "index" }, 5000);</script><span class="STYLE12">&nbsp;:(</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp检测到账户异常！系统将在5秒后自动跳转<br>&nbsp&nbsp&nbsp&nbsp&nbsp您的操作已被中止，这可能是权限不足或您的账户信息已被管理员修改，您可尝试重新登陆系统。<br/></body></html>';
                 exit;
             }
         }
@@ -273,10 +273,10 @@ class Define extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('username', $usrname)
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('username', $usrname)
             ->order('id desc')
@@ -332,7 +332,7 @@ class Define extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
-            $result = Db::table('zlog_view')
+            $result = Db::table('score_view')
                 ->where('id', $date['id'])
                 ->find();//通过session查询个人信息
 
@@ -360,7 +360,7 @@ class Define extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
-            $result = Db::table('zlog_view')
+            $result = Db::table('score_view')
                 ->where('id', $date['id'])
                 ->find();//通过session查询个人信息
             $result1 = Db::table('user')
@@ -3626,10 +3626,10 @@ class Define extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
             ->where('opstate', '2')//根据权限修改where条件
             ->order('datetime desc')
@@ -3650,11 +3650,11 @@ class Define extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->limit($start, $limit)
@@ -3848,10 +3848,10 @@ class Define extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->count("id");
 
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->order('id desc')
             ->select();
@@ -3871,10 +3871,10 @@ class Define extends Controller//权限1
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->where('id|s_name|s_class|scoresecinfo|s_id', 'like', "%" . $date["log"] . "%")
             ->limit($start, $limit)
             ->order("id desc")
@@ -3897,7 +3897,7 @@ class Define extends Controller//权限1
             echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
-            $result = Db::table('zlog_view')
+            $result = Db::table('score_view')
                 ->where('id', $date['id'])
                 ->find();//通过session查询个人信息
 
