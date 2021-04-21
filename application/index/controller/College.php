@@ -717,9 +717,12 @@ class College extends Controller//权限11170131315
 
     public function addclass()//添加班级页面
     {
+        $userinfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result1 = Db::name("teacher_view")
+            ->where('collegeid',$userinfo)
             ->select();
         $result2 = Db::name("major")
+            ->where('collegeid',$userinfo)
             ->select();
         $result3 = Db::table('college')
             ->where('class', '1')
@@ -991,10 +994,11 @@ class College extends Controller//权限11170131315
 
     public function addteacher()//添加辅导员页面
     {
+        $userinfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result = Db::table('college')
             ->where('class', '1')
-            ->select();
-
+            ->where('collegeid',$userinfo)
+            ->find();
         //$rs1=json($result);
         $this->assign('data', $result);
 
@@ -1139,16 +1143,16 @@ class College extends Controller//权限11170131315
         $list["code"] = 0;
         $list["count"] = $count;
         $list["data"] = $cate_list;
-
         return json($list);//返回数据给前端
     }
 
     public function addmajor()//专业添加页面
     {
-
+        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result1 = Db::table('college')
             ->where('class', '1')
-            ->select();
+            ->where('collegeid',$userInfo)
+            ->find();
         $this->assign('data', $result1);
 
         return $this->fetch();
@@ -2355,19 +2359,78 @@ class College extends Controller//权限11170131315
         return $this->fetch();
     }
 
+//    public function examinelist()//待审核操作列表后台
+//    {
+//        $page = input("get.page") ? input("get.page") : 1;
+//        $page = intval($page);
+//        $limit = input("get.limit") ? input("get.limit") : 1;
+//        $limit = intval($limit);
+//        $start = $limit * ($page - 1);
+//        //分页查询
+//        $count = Db::name("score_view")
+//            ->where('opstate', '2')//根据权限修改where条件
+//            ->count("id");
+//        $cate_list = Db::name("score_view")
+//            ->limit($start, $limit)
+//            ->where('opstate', '2')//根据权限修改where条件
+//            ->order('datetime desc')
+//            ->select();
+//        $list["msg"] = "";
+//        $list["code"] = 0;
+//        $list["count"] = $count;
+//        $list["data"] = $cate_list;
+//
+//        return json($list);
+//    }
+//
+//    public function examineload(Request $request)//待审核操作列表重载
+//    {
+//        $date = $request->post();
+//        $page = input("post.page") ? input("post.page") : 1;
+//        $page = intval($page);
+//        $limit = input("post.limit") ? input("post.limit") : 1;
+//        $limit = intval($limit);
+//        $start = $limit * ($page - 1);
+//        //分页查询
+//        $count = Db::name("score_view")
+//            ->where('opstate', '2')//根据权限修改where条件
+//            ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
+//            ->count("id");
+//        $cate_list = Db::name("score_view")
+//            ->where('opstate', '2')//根据权限修改where条件
+//            ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
+//            ->limit($start, $limit)
+//            ->order("datetime desc")
+//            ->select();
+//        $list["msg"] = "";
+//        $list["code"] = 0;
+//        $list["count"] = $count;
+//        $list["data"] = $cate_list;
+//
+//        return json($list);//返回数据给前端
+//    }
+
     public function examinelist()//待审核操作列表后台
     {
+        $usrname = session('username');
+        $usrinfo = Db::table('user')
+            ->where('username', $usrname)
+            ->find();
+        $usrcollege = $usrinfo['u_classinfo'];
+
         $page = input("get.page") ? input("get.page") : 1;
         $page = intval($page);
         $limit = input("get.limit") ? input("get.limit") : 1;
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
+            ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->limit($start, $limit)
+            ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->order('datetime desc')
             ->select();
@@ -2382,18 +2445,25 @@ class College extends Controller//权限11170131315
     public function examineload(Request $request)//待审核操作列表重载
     {
         $date = $request->post();
+        $usrname = session('username');
+        $usrinfo = Db::table('user')
+            ->where('username', $usrname)
+            ->find();
+        $usrcollege = $usrinfo['u_classinfo'];
         $page = input("post.page") ? input("post.page") : 1;
         $page = intval($page);
         $limit = input("post.limit") ? input("post.limit") : 1;
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("score_view")
+        $count = Db::name("zlog_view")
+            ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->count("id");
-        $cate_list = Db::name("score_view")
+        $cate_list = Db::name("zlog_view")
             ->where('opstate', '2')//根据权限修改where条件
+            ->where('collegeid', $usrcollege)
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->limit($start, $limit)
             ->order("datetime desc")
@@ -2403,7 +2473,7 @@ class College extends Controller//权限11170131315
         $list["count"] = $count;
         $list["data"] = $cate_list;
 
-        return json($list);//返回数据给前端 
+        return json($list);//返回数据给前端
     }
 
     public function showexamine()//查看待审核操作详情页面

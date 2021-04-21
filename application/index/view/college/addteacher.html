@@ -38,11 +38,8 @@
                 </td>
                 <td >所在学院：<font color="FF0000">*</font></td>
                 <td colspan="3">
-                    <select name="collegeid">
-                        <option value="">未选择</option>
-                         {volist name='data' id='list'}
-                        <option value="{$list.collegeid}">{$list.collegeinfo}</option>
-                         {/volist}
+                    <select name="collegeid" disabled>
+                        <option value="{$data.collegeid}">{$data.collegeinfo}</option>
                     </select>
                 </td>
             </tr>
