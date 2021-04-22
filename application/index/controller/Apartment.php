@@ -945,10 +945,13 @@ class Apartment extends Controller//权限1
         $start = $limit * ($page - 1);
         //分页查询
         $count = Db::name("stu_view")
+            ->where('s_apartment','not null')
             ->count("s_id");
         $cate_list = Db::name("stu_view")
             ->limit($start, $limit)
-            ->order('s_id desc')->select();
+            ->order('s_id desc')
+            ->where('s_apartment','not null')
+            ->select();
         $list["msg"] = "";
         $list["code"] = 0;
         $list["count"] = $count;
@@ -971,9 +974,11 @@ class Apartment extends Controller//权限1
         //分页查询
 
         $count = Db::name("stu_view")
+            ->where('s_apartment','not null')
             ->where('s_name|s_id|class|teacherinfo|apartmentinfo|dormitoryinfo', 'like', "%" . $date["s_name"] . "%")
             ->count("s_id");
         $cate_list = Db::name("stu_view")
+            ->where('s_apartment','not null')
             ->where('s_name|s_id|class|teacherinfo|apartmentinfo|dormitoryinfo', 'like', "%" . $date["s_name"] . "%")
             ->limit($start, $limit)
             ->order("s_id desc")
@@ -2820,9 +2825,11 @@ class Apartment extends Controller//权限1
         $start = $limit * ($page - 1);
         //分页查询
         $count = Db::name("stu_view")
+            ->where('s_apartment','not null')
             ->where('s_id|s_name|teacherinfo', 'like', "%" . $date["stuname"] . "%")
             ->count("s_id");
         $cate_list = Db::name("stu_view")
+            ->where('s_apartment','not null')
             ->where('s_id|s_name|teacherinfo', 'like', "%" . $date["stuname"] . "%")
             ->limit($start, $limit)
             ->order("s_id desc")

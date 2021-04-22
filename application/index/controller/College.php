@@ -2424,11 +2424,11 @@ class College extends Controller//权限11170131315
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
@@ -2456,12 +2456,12 @@ class College extends Controller//权限11170131315
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
-        $count = Db::name("zlog_view")
+        $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->count("id");
-        $cate_list = Db::name("zlog_view")
+        $cate_list = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('collegeid', $usrcollege)
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
@@ -2496,10 +2496,13 @@ class College extends Controller//权限11170131315
         }
     }
 
-    public function ExaminScoreOper($stuid, $score, $opscoreclass)
+    public function ExaminScoreOper($stuid, $score, $opscoreclass,$opstate)
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));
+        if ($opstate=='5'){
+            return true;
+        }
         try {
             if ($this->exchg2[$opscoreclass]) {
                 Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
@@ -2580,7 +2583,7 @@ class College extends Controller//权限11170131315
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
                         $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
-                        $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
+                        $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass'],$data['opstate']);
                         if ($result){
                             echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
                             exit();

@@ -3121,6 +3121,8 @@ class Hddy1 extends Controller//权限1
         return json($list);
     }
 
+
+
     public function dormitorycheck(Request $request)//寝室表格重载
     {
         $date = $request->post();
@@ -3160,6 +3162,8 @@ class Hddy1 extends Controller//权限1
         $this->assign('data2', $result2);
         return $this->fetch();
     }
+
+
 
     public function editapartment()//编辑公寓操作
     {
