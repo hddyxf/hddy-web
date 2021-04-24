@@ -116,6 +116,7 @@
           }
           xmlhttp.open("GET","userclassmore?q="+str,true);
           xmlhttp.send();
+          $('#txtHint').attr('disabled',false);
         }
         </script>
         <script>
@@ -173,7 +174,7 @@
                     </select></td>
                     <td >所属单位名称：<font color="FF0000">*</font></td>
                     <td>
-                        <select name="u_classinfo" id="txtHint">
+                        <select name="u_classinfo" id="txtHint" disabled>
                         <option value="{$data.u_classinfo}">当前：{$data.collegeinfo}</option>
                             
                         </select>

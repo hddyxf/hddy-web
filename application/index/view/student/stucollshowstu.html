@@ -58,6 +58,7 @@
                         for (var i=0;i<res.length;i++) {
                             //遍历添加op选项
                             if (res[i].classinfo=="减分") {
+                                // console.log(i)
                                 var op = $("<option></option>").text(res[i].scoresecinfo + "   " + res[i].score + "分")
                                 var oped = $('#first').append(op)
                                 op.attr('value', res[i].scoresecid)

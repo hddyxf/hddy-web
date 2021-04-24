@@ -292,7 +292,7 @@ class Wechat extends Controller
         }
     }
 
-        public function ExaminScoreOper($stuid, $score, $opscoreclass)
+        public function ExamineScoreOper($stuid, $score, $opscoreclass)
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));
@@ -366,7 +366,7 @@ class Wechat extends Controller
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
                         $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
-                        $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
+                        $result=$this->ExamineScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
                         echo "<script type='text/javascript'>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
                         exit;
                     } else {

@@ -2915,7 +2915,7 @@ class Work extends Controller//权限1
     }
 
 
-    public function ExaminScoreOper($stuid, $score, $opscoreclass)
+    public function ExamineScoreOper($stuid, $score, $opscoreclass)
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));
@@ -3004,7 +3004,7 @@ class Work extends Controller//权限1
         if($editscore){
             if($date['opstate']=='1'){
                 $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
-                $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
+                $result=$this->ExamineScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
                 if ($result){
                     echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
                     exit();

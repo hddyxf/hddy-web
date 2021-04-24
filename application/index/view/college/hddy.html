@@ -48,8 +48,26 @@
         <script>
             var is_remember = false;
         </script>
+        <script type="text/javascript">
+            function tj(){
+                var arr = "<?php echo $data1?>"
+                if(arr!=0)
+                {
+                    var a = document.getElementById('c1');
+                    var b = document.getElementById('c2');
+                    var s1 = document.createElement('span');
+                    var s2 = document.createElement('span');
+                    s1.setAttribute('class','layui-badge');
+                    s2.setAttribute('class','layui-badge');
+                    a.appendChild(s1);
+                    b.appendChild(s2);
+                    s2.innerText=arr;
+                    s1.innerText=arr;
+                }
+            }
+        </script>
     </head>
-    <body class="index" >
+    <body class="index" onload="tj()">
            
         <!-- 顶部开始 -->
         <div class="container">
@@ -185,7 +203,7 @@
                     <li>
                         <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="学分操作">&#xe705;</i>
-                            <cite>学分操作</cite>
+                            <cite id="c1">学分操作</cite>
                             <i class="iconfont nav_right">&#xe697;</i></a>
                         <ul class="sub-menu">
                             <li>

@@ -3885,7 +3885,7 @@ class Hddy1 extends Controller//权限1
             2=>false
         ];
 
-    public function ExaminScoreOper($stuid, $score, $opscoreclass)
+    public function ExamineScoreOper($stuid, $score, $opscoreclass)
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));
@@ -3970,7 +3970,7 @@ class Hddy1 extends Controller//权限1
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
                         $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
-                        $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
+                        $result=$this->ExamineScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
 //                        dump($stuScoreOperation);
 //                        halt($result);
                         if ($result){

@@ -42,6 +42,10 @@ class College extends Controller//权限11170131315
         $result = Db::table('system')
             ->where('id', '1')
             ->find();//通过session查询个人信息
+        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
+        $num1 = Db::name('score_view')->where('opstate', '2')->where('collegeid',$userInfo)->count();
+//        var_dump($num1);
+        $this->assign('data1', $num1);
         $this->assign('data', $result);
         return $this->fetch();
     }
@@ -57,6 +61,29 @@ class College extends Controller//权限11170131315
         $ip="http://".session('ip');
         echo "<script>window.parent.location.href='$ip'</script>>";
     }
+
+
+    // web类内参数--------------------------------》开始
+    private $ErrMsg;
+    // web类内参数--------------------------------》结束
+
+
+    // web生成返回信息--------------------------------》开始
+
+    public function ReturnMsg($status,$msg,$title){//分别是status状态（false/true）、msg具体返回信息、title总结返回状态
+        if (!$status)
+        {
+            return array('title'=>$title==null?'操作失败':$title,'msg'=>$msg==null?'无返回值':$msg,'code'=>550);
+        }
+        elseif ($status)
+        {
+            return array('title'=>$title==null?'操作成功':$title,'msg'=>$msg==null?'无返回值':$msg,'code'=>220);
+        }
+        //返回值：title总结返回状态、msg具体返回信息、code用于判断的返回值
+    }
+
+    // web生成返回信息--------------------------------》结束
+
 
 //系统参数设置---------------------------------------------------------------------》
     public function scoreadmin()//学分操作管理页面
@@ -198,9 +225,11 @@ class College extends Controller//权限11170131315
 
     public function addscorefir()//添加一级分类页面
     {
+        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result = Db::name("college")
             ->order('collegeid desc')
-            ->select();
+            ->where('collegeid',$userInfo)
+            ->find();
         $this->assign('data', $result);
         return $this->fetch();
     }
@@ -2496,12 +2525,16 @@ class College extends Controller//权限11170131315
         }
     }
 
-    public function ExaminScoreOper($stuid, $score, $opscoreclass,$opstate)
+    private $exchg2=[
+        1=>true,
+        2=>false
+    ];
+
+    public function ExamineScoreOper($stuid, $score, $opscoreclass,$opstate)
     {
-        //获取当前学生的分数
-//        halt(array($stuid,$score,$opscoreclass));
         if ($opstate=='5'){
-            return true;
+            echo "<script type='text/javascript'>parent.layer.alert('审核操作驳回成功');self.location=document.referrer;;</script>";
+            exit();
         }
         try {
             if ($this->exchg2[$opscoreclass]) {
@@ -2523,8 +2556,10 @@ class College extends Controller//权限11170131315
                     exit();
                 }
             }
-            return true;
-        }catch (Exception $e){
+            return  true;
+        }
+        catch (Exception $e){
+            $this->ErrMsg=$e;
             return false;
         }
     }
@@ -2564,7 +2599,7 @@ class College extends Controller//权限11170131315
                 $checkusr = Db::table('user')
                     ->where('username', $date['username'])
                     ->where('u_name', $date['othername'])
-                    ->select();//用户名重复性检测
+                    ->select();//检测有无此用户
                 if ($checkusr) {
                     $time = date('Y-m-d H:i:s');
                     $editscore = Db::table('scoreoperation')
@@ -2583,22 +2618,23 @@ class College extends Controller//权限11170131315
                             'username' => $usrlogo = session('username'),];
                         Db::table('systemlog')->insert($syslog);
                         $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
-                        $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass'],$data['opstate']);
-                        if ($result){
-                            echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
+                        $result=$this->ExamineScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass'],$data['opstate']);
+                        if ($result)
+                        {
+                            echo "<script type='text/javascript'>parent.layer.alert('审核及学分操作成功！');parent.history.go(-1);</script>";
                             exit();
-                        }elseif(!$result){
-                            echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');parent.history.go(-1);</script>";
+                        }
+                        elseif(!$result)
+                        {
+                            echo "<script type='text/javascript'>parent.layer.alert('审核成功但学分操作失败，请重试');parent.history.go(-1);</script>";
                             exit;//判断更新操作是否成功
                         }
-                        echo "<script>parent.layer.alert('操作成功！');self.location=document.referrer;;</script>";
-                        exit;
                     } else {
-                        echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
+                        echo "<script>parent.layer.alert('审核失败，请重试');self.location=document.referrer;;</script>";
                         exit;//判断更新操作是否成功
                     }
                 } else {
-                    echo "<script>parent.layer.alert('参数错误！');self.location=document.referrer;;</script>";
+                    echo "<script>parent.layer.alert('此用户不存在请重试');self.location=document.referrer;;</script>";
                     exit;
                 }
             }

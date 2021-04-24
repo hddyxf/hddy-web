@@ -3688,7 +3688,7 @@ class Define extends Controller//权限1
         }
     }
 
-    public function ExaminScoreOper($stuid, $score, $opscoreclass)
+    public function ExamineScoreOper($stuid, $score, $opscoreclass)
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));

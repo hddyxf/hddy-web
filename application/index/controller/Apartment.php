@@ -2861,7 +2861,7 @@ class Apartment extends Controller//权限1
                 ->find();//使用find前端可以直接输出
             $this->assign('data2', $result2);
             $result3 = Db::name("scorefirst")
-                ->whereOr('collegeid',3)
+                ->whereOr('collegeid',1)
                 ->select();
             $this->assign('data3', $result3);
             return $this->fetch();
@@ -3167,10 +3167,8 @@ class Apartment extends Controller//权限1
         }
     }
 
-    public function ExaminScoreOper($stuid, $score, $opscoreclass)
+    public function ExamineScoreOper($stuid, $score, $opscoreclass)
     {
-        //获取当前学生的分数
-//        halt(array($stuid,$score,$opscoreclass));
         try {
             if ($this->exchg2[$opscoreclass]) {
                 Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
@@ -3206,7 +3204,6 @@ class Apartment extends Controller//权限1
    public function examinerun()//审核操作
     {
         $data = input('post.');
-//        return json($data);
         $stateupdate = [
             'opstate' => '1',
           ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
@@ -3260,7 +3257,7 @@ class Apartment extends Controller//权限1
         if($editscore){
             if($date['opstate']=='1'){
                 $stuScoreOperation=Db::name('scoreoperation')->where('id',$date['id'])->find();
-                $result=$this->ExaminScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
+                $result=$this->ExamineScoreOper($stuScoreOperation['stuid'],$stuScoreOperation['score'],$stuScoreOperation['opscoreclass']);
                 if ($result){
                     echo "<script type='text/javascript'>parent.layer.alert('操作成功！');parent.history.go(-1);</script>";
                     exit();
