@@ -1201,7 +1201,6 @@ class College extends Controller//权限11170131315
     public function addmajorrun()//专业添加操作
     {
         $date = input('post.');
-        halt(\request()->param());
         $validate = new validate([
             ['majorinfo', 'require|max:45|chs', '专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
             ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院参数异常，请返回重试！'],
