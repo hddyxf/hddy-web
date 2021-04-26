@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 24/04/2021 14:34:01
+ Date: 26/04/2021 10:06:47
 */
 
 SET NAMES utf8mb4;
@@ -9780,7 +9780,7 @@ CREATE TABLE `systemlog`  (
   `state` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18555 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18578 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of systemlog
@@ -10375,6 +10375,29 @@ INSERT INTO `systemlog` VALUES (18551, '2021-04-22 15:51:00', '127.0.0.1', '对�
 INSERT INTO `systemlog` VALUES (18552, '2021-04-22 15:51:04', '127.0.0.1', '查看个人操作日志。', '正常', 'fuhongtao');
 INSERT INTO `systemlog` VALUES (18553, '2021-04-22 15:54:15', '127.0.0.1', '登陆系统。', '正常', 'dijun');
 INSERT INTO `systemlog` VALUES (18554, '2021-04-23 10:43:59', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18555, '2021-04-26 08:37:58', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18556, '2021-04-26 08:38:06', '127.0.0.1', '查看所有公寓信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18557, '2021-04-26 08:38:11', '127.0.0.1', '进入审核学分操作页面。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18558, '2021-04-26 08:41:37', '127.0.0.1', '进入审核学分操作页面。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18559, '2021-04-26 08:42:54', '127.0.0.1', '进入审核学分操作页面。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18560, '2021-04-26 08:43:07', '127.0.0.1', '进入审核学分操作页面。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18561, '2021-04-26 08:46:34', '127.0.0.1', '登陆系统。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18562, '2021-04-26 08:49:10', '127.0.0.1', '查看所有专业。', '重要', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18563, '2021-04-26 08:57:52', '127.0.0.1', '查看所有专业。', '重要', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18564, '2021-04-26 08:59:01', '127.0.0.1', '查看所有专业。', '重要', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18565, '2021-04-26 08:59:10', '127.0.0.1', '查看所有专业。', '重要', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18566, '2021-04-26 09:05:16', '127.0.0.1', '查看所有专业。', '重要', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18567, '2021-04-26 09:19:46', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18568, '2021-04-26 09:20:05', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18569, '2021-04-26 09:20:53', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18570, '2021-04-26 09:21:21', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18571, '2021-04-26 09:21:36', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18572, '2021-04-26 09:21:42', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18573, '2021-04-26 09:31:55', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18574, '2021-04-26 09:32:34', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18575, '2021-04-26 09:32:49', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18576, '2021-04-26 09:33:16', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18577, '2021-04-26 10:00:45', '127.0.0.1', '查看个人操作日志。', '正常', 'fuhongtao');
 
 -- ----------------------------
 -- Table structure for teacher
@@ -10873,7 +10896,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `scoresec_view` AS select
 -- View structure for score_view
 -- ----------------------------
 DROP VIEW IF EXISTS `score_view`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `score_view` AS select `scoreoperation`.`id` AS `id`,`scoreoperation`.`score` AS `score`,`scoreoperation`.`datetime` AS `datetime`,`students`.`s_name` AS `s_name`,`user`.`u_name` AS `u_name`,`operation`.`operationinfo` AS `operationinfo`,`scoreclass`.`classinfo` AS `classinfo`,`scoresec`.`scoresecinfo` AS `scoresecinfo`,`students`.`s_sex` AS `s_sex`,`students`.`s_id` AS `s_id`,`user`.`username` AS `username`,`scoreoperation`.`opstate` AS `opstate`,`scoreoperation`.`shibie` AS `shibie`,`major`.`collegeid` AS `collegeid`,`scoreoperation`.`info` AS `info` from (((((((`scoreoperation` join `students`) join `user`) join `operation`) join `scoreclass`) join `scoresec`) join `class`) join `major`) where ((`scoreoperation`.`stuid` = `students`.`s_id`) and (`scoreoperation`.`opusername` = `user`.`username`) and (`scoreoperation`.`opstate` = `operation`.`operationid`) and (`scoreoperation`.`opscoresec` = `scoresec`.`scoresecid`) and (`scoreoperation`.`opscoreclass` = `scoreclass`.`classid`) and (`students`.`s_class` = `class`.`class`) and (`class`.`majorid` = `major`.`majorid`));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `score_view` AS select `scoreoperation`.`id` AS `id`,`scoreoperation`.`score` AS `score`,`scoreoperation`.`datetime` AS `datetime`,`students`.`s_name` AS `s_name`,`user`.`u_name` AS `u_name`,`operation`.`operationinfo` AS `operationinfo`,`scoreclass`.`classinfo` AS `classinfo`,`scoresec`.`scoresecinfo` AS `scoresecinfo`,`students`.`s_sex` AS `s_sex`,`students`.`s_id` AS `s_id`,`user`.`username` AS `username`,`scoreoperation`.`opstate` AS `opstate`,`scoreoperation`.`shibie` AS `shibie`,`major`.`collegeid` AS `collegeid`,`scoreoperation`.`info` AS `info`,`students`.`s_apartment` AS `s_apartment` from (((((((`scoreoperation` join `students`) join `user`) join `operation`) join `scoreclass`) join `scoresec`) join `class`) join `major`) where ((`scoreoperation`.`stuid` = `students`.`s_id`) and (`scoreoperation`.`opusername` = `user`.`username`) and (`scoreoperation`.`opstate` = `operation`.`operationid`) and (`scoreoperation`.`opscoresec` = `scoresec`.`scoresecid`) and (`scoreoperation`.`opscoreclass` = `scoreclass`.`classid`) and (`students`.`s_class` = `class`.`class`) and (`class`.`majorid` = `major`.`majorid`));
 
 -- ----------------------------
 -- View structure for stu_view

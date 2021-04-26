@@ -42,8 +42,19 @@ class College extends Controller//权限11170131315
         $result = Db::table('system')
             ->where('id', '1')
             ->find();//通过session查询个人信息
-        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
-        $num1 = Db::name('score_view')->where('opstate', '2')->where('collegeid',$userInfo)->count();
+//        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
+        $usrinfo = Db::table('user')
+            ->where('username', session('username'))
+            ->find();
+        $usrcollege = $usrinfo['u_classinfo'];
+        $userInfo=Db::name('user')->where('u_classinfo',$usrcollege)->where('jurisdiction',7)->column('u_name');
+//        dump($userInfo);
+        $num1 = Db::name("score_view")
+            ->where('collegeid', $usrcollege)
+            ->where('u_name','in',$userInfo)
+            ->where('opstate', '2')//根据权限修改where条件
+            ->count("id");
+//        $num1 = Db::name('score_view')->where('opstate', '2')->where('collegeid',$userInfo)->count();
 //        var_dump($num1);
         $this->assign('data1', $num1);
         $this->assign('data', $result);
@@ -1190,6 +1201,7 @@ class College extends Controller//权限11170131315
     public function addmajorrun()//专业添加操作
     {
         $date = input('post.');
+        halt(\request()->param());
         $validate = new validate([
             ['majorinfo', 'require|max:45|chs', '专业名称不能为空！|专业名称限制为15位以内且全部为汉字|专业名称限制为15位以内且全部为汉字'],
             ['collegeid', 'require|regex:int', '所属学院不能为空！|所属学院参数异常，请返回重试！'],
@@ -2453,13 +2465,17 @@ class College extends Controller//权限11170131315
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
+        $userInfo=Db::name('user')->where('u_classinfo',$usrcollege)->where('jurisdiction',7)->column('u_name');
+//        dump($userInfo);
         $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
+            ->where('u_name','in',$userInfo)
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
         $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('collegeid', $usrcollege)
+            ->where('u_name','in',$userInfo)
             ->where('opstate', '2')//根据权限修改where条件
             ->order('datetime desc')
             ->select();
@@ -2467,6 +2483,7 @@ class College extends Controller//权限11170131315
         $list["code"] = 0;
         $list["count"] = $count;
         $list["data"] = $cate_list;
+        $list['data1']=$userInfo;
 
         return json($list);
     }
@@ -2485,14 +2502,18 @@ class College extends Controller//权限11170131315
         $limit = intval($limit);
         $start = $limit * ($page - 1);
         //分页查询
+        $userInfo=Db::name('user')->where('u_classinfo',$usrcollege)->where('jurisdiction',7)->column('u_name');
+//        dump($userInfo);
         $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
+            ->where('u_name','in',$userInfo)
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->count("id");
         $cate_list = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('collegeid', $usrcollege)
+            ->where('u_name','in',$userInfo)
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->limit($start, $limit)
             ->order("datetime desc")
@@ -2501,6 +2522,7 @@ class College extends Controller//权限11170131315
         $list["code"] = 0;
         $list["count"] = $count;
         $list["data"] = $cate_list;
+        $list['data1']=$userInfo;
 
         return json($list);//返回数据给前端
     }

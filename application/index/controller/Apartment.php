@@ -3114,7 +3114,7 @@ class Apartment extends Controller//权限1
         $list["code"] = 0;
         $list["count"] = $count;
         $list["data"] = $cate_list;
-
+//        var_dump($cate_list);
         return json($list);
     }
 

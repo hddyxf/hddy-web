@@ -6,9 +6,15 @@
     <link rel="stylesheet" type="text/css" href="/css/admin-all.css" />
     <link rel="stylesheet" type="text/css" href="/css/jquery-ui-1.8.22.custom.css" />
     <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
-    
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 
-      
+    <script>
+        // $(document).ready(function () {
+        //     // console.log(1)
+        //     // console.log($('#collegeid option:selected').val())
+        //     // $('#collegeid option:first').attr('selected', 'selected');
+        // })
+    </script>
 </head>
 <body>
     <br>
@@ -28,7 +34,7 @@
                 </td>
                 <td >所属学院：<font color="FF0000">*</font></td>
                 <td colspan="2">
-                    <select name="collegeid" disabled>
+                    <select id="collegeid" name="collegeid">
                         <option value="{$data.collegeid}">{$data.collegeinfo}</option>
                     </select>
 <!--                    <input name="majorinfo" value='{$data.collegeid}' type="text" placeholder='{$data.collegeinfo}' />-->

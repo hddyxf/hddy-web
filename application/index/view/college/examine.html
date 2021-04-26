@@ -100,7 +100,8 @@
 
             ]]
             ,page: true
-            ,done:function () {
+            ,done:function (res) {
+                console.log(res)
                 layer.close(index) //加载完数据
             }
 
@@ -121,7 +122,8 @@
                     }
                     ,where: { //类似于 data
                         id:id //传入日期参数
-                        ,done:function () {
+                        ,done:function (res) {
+                            console.log(res)
                             layer.close(index) //加载完数据
                         }
 
