@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 26/04/2021 10:06:47
+ Date: 27/04/2021 14:39:37
 */
 
 SET NAMES utf8mb4;
@@ -9780,7 +9780,7 @@ CREATE TABLE `systemlog`  (
   `state` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18578 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18593 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of systemlog
@@ -10398,6 +10398,21 @@ INSERT INTO `systemlog` VALUES (18574, '2021-04-26 09:32:34', '127.0.0.1', '进�
 INSERT INTO `systemlog` VALUES (18575, '2021-04-26 09:32:49', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
 INSERT INTO `systemlog` VALUES (18576, '2021-04-26 09:33:16', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
 INSERT INTO `systemlog` VALUES (18577, '2021-04-26 10:00:45', '127.0.0.1', '查看个人操作日志。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18578, '2021-04-27 14:16:12', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18579, '2021-04-27 14:16:38', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18580, '2021-04-27 14:22:09', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18581, '2021-04-27 14:22:12', '127.0.0.1', '查看所有公寓信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18582, '2021-04-27 14:22:23', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18583, '2021-04-27 14:22:32', '127.0.0.1', '查看所有公寓信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18584, '2021-04-27 14:22:34', '127.0.0.1', '查看所有学分操作信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18585, '2021-04-27 14:23:36', '127.0.0.1', '使用错误的密码尝试登陆系统。', '异常', 'dijun');
+INSERT INTO `systemlog` VALUES (18586, '2021-04-27 14:23:43', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18587, '2021-04-27 14:23:46', '127.0.0.1', '查看所有公寓信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18588, '2021-04-27 14:25:37', '127.0.0.1', '查看学分操作日志。', '异常', 'dijun');
+INSERT INTO `systemlog` VALUES (18589, '2021-04-27 14:25:54', '127.0.0.1', '查看学分操作日志。', '异常', 'dijun');
+INSERT INTO `systemlog` VALUES (18590, '2021-04-27 14:28:04', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18591, '2021-04-27 14:28:18', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18592, '2021-04-27 14:28:24', '127.0.0.1', '进入审核学分操作页面。', '正常', 'shiwei');
 
 -- ----------------------------
 -- Table structure for teacher
@@ -10896,7 +10911,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `scoresec_view` AS select
 -- View structure for score_view
 -- ----------------------------
 DROP VIEW IF EXISTS `score_view`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `score_view` AS select `scoreoperation`.`id` AS `id`,`scoreoperation`.`score` AS `score`,`scoreoperation`.`datetime` AS `datetime`,`students`.`s_name` AS `s_name`,`user`.`u_name` AS `u_name`,`operation`.`operationinfo` AS `operationinfo`,`scoreclass`.`classinfo` AS `classinfo`,`scoresec`.`scoresecinfo` AS `scoresecinfo`,`students`.`s_sex` AS `s_sex`,`students`.`s_id` AS `s_id`,`user`.`username` AS `username`,`scoreoperation`.`opstate` AS `opstate`,`scoreoperation`.`shibie` AS `shibie`,`major`.`collegeid` AS `collegeid`,`scoreoperation`.`info` AS `info`,`students`.`s_apartment` AS `s_apartment` from (((((((`scoreoperation` join `students`) join `user`) join `operation`) join `scoreclass`) join `scoresec`) join `class`) join `major`) where ((`scoreoperation`.`stuid` = `students`.`s_id`) and (`scoreoperation`.`opusername` = `user`.`username`) and (`scoreoperation`.`opstate` = `operation`.`operationid`) and (`scoreoperation`.`opscoresec` = `scoresec`.`scoresecid`) and (`scoreoperation`.`opscoreclass` = `scoreclass`.`classid`) and (`students`.`s_class` = `class`.`class`) and (`class`.`majorid` = `major`.`majorid`));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `score_view` AS select `scoreoperation`.`id` AS `id`,`scoreoperation`.`score` AS `score`,`scoreoperation`.`datetime` AS `datetime`,`students`.`s_name` AS `s_name`,`user`.`u_name` AS `u_name`,`operation`.`operationinfo` AS `operationinfo`,`scoreclass`.`classinfo` AS `classinfo`,`scoresec`.`scoresecinfo` AS `scoresecinfo`,`students`.`s_sex` AS `s_sex`,`students`.`s_id` AS `s_id`,`user`.`username` AS `username`,`scoreoperation`.`opstate` AS `opstate`,`scoreoperation`.`shibie` AS `shibie`,`major`.`collegeid` AS `collegeid`,`scoreoperation`.`info` AS `info`,`students`.`s_apartment` AS `s_apartment`,`user`.`jurisdiction` AS `jurisdiction`,`students`.`teacherid` AS `teacherid` from (((((((`scoreoperation` join `students`) join `user`) join `operation`) join `scoreclass`) join `scoresec`) join `class`) join `major`) where ((`scoreoperation`.`stuid` = `students`.`s_id`) and (`scoreoperation`.`opusername` = `user`.`username`) and (`scoreoperation`.`opstate` = `operation`.`operationid`) and (`scoreoperation`.`opscoresec` = `scoresec`.`scoresecid`) and (`scoreoperation`.`opscoreclass` = `scoreclass`.`classid`) and (`students`.`s_class` = `class`.`class`) and (`class`.`majorid` = `major`.`majorid`));
 
 -- ----------------------------
 -- View structure for stu_view

@@ -1178,8 +1178,8 @@ class Instructor extends Controller//权限1
         $usrinfo = Db::table('user')
             ->where('username', $usrname)
             ->find();
-        $usrcollege = $usrinfo['u_classinfo'];
-
+        $usrcollege = $usrinfo['u_classinfo'];//学院编号
+        $teacherid=Db::name('teacher')->where('teacherinfo',$usrinfo['u_name'])->value('teacherid');
         $page = input("get.page") ? input("get.page") : 1;
         $page = intval($page);
         $limit = input("get.limit") ? input("get.limit") : 1;
@@ -1188,11 +1188,13 @@ class Instructor extends Controller//权限1
         //分页查询
         $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
+            ->where('teacherid',$teacherid)
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
         $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('collegeid', $usrcollege)
+            ->where('teacherid',$teacherid)
             ->where('opstate', '2')//根据权限修改where条件
             ->order('datetime desc')
             ->select();
@@ -1212,6 +1214,7 @@ class Instructor extends Controller//权限1
             ->where('username', $usrname)
             ->find();
         $usrcollege = $usrinfo['u_classinfo'];
+        $teacherid=Db::name('teacher')->where('teacherinfo',$usrinfo['u_name'])->value('teacherid');
         $page = input("post.page") ? input("post.page") : 1;
         $page = intval($page);
         $limit = input("post.limit") ? input("post.limit") : 1;
@@ -1221,11 +1224,13 @@ class Instructor extends Controller//权限1
         $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
             ->where('opstate', '2')//根据权限修改where条件
+            ->where('teacherid',$teacherid)
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->count("id");
         $cate_list = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('collegeid', $usrcollege)
+            ->where('teacherid',$teacherid)
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
             ->limit($start, $limit)
             ->order("datetime desc")

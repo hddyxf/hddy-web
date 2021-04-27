@@ -2589,7 +2589,7 @@ class Apartment extends Controller//权限1
                     exit;//判断更新操作是否成功
                 }
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
+                echo "<script type='text/javascript'>parent.layer.alert('无任何更改');self.location=document.referrer;;</script>";
                 exit;
             }
 
@@ -3102,11 +3102,13 @@ class Apartment extends Controller//权限1
         //分页查询
         $count = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
+            ->where('jurisdiction',10)
             ->where('s_apartment','not null')
             ->count("id");
         $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('opstate', '2')//根据权限修改where条件
+            ->where('jurisdiction',10)
             ->where('s_apartment','not null')
             ->order('datetime desc')
             ->select();
@@ -3130,11 +3132,13 @@ class Apartment extends Controller//权限1
         $count = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
+            ->where('jurisdiction',10)
             ->where('s_apartment','not null')
             ->count("id");
         $cate_list = Db::name("score_view")
             ->where('opstate', '2')//根据权限修改where条件
             ->where('id|s_id|s_name|scoresecinfo', 'like', "%" . $date["id"] . "%")
+            ->where('jurisdiction',10)
             ->where('s_apartment','not null')
             ->limit($start, $limit)
             ->order("datetime desc")
