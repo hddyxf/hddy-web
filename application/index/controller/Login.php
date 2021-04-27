@@ -13,7 +13,10 @@ class Login extends Controller
     public function login()
     {
         $date = input('post.');
-
+        $pwd=Db::name('user')->where('username',$date['username'])->value('password');
+        if ($pwd==md5($date['password'])){
+            
+        }
         session('ip',$_SERVER['HTTP_HOST']);
 //        return json(session('url'));
 //        $dateinfo=Db::name('user')

@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 27/04/2021 14:39:37
+ Date: 27/04/2021 15:56:23
 */
 
 SET NAMES utf8mb4;
@@ -2109,6 +2109,7 @@ INSERT INTO `operation` VALUES (2, '待审核');
 INSERT INTO `operation` VALUES (3, '申请撤销');
 INSERT INTO `operation` VALUES (4, '已撤销');
 INSERT INTO `operation` VALUES (5, '已驳回');
+INSERT INTO `operation` VALUES (6, '审核通过');
 
 -- ----------------------------
 -- Table structure for qxinfo
@@ -9780,7 +9781,7 @@ CREATE TABLE `systemlog`  (
   `state` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18593 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18597 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of systemlog
@@ -10413,6 +10414,10 @@ INSERT INTO `systemlog` VALUES (18589, '2021-04-27 14:25:54', '127.0.0.1', '查�
 INSERT INTO `systemlog` VALUES (18590, '2021-04-27 14:28:04', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
 INSERT INTO `systemlog` VALUES (18591, '2021-04-27 14:28:18', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
 INSERT INTO `systemlog` VALUES (18592, '2021-04-27 14:28:24', '127.0.0.1', '进入审核学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18593, '2021-04-27 15:34:03', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18594, '2021-04-27 15:34:09', '127.0.0.1', '查看所有学分操作信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18595, '2021-04-27 15:47:11', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18596, '2021-04-27 15:47:16', '127.0.0.1', '查看所有学分操作信息。', '正常', 'kangchunli');
 
 -- ----------------------------
 -- Table structure for teacher

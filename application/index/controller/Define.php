@@ -2632,7 +2632,9 @@ class Define extends Controller//权限1
 
     public function addscorefir()//添加一级分类页面
     {
+        $collegeid=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result = Db::name("college")
+            ->where('collegeid',$collegeid)
             ->order('collegeid desc')
             ->select();
         $this->assign('data', $result);

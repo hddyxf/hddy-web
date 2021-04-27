@@ -2012,6 +2012,7 @@ class Apartment extends Controller//权限1
     public function addscorefir()//添加一级分类页面
     {
         $result = Db::name("college")
+            ->where('collegeid',1)
             ->order('collegeid desc')
             ->select();
         $this->assign('data', $result);
