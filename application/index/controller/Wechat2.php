@@ -167,7 +167,7 @@ class Wechat2 extends Controller
 
     //学分操作区域----------------------------------》开始
 
-    public function scoreOperRange($opscoresec, $score)
+    public function scoreOperRange($opscoresec, $score)//判断操作分数
     {
         return number_format(Db::name("scoresec")->where('scoresecid', $opscoresec)->value('score')) >= $score;
     }
@@ -177,7 +177,7 @@ class Wechat2 extends Controller
     {
         //获取当前学生的分数
 //        halt(array($stuid,$score,$opscoreclass));
-        if ($this->exchg[$opscoreclass]) {
+        if ($this->exchg[$opscoreclass]) {//判断加分
             Db::name('students')->where('s_id', $stuid)->setInc('score',$score);//先加分
             //再判断界限
             if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
@@ -186,7 +186,7 @@ class Wechat2 extends Controller
                 echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
                 exit();
             };
-        } elseif (!$this->exchg[$opscoreclass]) {
+        } elseif (!$this->exchg[$opscoreclass]) {//判断减分
             Db::name('students')->where('s_id', $stuid)->setDec('score',$score);//先减分
             //再判断界限
             if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) < 0) {
@@ -208,10 +208,10 @@ class Wechat2 extends Controller
     ];
     public function scoreoperationrun($ExaminInfo)//学分操作后台
     {
-        $date = input('post.');
+        $date = input('post.');//获取变量
         $score = Db::name('students')
             ->where('s_id', $date['stuid'])
-            ->find();
+            ->find();//获取学生信息
         $score1 = number_format($score['score']);
             if ($this->scoreOperRange($date['opscoresec'], $date['score'])) {
                 $scoreopartion = $this->scoreoper($date['stuid'], $date['score'], $date['opscoreclass']);
