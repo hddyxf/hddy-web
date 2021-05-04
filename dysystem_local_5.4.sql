@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
  Source Server Version : 50726
  Source Host           : localhost:3306
@@ -11,11 +11,26 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 27/04/2021 15:56:23
+ Date: 04/05/2021 16:19:39
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for advice
+-- ----------------------------
+DROP TABLE IF EXISTS `advice`;
+CREATE TABLE `advice`  (
+  `stuid` int(255) NOT NULL,
+  `info` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `date` datetime(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`date`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of advice
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for apartment
@@ -26,7 +41,7 @@ CREATE TABLE `apartment`  (
   `apartmentinfo` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `collegeid` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`apartmentid`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of apartment
@@ -53,9 +68,9 @@ CREATE TABLE `bbs`  (
   `id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `titt` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `datetime` datetime NULL DEFAULT NULL,
+  `datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of bbs
@@ -68,9 +83,9 @@ DROP TABLE IF EXISTS `blockade`;
 CREATE TABLE `blockade`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `datetime` datetime NULL DEFAULT NULL,
+  `datetime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of blockade
@@ -86,7 +101,7 @@ CREATE TABLE `class`  (
   `majorid` int(11) NULL DEFAULT NULL,
   `collegeid` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`class`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of class
@@ -327,7 +342,7 @@ CREATE TABLE `college`  (
   `class` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`collegeid`) USING BTREE,
   INDEX `collegeinfo`(`collegeinfo`, `collegeid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of college
@@ -355,7 +370,7 @@ CREATE TABLE `diy_auth`  (
   `allfrt` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `allsec` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`user`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of diy_auth
@@ -378,7 +393,7 @@ CREATE TABLE `dormitory`  (
   `apartmentid` int(11) NULL DEFAULT NULL,
   `dormitoryinfo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`dormitoryid`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 30841 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 30841 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dormitory
@@ -2015,7 +2030,7 @@ CREATE TABLE `journal`  (
   `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `onlyid` int(20) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`onlyid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of journal
@@ -2026,11 +2041,11 @@ CREATE TABLE `journal`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `log`;
 CREATE TABLE `log`  (
-  `time` datetime NOT NULL,
+  `time` datetime(0) NOT NULL,
   `tittle` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`time`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of log
@@ -2045,7 +2060,7 @@ CREATE TABLE `major`  (
   `majorinfo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `collegeid` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`majorid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of major
@@ -2099,7 +2114,7 @@ CREATE TABLE `operation`  (
   `operationid` int(11) NOT NULL,
   `operationinfo` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`operationid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of operation
@@ -2119,7 +2134,7 @@ CREATE TABLE `qxinfo`  (
   `jurisdiction` int(11) NOT NULL,
   `jurisdictioninfo` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`jurisdiction`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qxinfo
@@ -2144,7 +2159,7 @@ CREATE TABLE `scoreclass`  (
   `classid` int(11) NOT NULL,
   `classinfo` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`classid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scoreclass
@@ -2162,7 +2177,7 @@ CREATE TABLE `scorefirst`  (
   `collegeid` int(11) NULL DEFAULT NULL,
   `scorebl` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`scoreid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scorefirst
@@ -2170,6 +2185,7 @@ CREATE TABLE `scorefirst`  (
 INSERT INTO `scorefirst` VALUES (1, 'Test1', 11, NULL);
 INSERT INTO `scorefirst` VALUES (2, 'Test2', 7, NULL);
 INSERT INTO `scorefirst` VALUES (3, 'Test3', 1, NULL);
+INSERT INTO `scorefirst` VALUES (4, '1', 1, NULL);
 
 -- ----------------------------
 -- Table structure for scoreoperation
@@ -2194,15 +2210,15 @@ CREATE TABLE `scoreoperation`  (
   `opstate` int(11) NULL DEFAULT NULL COMMENT '操作状态',
   `opscorefir` int(11) NULL DEFAULT NULL COMMENT '操作一级',
   `opscoresec` int(11) NULL DEFAULT NULL COMMENT '操作二级',
-  `datetime` datetime NULL DEFAULT NULL,
+  `datetime` datetime(0) NULL DEFAULT NULL,
   `ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `othername` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `otherstate` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `othertime` datetime NULL DEFAULT NULL,
+  `othertime` datetime(0) NULL DEFAULT NULL,
   `shibie` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 78 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scoreoperation
@@ -2227,6 +2243,10 @@ INSERT INTO `scoreoperation` VALUES (70, '1180131231', '汪朝源', '男', 18013
 INSERT INTO `scoreoperation` VALUES (71, '1180541118', '张澳涵', '女', 1803611, 7, 14, 22, 'huangyiming', 6, '黄一鸣', 1, 7, 2, 1, 1, 2, 2, '2021-04-22 15:10:53', '127.0.0.1', NULL, NULL, '0', NULL, NULL);
 INSERT INTO `scoreoperation` VALUES (72, '1180131231', '汪朝源', '男', 1801312, 11, 2, 5, 'dijun', 9, '邸均', 2, 1, 2, 1, 1, 3, 3, '2021-04-22 15:26:20', '127.0.0.1', NULL, NULL, '0', NULL, NULL);
 INSERT INTO `scoreoperation` VALUES (73, '1180131231', '汪朝源', '男', 1801312, 11, 2, 5, 'fuhongtao', 4, '付洪涛', 1, 11, 2, 2, 1, 1, 1, '2021-04-22 15:51:00', '127.0.0.1', NULL, NULL, '0', NULL, NULL);
+INSERT INTO `scoreoperation` VALUES (74, '1180131231', '汪朝源', '男', 1801312, 11, 2, 5, 'shenjiawei', 10, '沈佳伟', 2, 1, 2, 1, 2, 1, 1, '2021-04-28 21:34:22', '127.0.0.1', NULL, NULL, '0', NULL, NULL);
+INSERT INTO `scoreoperation` VALUES (75, '1180131231', '汪朝源', '男', 1801312, 11, 2, 5, 'shenjiawei', 10, '沈佳伟', 2, 1, 2, 1, 1, 1, 1, '2021-04-28 21:36:06', '127.0.0.1', '小程序', '付洪涛', '1', '2021-05-03 10:30:49', NULL);
+INSERT INTO `scoreoperation` VALUES (76, '1180131231', '汪朝源', '男', 1801312, 11, 2, 5, 'shenjiawei', 10, '沈佳伟', 2, 1, 2, 1, 1, 1, 1, '2021-04-29 12:59:54', '127.0.0.1', '小程序', '康春丽', '1', '2021-04-30 15:48:40', NULL);
+INSERT INTO `scoreoperation` VALUES (77, '1180131231', '汪朝源', '男', 1801312, 11, 2, 5, 'shenjiawei', 10, '沈佳伟', 2, 1, 2, 1, 2, 1, 1, '2021-05-04 14:09:44', '127.0.0.1', NULL, NULL, '0', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for scoresec
@@ -2239,7 +2259,7 @@ CREATE TABLE `scoresec`  (
   `classid` int(11) NULL DEFAULT NULL,
   `score` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`scoresecid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scoresec
@@ -2275,7 +2295,7 @@ CREATE TABLE `students`  (
   `apartment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '公寓楼号',
   `dormitory` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '寝室号',
   `openid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of students
@@ -2610,7 +2630,7 @@ INSERT INTO `students` VALUES ('1180131225', '杨继昆', '男', '23042220000201
 INSERT INTO `students` VALUES ('1180131226', '刘璐', '女', '231083200002235921', NULL, '18745357662', NULL, NULL, NULL, NULL, NULL, '1801312', '2516-5', 11, 2, 5, '60', 2, 30280, '二公寓', '2516', NULL);
 INSERT INTO `students` VALUES ('1180131227', '韩宝双', '男', '220322199907257119', NULL, '17177355222', NULL, NULL, NULL, NULL, NULL, '1801312', '9523-1', 11, 2, 5, '60', 9, 30231, '九公寓', '9523', NULL);
 INSERT INTO `students` VALUES ('1180131230', '王慧', '女', '340404199906302627', NULL, '15855456384', NULL, NULL, NULL, NULL, NULL, '1801312', '2528-3', 11, 2, 5, '60', 2, 30286, '二公寓', '2528', NULL);
-INSERT INTO `students` VALUES ('1180131231', '汪朝源', '男', '522501200004261616', NULL, '13147074319', NULL, NULL, NULL, NULL, NULL, '1801312', '9202-6', 11, 2, 5, '58', 9, 30198, '九公寓', '9202', NULL);
+INSERT INTO `students` VALUES ('1180131231', '汪朝源', '男', '522501200004261616', NULL, '13147074319', NULL, NULL, NULL, NULL, NULL, '1801312', '9202-6', 11, 2, 5, '56', 9, 30198, '九公寓', '9202', NULL);
 INSERT INTO `students` VALUES ('1180131233', '向国望', '男', '511321200009098151', NULL, '18402876500', NULL, NULL, NULL, NULL, NULL, '1801312', '9611-3', 11, 2, 5, '60', 9, 30234, '九公寓', '9611', NULL);
 INSERT INTO `students` VALUES ('1180131234', '伏凯', '男', '511321199710181839', NULL, '18881729629', NULL, NULL, NULL, NULL, NULL, '1801312', '9201-4', 11, 2, 5, '60', 9, 30197, '九公寓', '9201', NULL);
 INSERT INTO `students` VALUES ('1180131235', '郑作', '男', '51382220000824671X', NULL, '13778843851', NULL, NULL, NULL, NULL, NULL, '1801312', '9202-5', 11, 2, 5, '60', 9, 30198, '九公寓', '9202', NULL);
@@ -9762,7 +9782,7 @@ CREATE TABLE `system`  (
   `info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of system
@@ -9775,13 +9795,13 @@ INSERT INTO `system` VALUES (1, '哈尔滨华德学院学生德育学分管理�
 DROP TABLE IF EXISTS `systemlog`;
 CREATE TABLE `systemlog`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `datetime` datetime NULL DEFAULT NULL,
+  `datetime` datetime(0) NULL DEFAULT NULL,
   `ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `state` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18597 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18633 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of systemlog
@@ -10418,6 +10438,42 @@ INSERT INTO `systemlog` VALUES (18593, '2021-04-27 15:34:03', '127.0.0.1', '登�
 INSERT INTO `systemlog` VALUES (18594, '2021-04-27 15:34:09', '127.0.0.1', '查看所有学分操作信息。', '正常', 'dijun');
 INSERT INTO `systemlog` VALUES (18595, '2021-04-27 15:47:11', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
 INSERT INTO `systemlog` VALUES (18596, '2021-04-27 15:47:16', '127.0.0.1', '查看所有学分操作信息。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18597, '2021-04-28 19:40:02', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18598, '2021-04-28 19:40:08', '127.0.0.1', '查看所有公寓信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18599, '2021-04-28 21:27:10', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18600, '2021-04-28 21:27:22', '127.0.0.1', '查看所有学分操作信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18601, '2021-04-28 21:27:42', '127.0.0.1', '添加了学分操作一级分类为：1 的信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18602, '2021-04-28 21:27:54', '127.0.0.1', '添加学分操作二级分类时输入非法字符。', '异常', 'dijun');
+INSERT INTO `systemlog` VALUES (18603, '2021-04-28 21:30:10', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18604, '2021-04-28 21:34:22', '127.0.0.1', '对学生学号为：1180131231 进行学分操作。', '重要', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18605, '2021-04-28 21:36:06', '127.0.0.1', '对学生学号为：1180131231 进行学分操作。', '重要', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18606, '2021-04-29 12:59:38', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18607, '2021-04-29 12:59:54', '127.0.0.1', '对学生学号为：1180131231 进行学分操作。', '重要', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18608, '2021-04-30 15:48:40', '127.0.0.1', '对学生操作流水号为为：76 进行了操作。', '重要', NULL);
+INSERT INTO `systemlog` VALUES (18609, '2021-05-03 10:30:49', '127.0.0.1', '对学生操作流水号为为：75 进行了操作。', '重要', NULL);
+INSERT INTO `systemlog` VALUES (18610, '2021-05-04 14:09:10', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18611, '2021-05-04 14:09:44', '127.0.0.1', '对学生学号为：1180131231 进行学分操作。', '重要', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18612, '2021-05-04 14:10:00', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18613, '2021-05-04 14:10:03', '127.0.0.1', '进入审核学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18614, '2021-05-04 14:42:13', '127.0.0.1', '进入审核学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18615, '2021-05-04 14:45:20', '127.0.0.1', '进入审核学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18616, '2021-05-04 14:46:45', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18617, '2021-05-04 15:17:37', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18618, '2021-05-04 15:18:45', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18619, '2021-05-04 15:23:26', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18620, '2021-05-04 15:24:55', '127.0.0.1', '修改个人密码。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18621, '2021-05-04 15:27:40', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18622, '2021-05-04 15:27:47', '127.0.0.1', '修改个人密码。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18623, '2021-05-04 15:28:39', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18624, '2021-05-04 15:30:39', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18625, '2021-05-04 15:31:10', '127.0.0.1', '修改个人密码。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18626, '2021-05-04 15:31:17', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18627, '2021-05-04 15:31:22', '127.0.0.1', '修改个人密码。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18628, '2021-05-04 15:31:38', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18629, '2021-05-04 15:33:12', '127.0.0.1', '修改个人密码。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18630, '2021-05-04 15:34:35', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18631, '2021-05-04 15:34:41', '127.0.0.1', '修改个人密码。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18632, '2021-05-04 15:35:28', '127.0.0.1', '登陆系统。', '正常', 'admin');
 
 -- ----------------------------
 -- Table structure for teacher
@@ -10430,7 +10486,7 @@ CREATE TABLE `teacher`  (
   `teachersex` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `teacheradd` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`teacherid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of teacher
@@ -10489,7 +10545,7 @@ CREATE TABLE `test`  (
   `testid` int(11) NOT NULL,
   `testinfo` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`testid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of test
@@ -10509,7 +10565,7 @@ CREATE TABLE `test_copy1`  (
   `testid` int(11) NOT NULL,
   `testinfo` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`testid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of test_copy1
@@ -10545,7 +10601,7 @@ CREATE TABLE `user`  (
   `allsec` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `apartmentid2` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`u_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 951 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 951 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
@@ -10846,7 +10902,7 @@ CREATE TABLE `userclass`  (
   `userid` int(11) NOT NULL,
   `userinfo` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`userid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of userclass
@@ -10862,7 +10918,7 @@ CREATE TABLE `userstate`  (
   `stateid` int(11) NOT NULL,
   `stateinfo` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`stateid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of userstate
@@ -10916,7 +10972,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `scoresec_view` AS select
 -- View structure for score_view
 -- ----------------------------
 DROP VIEW IF EXISTS `score_view`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `score_view` AS select `scoreoperation`.`id` AS `id`,`scoreoperation`.`score` AS `score`,`scoreoperation`.`datetime` AS `datetime`,`students`.`s_name` AS `s_name`,`user`.`u_name` AS `u_name`,`operation`.`operationinfo` AS `operationinfo`,`scoreclass`.`classinfo` AS `classinfo`,`scoresec`.`scoresecinfo` AS `scoresecinfo`,`students`.`s_sex` AS `s_sex`,`students`.`s_id` AS `s_id`,`user`.`username` AS `username`,`scoreoperation`.`opstate` AS `opstate`,`scoreoperation`.`shibie` AS `shibie`,`major`.`collegeid` AS `collegeid`,`scoreoperation`.`info` AS `info`,`students`.`s_apartment` AS `s_apartment`,`user`.`jurisdiction` AS `jurisdiction`,`students`.`teacherid` AS `teacherid` from (((((((`scoreoperation` join `students`) join `user`) join `operation`) join `scoreclass`) join `scoresec`) join `class`) join `major`) where ((`scoreoperation`.`stuid` = `students`.`s_id`) and (`scoreoperation`.`opusername` = `user`.`username`) and (`scoreoperation`.`opstate` = `operation`.`operationid`) and (`scoreoperation`.`opscoresec` = `scoresec`.`scoresecid`) and (`scoreoperation`.`opscoreclass` = `scoreclass`.`classid`) and (`students`.`s_class` = `class`.`class`) and (`class`.`majorid` = `major`.`majorid`));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `score_view` AS select `scoreoperation`.`id` AS `id`,`scoreoperation`.`score` AS `score`,`scoreoperation`.`datetime` AS `datetime`,`students`.`s_name` AS `s_name`,`user`.`u_name` AS `u_name`,`operation`.`operationinfo` AS `operationinfo`,`scoreclass`.`classinfo` AS `classinfo`,`scoresec`.`scoresecinfo` AS `scoresecinfo`,`students`.`s_sex` AS `s_sex`,`students`.`s_id` AS `s_id`,`user`.`username` AS `username`,`scoreoperation`.`opstate` AS `opstate`,`scoreoperation`.`shibie` AS `shibie`,`major`.`collegeid` AS `collegeid`,`scoreoperation`.`info` AS `info`,`students`.`s_apartment` AS `s_apartment`,`user`.`jurisdiction` AS `jurisdiction`,`students`.`teacherid` AS `teacherid`,`teacher`.`teacherid` AS `userteacherid` from ((((((((`scoreoperation` join `students`) join `user`) join `operation`) join `scoreclass`) join `scoresec`) join `class`) join `major`) left join `teacher` on((`scoreoperation`.`opname` = `teacher`.`teacherinfo`))) where ((`scoreoperation`.`stuid` = `students`.`s_id`) and (`scoreoperation`.`opusername` = `user`.`username`) and (`scoreoperation`.`opstate` = `operation`.`operationid`) and (`scoreoperation`.`opscoresec` = `scoresec`.`scoresecid`) and (`scoreoperation`.`opscoreclass` = `scoreclass`.`classid`) and (`students`.`s_class` = `class`.`class`) and (`class`.`majorid` = `major`.`majorid`));
 
 -- ----------------------------
 -- View structure for stu_view
