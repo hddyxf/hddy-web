@@ -174,6 +174,11 @@ class Instructor extends Controller//权限1
     public function newpwdrun()//设置新密码操作
     {
         $date = input('post.');
+        if ($date['password']=='123456'){
+//            halt(1);
+            echo "<script type='text/javascript'>alert('密码不能和初始密码相同');parent.history.go(-1);</script>";
+            exit();
+        }
         $validate = new validate([
             ['password', 'require|min:5|max:20|alphaDash', '密码不能为空|密码至少5位|密码不能超过20位|密码不能包含非法字符'],]);
         if (!$validate->check($date)) {
@@ -1188,13 +1193,13 @@ class Instructor extends Controller//权限1
         //分页查询
         $count = Db::name("score_view")
             ->where('collegeid', $usrcollege)
-            ->where('teacherid',$teacherid)
+            ->where('userteacherid',$teacherid)
             ->where('opstate', '2')//根据权限修改where条件
             ->count("id");
         $cate_list = Db::name("score_view")
             ->limit($start, $limit)
             ->where('collegeid', $usrcollege)
-            ->where('teacherid',$teacherid)
+            ->where('userteacherid',$teacherid)
             ->where('opstate', '2')//根据权限修改where条件
             ->order('datetime desc')
             ->select();

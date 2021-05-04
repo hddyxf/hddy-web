@@ -63,40 +63,67 @@ class Login extends Controller
                             ->find();
                         if ($qxcheck['jurisdiction'] == '1'||$qxcheck['jurisdiction'] == '11') {
                             if ($qxcheck['jurisdiction'] == '11'){
+                                if (md5('123456')==md5($date['password'])){
+                                    $this->success("请求修改初始密码{$date['username']}。", 'Hddy1/newpwd');
+                                }
                                 $this->success("登陆成功!  欢迎：{$date['username']}。", 'Define/hddy');
                                 session('qx',$qxcheck['jurisdiction']);
                             }
+                                    if (md5('123456')==md5($date['password'])){
+                                        $this->success("请求修改初始密码{$date['username']}。", 'Hddy1/newpwd');
+                                        }
                             $this->success("登陆成功!  欢迎：{$date['username']}。", 'Hddy1/hddy');
                             session('username', $date['username']);
                             session('login_url',$_SERVER['HTTP_HOST']);
                         } else {
                             if ($qxcheck['jurisdiction'] == '9') {
+                                if (md5('123456')==md5($date['password'])){
+                                    $this->success("请求修改初始密码{$date['username']}。", 'Apartment/newpwd');
+                                }
                                 $this->success("登陆成功!  欢迎：{$date['username']}。", 'Apartment/hddy');
                                 session('username', $date['username']);
                             } else {
                                 if ($qxcheck['jurisdiction'] == '7' || $qxcheck['jurisdiction'] == '10') {
+                                    if (md5('123456')==md5($date['password'])){
+                                        $this->success("请求修改初始密码{$date['username']}。", 'Student/newpwd');
+                                    }
                                     $this->success("登陆成功!  欢迎：{$date['username']}。", 'Student/studentindex');
                                     session('username', $date['username']);
                                     session('user_id',$date[]);
                                     session('login_url',$_SERVER['HTTP_REFERER']);
                                 } else {
                                     if ($qxcheck['jurisdiction'] == '6') {
+                                        if (md5('123456')==md5($date['password'])){
+                                            $this->success("请求修改初始密码{$date['username']}。", 'Instructor/newpwd');
+                                        }
                                         $this->success("登陆成功!  欢迎：{$date['username']}。", 'Instructor/hddy');
                                         session('username', $date['username']);
                                     } else {
                                         if ($qxcheck['jurisdiction'] == '5') {
+                                            if (md5('123456')==md5($date['password'])){
+                                                $this->success("请求修改初始密码{$date['username']}。", 'Instructordoub/newpwd');
+                                            }
                                             $this->success("登陆成功!  欢迎：{$date['username']}。", 'Instructordoub/hddy');
                                             session('username', $date['username']);
                                         } else {
                                             if ($qxcheck['jurisdiction'] == '4') {
+                                                if (md5('123456')==md5($date['password'])){
+                                                    $this->success("请求修改初始密码{$date['username']}。", 'College/newpwd');
+                                                }
                                                 $this->success("登陆成功!  欢迎：{$date['username']}。", 'College/hddy');
                                                 session('username', $date['username']);
                                             } else {
                                                 if ($qxcheck['jurisdiction'] == '3') {
+                                                    if (md5('123456')==md5($date['password'])){
+                                                        $this->success("请求修改初始密码{$date['username']}。", 'Work/newpwd');
+                                                    }
                                                     $this->success("登陆成功!  欢迎：{$date['username']}。", 'Work/hddy');
                                                     session('username', $date['username']);
                                                 } else {
                                                     if ($qxcheck['jurisdiction'] == '2') {
+                                                        if (md5('123456')==md5($date['password'])){
+                                                            $this->success("请求修改初始密码{$date['username']}。", 'Work/newpwd');
+                                                        }
                                                         $this->success("登陆成功!  欢迎：{$date['username']}。", 'Work/hddy');
                                                         session('username', $date['username']);
                                                     } else {

@@ -417,7 +417,7 @@ class Wechat extends Controller
 //        jur: "4"
 //s_id: "1180131231"
 //username: "fht"
-        $lsu = new Formcheck();
+        $lsu = new Formcheck1();
         $username = $data['username'];
         $s_id = $data['s_id'];
         $data['jur']=intval($data['jur']);

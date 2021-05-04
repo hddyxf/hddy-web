@@ -18,10 +18,10 @@ class Formcheck1 extends Controller
     public function check_addstu($data,$table,$checkey){
         //对学号、身份证号，学生手机号，寝室号及床位号进行查重（s_id,s_proid,s_add,s_room）
         $msg=array(
-           's_id'=>'学号重复请重新输入',
-           's_proid'=>'身份证重复请重新输入',
-           's_add'=>'个人手机号码重复请重新输入',
-           's_room'=>'寝室号及床位号重复请重新输入',
+            's_id'=>'学号重复请重新输入',
+            's_proid'=>'身份证重复请重新输入',
+            's_add'=>'个人手机号码重复请重新输入',
+            's_room'=>'寝室号及床位号重复请重新输入',
             'username'=>'用户名重复请重新输入',
             'user_id'=>'用户身份证重复请重新输入',
             'add'=>'用户手机号重复请重新输入',
@@ -95,7 +95,7 @@ class Formcheck1 extends Controller
      * or_user 是要插销的操作相关的权限的username
      * */
     public  function  auth_check($self_user,$or_user){
-       $or_jur= Db::name('user_view')
+        $or_jur= Db::name('user_view')
             ->where('username',$or_user)
             ->value('jurisdiction');
         $self_jur=Db::name('user_view')

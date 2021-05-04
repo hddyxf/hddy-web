@@ -177,6 +177,11 @@ class Apartment extends Controller//权限1
     public function newpwdrun()//设置新密码操作
     {
         $date = input('post.');
+        if ($date['password']=='123456'){
+//            halt(1);
+            echo "<script type='text/javascript'>alert('密码不能和初始密码相同');parent.history.go(-1);</script>";
+            exit();
+        }
         $validate = new validate([
             ['password', 'min:5|max:20|alphaDash|require', '密码至少5位|密码不能超过20位|密码不能包含非法字符|密码不能为空'],]);
         if (!$validate->check($date)) {

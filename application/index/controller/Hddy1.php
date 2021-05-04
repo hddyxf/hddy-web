@@ -199,7 +199,81 @@ class Hddy1 extends Controller//权限1
     public function newpwdrun()//设置新密码操作
     {
         $date = input('post.');
+        if ($date['password']=='123456'){
+//            halt(1);
+            echo "<script type='text/javascript'>alert('密码不能和初始密码相同');parent.history.go(-1);</script>";
+            exit();
+        }
 
+        $validate = new validate([
+            ['password', 'min:5|max:20|alphaDash|require', '密码至少5位|密码不能超过20位|密码不能包含非法字符|密码不能为空'],]);
+        if (!$validate->check($date)) {
+            $msg = $validate->getError();
+            $syslog = ['ip' => $ip = request()->ip(),
+                'datetime' => $time = date('Y-m-d H:i:s'),
+                'info' => '修改个人密码时输入非法字符。',
+                'state' => '异常',
+                'username' => $usrlogo = session('username'),];
+            Db::table('systemlog')->insert($syslog);
+            echo "<script type='text/javascript'>parent.layer.alert('$msg');self.location=document.referrer;</script>";
+            exit;//判断数据是否合法
+        } else {
+            $usrname = session('username');
+            if ($usrname === $date['username']) {
+                //判断当前用户名是否和session相等，预防通过前端修改用户名
+
+                if ($date['password'] === $date['passwordd']) {//验证密码一致性
+                    Db::table('user')
+                        ->where('username', $usrname)
+                        ->update([
+                            'password' => md5($date['password'])]);//修改操作
+                    if ($this) {
+                        $syslog = ['ip' => $ip = request()->ip(),
+                            'datetime' => $time = date('Y-m-d H:i:s'),
+                            'info' => '修改个人密码。',
+                            'state' => '正常',
+                            'username' => $usrlogo = session('username'),];
+                        Db::table('systemlog')->insert($syslog);
+                        session('username', null);
+                        $ip = "http://" . session('ip');
+//                        echo $ip;
+//                        echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { location.href = "$ip" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
+                        echo "<script>window.parent.location.href='$ip'</script>>";
+                        //                        echo "<script type='text/javascript'>parent.layer.alert('密码修改成功',function(index) {
+////                            window.parent.location.href='Index/index';
+//                       layer.close(index);
+//                        });self.location=document.referrer;;window.parent.location.href='$ip';</script>";
+//                        $this->goout();
+                        exit;
+                    } else {
+                        echo "<script type='text/javascript'>parent.layer.alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
+                    }
+
+                } else {
+                    echo "<script type='text/javascript'>parent.layer.alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
+                }
+
+            } else {
+                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
+            }
+        }
+    }
+
+    public function newpwd2()//设置新密码操作
+    {
+        return $this->fetch();
+    }
+
+    public function newpwdrun2()//设置新密码操作
+    {
+        $date = input('post.');
+
+        if ($date['password']=='123456'){
+//            halt(1);
+            echo "<script type='text/javascript'>alert('密码不能和初始密码相同');parent.history.go(-1);</script>";
+            exit();
+        }
+        halt(2);
         $validate = new validate([
             ['password', 'min:5|max:20|alphaDash|require', '密码至少5位|密码不能超过20位|密码不能包含非法字符|密码不能为空'],]);
         if (!$validate->check($date)) {
@@ -435,7 +509,7 @@ class Hddy1 extends Controller//权限1
                         exit;//判断更新操作是否成功
                     }
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');parenthistory.go(-1);</script>";
+                    echo "<script type='text/javascript'>parent.layer.alert('参数错误！');parent.history.go(-1);</script>";
                     exit;
                 }
             }

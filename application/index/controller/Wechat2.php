@@ -16,6 +16,8 @@ class Wechat2 extends Controller
 
     //权限ID
     private $AuthID;
+    //请求PHP方法的参数
+    private $data;
     //存放报错信息
 
 
@@ -36,6 +38,7 @@ class Wechat2 extends Controller
         }
         //初始化赋值
         $this->AuthID=number_format(request()->param('AuthID')) ;
+        $this->data=request()->param();
     }
 
 
@@ -97,6 +100,15 @@ class Wechat2 extends Controller
 
 
     //小程序学分审核模块--------------------------------》开始
+
+
+    //小程序学分审核模块变量区域--------------------------------》结束
+
+
+
+    //小程序学分审核模块变量区域--------------------------------》结束
+
+
     //小程序学分审核列表--------------------------------》开始
 
 
@@ -130,33 +142,45 @@ class Wechat2 extends Controller
     //小程序学分审核列表--------------------------------》结束
 
 
-    //小程序学分审核操作--------------------------------》开始
+    //小程序学分审核操作主方法--------------------------------》开始
+
 
 
     public function ExamineRun(){
-        try
-        {
-            $scoreOperation=$this->scoreoperationrun(Db::name('score_view')->where('id',request()->param('id'))->find());
-            if ($scoreOperation['code']=='550')
-            {
-                return json($scoreOperation);
-            }
-            elseif ($scoreOperation['code']=='220')
-            {
-                Db::name('scoreoperation')->where('id',request()->param('id'))->update([
-                    'opstate'=>1
-                ]);
-                return json($scoreOperation);
-            }
+        //先根据ID取出学分操作日志中对应的记录
+        $Record=Db::name('scoreoperation')->where('id',$this->data['id'])->find();
+        //根据审核操作的类型去分别处理
+        switch ($this->data['OperClass']){
+            case 1://通过
+                $this->EamScOper($Record);
+                Db::name('scoreoperation')->where('id',$this->data['id'])->update(['opstate'=>6]);
+                break;
+            case 2://驳回
+                Db::name('scoreoperation')->where('id',$this->data['id'])->update(['opstate'=>5]);
         }
-        catch (Exception $e)
-        {
-            return json($this->ReturnMsg(false,$e,null));
-        }
+        //如果通过，则1.进行学分操作补充 2.将审核状态更改为已确认
+        //如果驳回 则1.将学分操作日志中待审核状态更改为已驳回
     }
 
 
-    //小程序学分审核操作--------------------------------》结束
+    //小程序学分审核操作主方法--------------------------------》结束
+
+
+    //小程序学分审核操作附属学分操作--------------------------------》开始
+
+
+    public function EamScOper($Record){//传参传回的是scoreoperation表中的数据
+    //根据数据中的操作分数和操作类型以及操作对象进行操作学分
+     $this->scoreoper($Record['stuid'],$Record['score'],$Record['opscoreclass']);
+     if ($this){
+         return true;
+     }else{
+         return false;
+     }
+    }
+
+
+    //小程序学分审核操作附属学分操作--------------------------------》结束
 
 
     //小程序学分审核模块--------------------------------》结束
@@ -167,7 +191,7 @@ class Wechat2 extends Controller
 
     //学分操作区域----------------------------------》开始
 
-    public function scoreOperRange($opscoresec, $score)//判断操作分数
+    public function scoreOperRange($opscoresec, $score)//判断操作分数是否超过限制
     {
         return number_format(Db::name("scoresec")->where('scoresecid', $opscoresec)->value('score')) >= $score;
     }
@@ -196,6 +220,7 @@ class Wechat2 extends Controller
                 exit();
             }
         }
+        return $this->ReturnMsg();
     }
 
     private $exchg = [
@@ -206,31 +231,69 @@ class Wechat2 extends Controller
         '加分'=>'1',
         '减分'=>'2'
     ];
-    public function scoreoperationrun($ExaminInfo)//学分操作后台
+    public function scoreoperationrun()//学分操作后台====================主方法
     {
         $date = input('post.');//获取变量
-        $score = Db::name('students')
+        $stuInfo = Db::name('students')
             ->where('s_id', $date['stuid'])
             ->find();//获取学生信息
-        $score1 = number_format($score['score']);
             if ($this->scoreOperRange($date['opscoresec'], $date['score'])) {
-                $scoreopartion = $this->scoreoper($date['stuid'], $date['score'], $date['opscoreclass']);
+                $ResScoreOperation = $this->scoreoper($date['stuid'], $date['score'], $date['opscoreclass']);
             }elseif (!$this->scoreOperRange($date['opscoresec'], $date['score'])){
                 echo "<script type='text/javascript'>parent.layer.alert('学分操作超出限制');self.location=document.referrer;;;;</script>";
                 exit();
             }
             $data['opscoreclass'] = $this->ls_exchg[$date['opscoreclass']];
-            $scoreopartion = Db::table('scoreoperation')->insert($data);
-            if ($scoreopartion) {
-                return json($this->ReturnMsg(true,$scoreopartion,null));
+            $RecordScoreOperation = Db::table('scoreoperation')->insert($data);//留存学分操作日志
+            if ($RecordScoreOperation) {
+                return json($this->ReturnMsg(true,$RecordScoreOperation,null));
             } else {
-                return json($this->ReturnMsg(false,$scoreopartion,null));            }
+                return json($this->ReturnMsg(false,$RecordScoreOperation,null));            }
     }
     //学分操作区域----------------------------------》结束
 
 
 
     //小程序学分操作模块--------------------------------》结束
+    //小程序查看学分操作日志模块--------------------------------》开始
+
+
+    //小程序学分操作日志列表模块--------------------------------》开始
+
+
+    public function LogList(){
+        return Db::name('score_view')->limit(10)->find();
+    }
+
+
+    //小程序学分操作日志列表模块--------------------------------》开始
+
+
+    //小程序查看学分操作日志模块主方法--------------------------------》开始
+
+
+    public function checkLog(){
+        return Db::name('score_view')->where('id',$this->data['id'])->find();
+    }
+
+
+    //小程序查看学分操作日志模块主方法--------------------------------》结束
+
+
+    //小程序查看学分操作日志模块--------------------------------》结束
+
+
+    //小程序提交意见反馈模块--------------------------------》开始
+
+
+    public function subAdvice(){
+        Db::name('advice')->insert($this->data);
+    }
+
+
+    //小程序提交意见反馈模块--------------------------------》结束
+
+
 
 
 }
