@@ -803,6 +803,13 @@ class Instructor extends Controller//权限1
     public function editstuinforun()//学生编辑操作
     {
         $date = input('post.');
+        if (explode('-',$date['s_room'])[1]==null){
+            $dormitory=explode('—',$date['s_room'])[0];
+            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+        }elseif (explode('-',$date['s_room'])[1]!=null){
+            $dormitory=explode('-',$date['s_room'])[0];
+            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+        }
         $validate = new validate([
             ['s_id', 'require|regex:int|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
             ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
@@ -851,6 +858,8 @@ class Instructor extends Controller//权限1
                     's_home' => $date['s_home'],
                     's_class' => $date['s_class'],
                     's_room' => $date['s_room'],
+                    'dormitory'=>$dormitory,
+                    's_dormitory'=>$s_dormitory,
                 ]);//修改操作
             if ($this) {
                 $syslog = ['ip' => $ip = request()->ip(),

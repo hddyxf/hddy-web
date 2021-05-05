@@ -84,9 +84,6 @@ class Login extends Controller
                                 session('username', $date['username']);
                             } else {
                                 if ($qxcheck['jurisdiction'] == '7' || $qxcheck['jurisdiction'] == '10') {
-                                    if (md5('123456')==md5($date['password'])){
-                                        $this->success("请求修改初始密码{$date['username']}。", 'Student/newpwd');
-                                    }
                                     $this->success("登陆成功!  欢迎：{$date['username']}。", 'Student/studentindex');
                                     session('username', $date['username']);
                                     session('user_id',$date[]);

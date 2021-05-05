@@ -219,18 +219,18 @@ class Work extends Controller//权限1
 //                echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style type="text/css">body,td,th{color: #FFFFFF;}body{background-color: #0099CC;}.STYLE7 {font-size: 24px;font-family: "微软雅黑";}.STYLE9 {font-size: 16px}.STYLE12 {font-size: 100px;font-family: "微软雅黑";}</style></head><body><script language="javascript" type="text/javascript">setTimeout(function () { top.location.href = "http://127.0.0.1:8088" }, 3000);</script><span class="STYLE12">&nbsp;:)</span><p class="STYLE7">&nbsp&nbsp&nbsp&nbsp&nbsp密码修改成功！系统正在自动跳转至登陆页面。<br/></body></html>';
 //                  exit;
                         $ip="http://".session('ip');
-                        echo "<script type='text/javascript'>parent.layer.alert('密码修改成功');window.parent.location.href='$ip';</script>";
-
+                        echo "<script type='text/javascript'>alert('密码修改成功');window.parent.location.href='$ip';</script>";
+                        exit();
                     } else {
-                        echo "<script>parent.layer.alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
+                        echo "<script>alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
                     }
 
                 } else {
-                    echo "<script>parent.layer.alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
+                    echo "<script>alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
                 }
 
             } else {
-                echo "<script>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
+                echo "<script>alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -986,6 +986,13 @@ class Work extends Controller//权限1
     public function editstuinforun()//学生编辑操作
     {
         $date = input('post.');
+        if (explode('-',$date['s_room'])[1]==null){
+            $dormitory=explode('—',$date['s_room'])[0];
+            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+        }elseif (explode('-',$date['s_room'])[1]!=null){
+            $dormitory=explode('-',$date['s_room'])[0];
+            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+        }
         $validate = new validate([
             ['s_id', 'require|regex:int|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
             ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
@@ -1035,6 +1042,8 @@ class Work extends Controller//权限1
                     's_home' => $date['s_home'],
                     's_class' => $date['s_class'],
                     's_room' => $date['s_room'],
+                    'dormitory'=>$dormitory,
+                    's_dormitory'=>$s_dormitory,
                 ]);//修改操作
             if ($this) {
                 $syslog = ['ip' => $ip = request()->ip(),

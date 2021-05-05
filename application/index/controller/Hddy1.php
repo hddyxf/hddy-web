@@ -204,7 +204,6 @@ class Hddy1 extends Controller//权限1
             echo "<script type='text/javascript'>alert('密码不能和初始密码相同');parent.history.go(-1);</script>";
             exit();
         }
-
         $validate = new validate([
             ['password', 'min:5|max:20|alphaDash|require', '密码至少5位|密码不能超过20位|密码不能包含非法字符|密码不能为空'],]);
         if (!$validate->check($date)) {
@@ -246,15 +245,15 @@ class Hddy1 extends Controller//权限1
 //                        $this->goout();
                         exit;
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
+                        echo "<script type='text/javascript'>alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
                     }
 
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
+                    echo "<script type='text/javascript'>alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
                 }
 
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
+                echo "<script type='text/javascript'>alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -315,15 +314,15 @@ class Hddy1 extends Controller//权限1
 //                        $this->goout();
                         exit;
                     } else {
-                        echo "<script type='text/javascript'>parent.layer.alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
+                        echo "<script type='text/javascript'>alert('修改失败，请返回重试！');self.location=document.referrer;;</script>";
                     }
 
                 } else {
-                    echo "<script type='text/javascript'>parent.layer.alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
+                    echo "<script type='text/javascript'>alert('密码不一致，请返回重试！');self.location=document.referrer;;</script>";
                 }
 
             } else {
-                echo "<script type='text/javascript'>parent.layer.alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
+                echo "<script type='text/javascript'>alert('参数错误，请返回重试！');self.location=document.referrer;;</script>";
             }
         }
     }
@@ -1585,6 +1584,21 @@ class Hddy1 extends Controller//权限1
     public function editstuinforun()//学生编辑操作
     {
         $date = input('post.');
+        //先盘
+        if (explode('-',$date['s_room'])[1]==null){
+            $dormitory=explode('—',$date['s_room'])[0];
+            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+        }elseif (explode('-',$date['s_room'])[1]!=null){
+            $dormitory=explode('-',$date['s_room'])[0];
+            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+        }
+//        $date['dormitory']=$dormitory;
+//        $date['s_dormitory']=$s_dormitory;
+//        dump($date);
+//        dump($dormitory);
+//        dump($s_dormitory);
+//        dump(explode('-',$date['s_room']));
+//        halt(explode('—',$date['s_room']));
         $validate = new validate([
             ['s_id', 'require|regex:int|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
             ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
@@ -1637,6 +1651,8 @@ class Hddy1 extends Controller//权限1
                     's_home' => $date['s_home'],
                     's_class' => $date['s_class'],
                     's_room' => $date['s_room'],
+                    'dormitory'=>$dormitory,
+                    's_dormitory'=>$s_dormitory,
                 ]);//修改操作
             if ($this) {
                 $syslog = ['ip' => $ip = request()->ip(),
@@ -3700,7 +3716,11 @@ class Hddy1 extends Controller//权限1
             //再判断界限
             if (number_format(Db::name('students')->where('s_id', $stuid)->value('score')) > 100) {
                 //保持临界值
+//                $realscore=number_format($score)-number_format(Db::name('students')->where('s_id', $stuid)->value('score')-100);
                 Db::name('students')->where('s_id', $stuid)->update(['score' => '100']);
+                //让操作分数减去（超过一百分去减一百分）得出这个分数
+                //当做返回值，附带判断code。
+//                $lmtscore=number_format()
                 echo "<script type='text/javascript'>parent.layer.alert('操作成功但德育学分最高100分');self.location=document.referrer;;</script>";
                 exit();
             };
