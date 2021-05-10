@@ -2075,8 +2075,10 @@ class Apartment extends Controller//权限1
 
     public function addscoresec()//添加二级分类页面
     {
+        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result = Db::name("scorefirst")
             ->order('scoreid desc')
+            ->where('collegeid',$userInfo)
             ->select();
         $this->assign('data', $result);
         return $this->fetch();
@@ -3224,7 +3226,7 @@ class Apartment extends Controller//权限1
     {
         $data = input('post.');
         $stateupdate = [
-            'opstate' => '1',
+            'opstate' => '6',
           ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
           $date = $data + $stateupdate;
           //$a = $data['s_id'];

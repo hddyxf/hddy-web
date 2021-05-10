@@ -1285,7 +1285,7 @@ class Instructordoub extends Controller//权限1
     {
         $data = input('post.');
         $stateupdate = [
-            'opstate' => '1',
+            'opstate' => '6',
         ];//#########################################根据权限需要修改一下代码块的相关代表状态的参数
         $date = $data + $stateupdate;
         $validate = new validate([

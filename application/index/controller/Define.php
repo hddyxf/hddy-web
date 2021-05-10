@@ -2696,8 +2696,10 @@ class Define extends Controller//权限1
 
     public function addscoresec()//添加二级分类页面
     {
+        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result = Db::name("scorefirst")
             ->order('scoreid desc')
+            ->where('collegeid',$userInfo)
             ->select();
         $this->assign('data', $result);
         return $this->fetch();
@@ -3756,7 +3758,7 @@ class Define extends Controller//权限1
                 ]);//根据管理员用户名和用户姓名静态调用Scoreoperation表模型的查询方法
                 if ($checkusr) {//如果用户存在
                     $editscore= Scoreoperation::save([
-                        'opstate' => '1',
+                        'opstate' => '6',
                         'othername' => $date['othername'],
                         'othertime' => date('Y-m-d H:i:s'),
                         'otherstate' => '1',

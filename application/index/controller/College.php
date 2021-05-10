@@ -287,8 +287,10 @@ class College extends Controller//权限11170131315
 
     public function addscoresec()//添加二级分类页面
     {
+        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result = Db::name("scorefirst")
             ->order('scoreid desc')
+            ->where('collegeid',$userInfo)
             ->select();
         $this->assign('data', $result);
         return $this->fetch();
@@ -2640,7 +2642,7 @@ class College extends Controller//权限11170131315
                     $editscore = Db::table('scoreoperation')
                         ->where('id', $date['id'])
                         ->update([
-                            'opstate' => '1',
+                            'opstate' => '6',
                             'othername' => $date['othername'],
                             'othertime' => $time,
                             'otherstate' => '1',

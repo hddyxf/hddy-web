@@ -234,7 +234,7 @@ class Wechat extends Controller
                     $editscore = Db::table('scoreoperation')
                         ->where('id', $date['id'])
                         ->update([
-                            'opstate' => '1',
+                            'opstate' => '6',
                             'othername' => $date['othername'],
                             'othertime' => $time,
                             'otherstate' => '1',

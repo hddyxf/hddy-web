@@ -1585,13 +1585,6 @@ class Hddy1 extends Controller//权限1
     {
         $date = input('post.');
         //先盘
-        if (explode('-',$date['s_room'])[1]==null){
-            $dormitory=explode('—',$date['s_room'])[0];
-            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
-        }elseif (explode('-',$date['s_room'])[1]!=null){
-            $dormitory=explode('-',$date['s_room'])[0];
-            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
-        }
 //        $date['dormitory']=$dormitory;
 //        $date['s_dormitory']=$s_dormitory;
 //        dump($date);
@@ -1628,6 +1621,13 @@ class Hddy1 extends Controller//权限1
 //            echo "<script>window.parent.location.reload()</script>";
             exit;//判断数据是否合法
         } else {
+            if (explode('-',$date['s_room'])[1]==null){
+                $dormitory=explode('—',$date['s_room'])[0];
+                $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+            }elseif (explode('-',$date['s_room'])[1]!=null){
+                $dormitory=explode('-',$date['s_room'])[0];
+                $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+            }
             $cd = new Formcheck();
             $checkey = array('s_id', 's_add', 's_proid', 's_room');
             $cd_res = $cd->check_stuinfo($date, 'students', $checkey, 's_id');
@@ -2849,8 +2849,10 @@ class Hddy1 extends Controller//权限1
 
     public function addscoresec()//添加二级分类页面
     {
+        $userInfo=Db::name('user')->where('username',session('username'))->value('u_classinfo');
         $result = Db::name("scorefirst")
             ->order('scoreid desc')
+            ->where('collegeid',$userInfo)
             ->select();
         $this->assign('data', $result);
         return $this->fetch();
@@ -4053,7 +4055,7 @@ class Hddy1 extends Controller//权限1
                     $editscore = Db::table('scoreoperation')
                         ->where('id', $date['id'])
                         ->update([
-                            'opstate' => '1',
+                            'opstate' => '6',
                             'othername' => $date['othername'],
                             'othertime' => $time,
                             'otherstate' => '1',
