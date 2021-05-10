@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 05/05/2021 19:02:32
+ Date: 10/05/2021 18:06:17
 */
 
 SET NAMES utf8mb4;
@@ -2124,7 +2124,7 @@ INSERT INTO `operation` VALUES (2, '待审核');
 INSERT INTO `operation` VALUES (3, '申请撤销');
 INSERT INTO `operation` VALUES (4, '已撤销');
 INSERT INTO `operation` VALUES (5, '已驳回');
-INSERT INTO `operation` VALUES (6, '审核通过');
+INSERT INTO `operation` VALUES (6, '已审核');
 
 -- ----------------------------
 -- Table structure for qxinfo
@@ -2223,7 +2223,7 @@ CREATE TABLE `scoreoperation`  (
 -- ----------------------------
 -- Records of scoreoperation
 -- ----------------------------
-INSERT INTO `scoreoperation` VALUES (54, '1209949220', '梅俊昊', '男', 2009402, 11, 1, 1, 'fuhongtao', 4, '付洪涛', 1, 11, 1, 2, 1, 1, 1, '2021-04-19 15:55:14', '112.102.214.198', NULL, NULL, '0', NULL, NULL);
+INSERT INTO `scoreoperation` VALUES (54, '1209949220', '梅俊昊', '男', 2009402, 11, 1, 1, 'fuhongtao', 4, '付洪涛', 1, 11, 1, 2, 6, 1, 1, '2021-04-19 15:55:14', '112.102.214.198', NULL, NULL, '0', NULL, NULL);
 INSERT INTO `scoreoperation` VALUES (55, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'lixianqi', 7, '李显奇', 1, 11, 2, 3, 1, 50, 131, '2021-04-19 22:09:02', '117.132.195.146', '2', '李显奇', '1', '2021-04-19 22:11:20', NULL);
 INSERT INTO `scoreoperation` VALUES (56, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'lixianqi', 7, '李显奇', 1, 11, 2, 3, 5, 50, 131, '2021-04-19 22:09:21', '117.132.195.146', '硕大的', '李显奇', '5', '2021-04-19 22:09:53', NULL);
 INSERT INTO `scoreoperation` VALUES (57, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'lixianqi', 7, '李显奇', 1, 11, 2, 3, 1, 50, 131, '2021-04-19 22:09:35', '112.102.214.194', '审核', '李显奇', '1', '2021-04-19 22:09:46', NULL);
@@ -9801,7 +9801,7 @@ CREATE TABLE `systemlog`  (
   `state` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18684 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18709 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of systemlog
@@ -10525,6 +10525,31 @@ INSERT INTO `systemlog` VALUES (18680, '2021-05-05 18:30:10', '127.0.0.1', '登�
 INSERT INTO `systemlog` VALUES (18681, '2021-05-05 18:30:20', '127.0.0.1', '修改个人密码。', '正常', 'kangchunli');
 INSERT INTO `systemlog` VALUES (18682, '2021-05-05 18:31:36', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
 INSERT INTO `systemlog` VALUES (18683, '2021-05-05 18:31:44', '127.0.0.1', '修改个人密码。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18684, '2021-05-09 19:16:49', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18685, '2021-05-09 19:16:53', '127.0.0.1', '修改个人密码。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18686, '2021-05-09 19:17:13', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18687, '2021-05-09 19:17:17', '127.0.0.1', '进入审核学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18688, '2021-05-09 19:20:02', '127.0.0.1', '使用错误的密码尝试登陆系统。', '异常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18689, '2021-05-09 19:21:41', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18690, '2021-05-09 19:21:45', '127.0.0.1', '进入审核学分操作页面。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18691, '2021-05-09 19:21:46', '127.0.0.1', '进入学分操作页面。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18692, '2021-05-09 19:22:04', '127.0.0.1', '查看学分操作日志。', '异常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18693, '2021-05-10 17:26:51', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18694, '2021-05-10 17:27:26', '127.0.0.1', '查询学生信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18695, '2021-05-10 17:28:29', '127.0.0.1', '修改学号为：1220820219 的信息时输入非法字符。', '异常', 'admin');
+INSERT INTO `systemlog` VALUES (18696, '2021-05-10 17:28:30', '127.0.0.1', '查询学生信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18697, '2021-05-10 17:29:14', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18698, '2021-05-10 17:29:20', '127.0.0.1', '查看所有学分操作信息。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18699, '2021-05-10 17:31:38', '127.0.0.1', '使用错误的密码尝试登陆系统。', '异常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18700, '2021-05-10 17:31:47', '127.0.0.1', '使用错误的密码尝试登陆系统。', '异常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18701, '2021-05-10 17:31:54', '127.0.0.1', '使用错误的密码尝试登陆系统。', '异常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18702, '2021-05-10 17:32:07', '127.0.0.1', '登陆系统。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18703, '2021-05-10 17:32:11', '127.0.0.1', '修改个人密码。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18704, '2021-05-10 17:32:23', '127.0.0.1', '登陆系统。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18705, '2021-05-10 17:32:25', '127.0.0.1', '进入审核学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18706, '2021-05-10 17:32:26', '127.0.0.1', '进入学分操作页面。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18707, '2021-05-10 17:32:35', '127.0.0.1', '查看所有学分操作信息。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18708, '2021-05-10 18:01:42', '127.0.0.1', '查看学分操作日志。', '异常', 'fuhongtao');
 
 -- ----------------------------
 -- Table structure for teacher
@@ -10783,11 +10808,11 @@ INSERT INTO `user` VALUES (615, 'yuzibo', 'e10adc3949ba59abbe56e057f20f883e', NU
 INSERT INTO `user` VALUES (614, 'chencheng', 'e10adc3949ba59abbe56e057f20f883e', NULL, '陈成', '男', NULL, 1, '11', 7, NULL, '1', NULL, '232321200004187212', '18645587574', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (613, 'meijunhao', 'e10adc3949ba59abbe56e057f20f883e', NULL, '梅俊昊', '男', NULL, 1, '11', 7, NULL, '1', NULL, '231222200204104039', '15765777933', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (612, 'songliyu', 'e10adc3949ba59abbe56e057f20f883e', NULL, '宋立雨', '男', NULL, 1, '11', 6, NULL, '1', NULL, '230182199907185853', '18103660121', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `user` VALUES (610, 'shiwei', 'e10adc3949ba59abbe56e057f20f883e', '', '施薇', '女', NULL, 1, '11', 6, NULL, '1', NULL, '230102198707012142', '17766538052', '', '', NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `user` VALUES (610, 'shiwei', '4297f44b13955235245b2497399d7a93', '', '施薇', '女', NULL, 1, '11', 6, NULL, '1', NULL, '230102198707012142', '17766538052', '', '', NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (609, 'sjzhoubo', 'e10adc3949ba59abbe56e057f20f883e', NULL, '周博', '女', NULL, 1, '11', 6, NULL, '1', NULL, '230403198705170529', '18846772722', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (608, 'zhangjian', 'e10adc3949ba59abbe56e057f20f883e', NULL, '张健', '男', NULL, 1, '11', 6, NULL, '1', NULL, '230182198403081837', '13936057139', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (607, 'sujun', 'e10adc3949ba59abbe56e057f20f883e', NULL, '苏军', '男', NULL, 1, '11', 6, NULL, '1', NULL, '511324199210215499', '18845599496', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `user` VALUES (606, 'fuhongtao', 'e10adc3949ba59abbe56e057f20f883e', NULL, '付洪涛', '男', NULL, 1, '11', 4, NULL, '1', NULL, '230125198404172119', '13945103413', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `user` VALUES (606, 'fuhongtao', '4297f44b13955235245b2497399d7a93', NULL, '付洪涛', '男', NULL, 1, '11', 4, NULL, '1', NULL, '230125198404172119', '13945103413', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (605, 'zhangshilong', 'e10adc3949ba59abbe56e057f20f883e', NULL, '张世龙', '男', NULL, 1, '11', 4, NULL, '1', NULL, '231005197604082017', '13836111536', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (789, 'rhq', 'e10adc3949ba59abbe56e057f20f883e', '123@qq.com', '任贺群', '女', NULL, 1, '11', 5, NULL, '1', NULL, '122345666678908977', '14556766567', '1234567', 'a12345', NULL, NULL, NULL, '', '', 0);
 INSERT INTO `user` VALUES (790, 'jdwangwei', 'e10adc3949ba59abbe56e057f20f883e', NULL, '王伟', '男', NULL, 1, '5', 7, NULL, '1', NULL, '230623200106181038', '18846631635', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
