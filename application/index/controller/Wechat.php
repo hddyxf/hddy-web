@@ -234,7 +234,7 @@ class Wechat extends Controller
                     $editscore = Db::table('scoreoperation')
                         ->where('id', $date['id'])
                         ->update([
-                            'opstate' => '1',
+                            'opstate' => '6',
                             'othername' => $date['othername'],
                             'othertime' => $time,
                             'otherstate' => '1',
@@ -351,7 +351,7 @@ class Wechat extends Controller
                     ->where('password', md5($data['pwd']))
                     ->find();
                 if (empty($check_mnt)) {//也非班长
-                    return json(array('code' => '4', 'msg' => '请输入正确的账号、密码'));
+                    return json(array('code' => '4', 'msg' => '校外账户'));
                 } elseif (!empty($check_mnt)) {
                     return json(array('code' => '2', 'info' => $check_mnt, 'msg' => '此账户为班长账户'));
                 } else {
@@ -786,6 +786,10 @@ class Wechat extends Controller
         } else {
             return json(array('参数异常'));
         }
+    }
+    public function sendadvice(){
+        Db::name('advice')
+            ->insert(request()->param());
     }
 
 }
