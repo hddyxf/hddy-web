@@ -40,10 +40,10 @@ class Student extends Controller//权限1
             ->where('username', $usrname)
             ->find();
         $this->assign('data', $result);
-        $this->assign('data1','visible' );
-        if ($result['jurisdiction']==10){
-            $this->assign('data1','hidden' );
-        }
+//        $this->assign('data1','visible' );
+//        if ($result['jurisdiction']==10){
+//            $this->assign('data1','hidden' );
+//        }
         return $this->fetch();
     }
 
@@ -54,10 +54,10 @@ class Student extends Controller//权限1
             ->where('username', $usrname)
             ->find();
         $this->assign('data', $result);
-        $this->assign('data1','visible' );
-        if ($result['jurisdiction']==10){
-            $this->assign('data1','hidden' );
-        }
+//        $this->assign('data1','visible' );
+//        if ($result['jurisdiction']==10){
+//            $this->assign('data1','hidden' );
+//        }
         return $this->fetch();
     }
 
