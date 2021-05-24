@@ -159,6 +159,10 @@ class Login extends Controller
 
         }
     }
+    public function multiAuth(){
+        $res=Db::name('user_view')->where('username',request()->param('username'))->column('jurisdictioninfo');
+       return json($res);
+    }
 
 }
 

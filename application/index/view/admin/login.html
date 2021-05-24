@@ -5,6 +5,23 @@
   <title>欢迎使用学生德育学分管理系统</title>
   <link rel="shortcut icon" href="/static/logo.ico" />
    <link rel="stylesheet" href="/logincss/style.css">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log(123)
+            $('#username').change(function (res) {
+                console.log(res)
+                $.ajax({
+                    url:'Login/multiAuth',
+                    data:{
+                        username:res.username;
+                    },success:function (res) {
+                        console.log(res)
+                    }
+                })
+            })
+        })
+    </script>
   <script>
   window.onload = function IEVersion() {
             var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
@@ -69,7 +86,7 @@
   <div class="login">
   	<!-- <h5 class="login-heading" align="center">登陆系统</h5> -->
       <form method="post" action="{:url('login/login')}">
-         <input type="text" name="username" placeholder="用户名：" required="required" class="input-txt" />
+         <input id="username" type="text" name="username" placeholder="用户名：" required="required" class="input-txt" />
           <input type="password" name="password" placeholder="密码：" required="required" class="input-txt" />
           <input type="text" name="code" placeholder="验证码：" required="required" class="input-txt" style="width:250px" autocomplete="off"/>
           <img id="code" alt="验证码" height="40" width="180" align="bottom" class="lnk btn--right"  style="cursor:pointer;" title="点击图片刷新" onclick="this.src='{:captcha_src()}?d='+Math.random();" />
@@ -84,10 +101,10 @@
 </div>
 
 <script>   
-　　console.log("%c ", "background: url(http://img.soogif.com/kx63nQscumXTtQjSl70ZyDv5w68AbL7C.gif) no-repeat center;padding-left:440px;padding-bottom: 142px;")
-    console.log("%c 你似乎发现了一个彩蛋 %c  %c 然而并没有什么卵用", "color:red","","color:orange;font-weight:bold")
-     console.log("%c 那就祝你可以拥有快乐的每一天吧 %c  %c 嗯哼？", "color:blue;font-weight:bold","","color:green;font-weight:bold")
-     console.log("%c 创客实验室 %c%c 出品", "color:BlueViolet;font-weight:bold","","color:Black;font-weight:bold")
+<!--　　console.log("%c ", "background: url(http://img.soogif.com/kx63nQscumXTtQjSl70ZyDv5w68AbL7C.gif) no-repeat center;padding-left:440px;padding-bottom: 142px;")-->
+//    console.log("%c 你似乎发现了一个彩蛋 %c  %c 然而并没有什么卵用", "color:red","","color:orange;font-weight:bold")
+//     console.log("%c 那就祝你可以拥有快乐的每一天吧 %c  %c 嗯哼？", "color:blue;font-weight:bold","","color:green;font-weight:bold")
+//     console.log("%c 创客实验室 %c%c 出品", "color:BlueViolet;font-weight:bold","","color:Black;font-weight:bold")
      
 </script>
 </body>
