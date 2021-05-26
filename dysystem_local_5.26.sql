@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 10/05/2021 18:06:17
+ Date: 26/05/2021 09:31:53
 */
 
 SET NAMES utf8mb4;
@@ -2060,7 +2060,7 @@ CREATE TABLE `major`  (
   `majorinfo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `collegeid` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`majorid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of major
@@ -2105,6 +2105,7 @@ INSERT INTO `major` VALUES (37, '机械设计制造及其自动化', 5);
 INSERT INTO `major` VALUES (38, '车辆工程', 13);
 INSERT INTO `major` VALUES (39, '交通运输', 13);
 INSERT INTO `major` VALUES (40, '汽车服务工程', 13);
+INSERT INTO `major` VALUES (41, '专业', 11);
 
 -- ----------------------------
 -- Table structure for operation
@@ -2177,7 +2178,7 @@ CREATE TABLE `scorefirst`  (
   `collegeid` int(11) NULL DEFAULT NULL,
   `scorebl` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`scoreid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scorefirst
@@ -2186,6 +2187,7 @@ INSERT INTO `scorefirst` VALUES (1, 'Test1', 11, NULL);
 INSERT INTO `scorefirst` VALUES (2, 'Test2', 7, NULL);
 INSERT INTO `scorefirst` VALUES (3, 'Test3', 1, NULL);
 INSERT INTO `scorefirst` VALUES (4, '1', 1, NULL);
+INSERT INTO `scorefirst` VALUES (5, '学工处测试操作1', 3, NULL);
 
 -- ----------------------------
 -- Table structure for scoreoperation
@@ -2229,7 +2231,7 @@ INSERT INTO `scoreoperation` VALUES (56, '1180131224', '李显奇', '男', 18013
 INSERT INTO `scoreoperation` VALUES (57, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'lixianqi', 7, '李显奇', 1, 11, 2, 3, 1, 50, 131, '2021-04-19 22:09:35', '112.102.214.194', '审核', '李显奇', '1', '2021-04-19 22:09:46', NULL);
 INSERT INTO `scoreoperation` VALUES (58, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'lixianqi', 7, '李显奇', 1, 11, 2, 2, 5, 50, 131, '2021-04-19 22:09:46', '112.102.214.194', 'w', '李显奇', '5', '2021-04-19 22:10:46', NULL);
 INSERT INTO `scoreoperation` VALUES (59, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'lixianqi', 7, '李显奇', 1, 11, 2, 3, 1, 50, 131, '2021-04-19 22:09:58', '112.102.214.194', 'w', '李显奇', '1', '2021-04-19 22:10:28', NULL);
-INSERT INTO `scoreoperation` VALUES (60, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'shiwei', 6, '施薇', 1, 11, 1, 3, 1, 50, 130, '2021-04-19 22:10:20', '117.132.195.146', NULL, NULL, '0', NULL, NULL);
+INSERT INTO `scoreoperation` VALUES (60, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'songliyu', 6, '施薇', 1, 11, 1, 3, 2, 50, 130, '2021-04-19 22:10:20', '117.132.195.146', NULL, NULL, '0', NULL, NULL);
 INSERT INTO `scoreoperation` VALUES (61, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'shiwei', 6, '施薇', 1, 11, 1, 2, 1, 50, 130, '2021-04-19 22:10:29', '117.132.195.146', NULL, NULL, '0', NULL, NULL);
 INSERT INTO `scoreoperation` VALUES (62, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'shiwei', 6, '施薇', 1, 11, 2, 3, 2, 1, 1, '2021-04-19 22:10:38', '117.132.195.146', '1', '施薇', '1', '2021-04-22 14:10:37', NULL);
 INSERT INTO `scoreoperation` VALUES (63, '1180131224', '李显奇', '男', 1801312, 11, 2, 5, 'shiwei', 6, '施薇', 1, 11, 2, 3, 2, 50, 131, '2021-04-19 22:10:47', '117.132.195.146', NULL, NULL, '0', NULL, NULL);
@@ -2259,7 +2261,7 @@ CREATE TABLE `scoresec`  (
   `classid` int(11) NULL DEFAULT NULL,
   `score` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`scoresecid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scoresec
@@ -2267,6 +2269,8 @@ CREATE TABLE `scoresec`  (
 INSERT INTO `scoresec` VALUES (1, '1', 1, 2, '2');
 INSERT INTO `scoresec` VALUES (2, '11', 2, 2, '2');
 INSERT INTO `scoresec` VALUES (3, '111', 3, 2, '4');
+INSERT INTO `scoresec` VALUES (4, '学工处测试操作1的二级分类', 5, 1, '1');
+INSERT INTO `scoresec` VALUES (5, '学工处测试操作1二级分类2', 5, 2, '2');
 
 -- ----------------------------
 -- Table structure for students
@@ -8405,7 +8409,7 @@ INSERT INTO `students` VALUES ('1201031234', '刘楠', '女', '51160220010905378
 INSERT INTO `students` VALUES ('1201031235', '兰甜甜', '女', '51132120010114726X', NULL, '15881755346', NULL, NULL, NULL, NULL, NULL, '2010312', '3716-4', 13, NULL, 43, '60', 3, 29973, '三公寓', '3716', NULL);
 INSERT INTO `students` VALUES ('1208431324', '张文秀', '女', '230221200111181820', NULL, '18845571527', NULL, NULL, NULL, NULL, NULL, '2004313', '3222-3', 8, 25, 27, '60', 3, 29961, '三公寓', '3222', NULL);
 INSERT INTO `students` VALUES ('1209949220', '梅俊昊', '男', '231222200204104039', NULL, '15765777933', NULL, NULL, NULL, NULL, NULL, '2009402', '5418-4', 11, 1, 1, '62', 5, 29375, '五公寓', '5418', NULL);
-INSERT INTO `students` VALUES ('1220820219', '栗祥旭', '男', '230822200208220610', NULL, '18714473944', NULL, NULL, NULL, NULL, NULL, '2008202', '5324–5', 6, 12, 20, '60', 5, 29286, '五公寓', '5324', NULL);
+INSERT INTO `students` VALUES ('1220820219', '栗祥旭', '男', '230822200208220610', NULL, '18714473944', '', '', '', '', '', '2008202', '5324-5', 6, 12, 20, '60', 5, 29286, '五公寓', '5324', NULL);
 INSERT INTO `students` VALUES ('1180511103', '李金宇', '男', '230303200004064015', NULL, '18814515624', NULL, NULL, NULL, NULL, NULL, '1805111', '12521-3', 9, 23, 24, '60', 12, 29747, '十二公寓', '12521', NULL);
 INSERT INTO `students` VALUES ('1180511104', '孙文雅', '女', '230421200012090828', NULL, '18145662723', NULL, NULL, NULL, NULL, NULL, '1805111', '1506-1', 9, 23, 24, '60', 1, 29235, '一公寓', '1506', NULL);
 INSERT INTO `students` VALUES ('1180511105', '张迪', '女', '230624200008042866', NULL, '16227411313', NULL, NULL, NULL, NULL, NULL, '1805111', '1506-2', 9, 23, 24, '60', 1, 29235, '一公寓', '1506', NULL);
@@ -9801,7 +9805,7 @@ CREATE TABLE `systemlog`  (
   `state` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18709 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18779 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of systemlog
@@ -10550,6 +10554,76 @@ INSERT INTO `systemlog` VALUES (18705, '2021-05-10 17:32:25', '127.0.0.1', '进�
 INSERT INTO `systemlog` VALUES (18706, '2021-05-10 17:32:26', '127.0.0.1', '进入学分操作页面。', '正常', 'fuhongtao');
 INSERT INTO `systemlog` VALUES (18707, '2021-05-10 17:32:35', '127.0.0.1', '查看所有学分操作信息。', '正常', 'fuhongtao');
 INSERT INTO `systemlog` VALUES (18708, '2021-05-10 18:01:42', '127.0.0.1', '查看学分操作日志。', '异常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18709, '2021-05-21 15:12:11', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18710, '2021-05-21 15:12:18', '127.0.0.1', '进入学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18711, '2021-05-24 08:37:21', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18712, '2021-05-24 14:19:59', '127.0.0.1', '登陆系统。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18713, '2021-05-24 14:20:06', '127.0.0.1', '查看所有专业。', '重要', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18714, '2021-05-24 14:20:12', '127.0.0.1', '添加专业信息时输入非法字符。', '异常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18715, '2021-05-24 14:20:20', '127.0.0.1', '添加了专业名称为：专业 的信息。', '正常', 'fuhongtao');
+INSERT INTO `systemlog` VALUES (18716, '2021-05-24 14:20:45', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18717, '2021-05-24 14:20:51', '127.0.0.1', '查看所有学生。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18718, '2021-05-24 14:21:48', '127.0.0.1', '修改学号为：1220820219 的信息时输入非法字符。', '异常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18719, '2021-05-24 14:22:23', '127.0.0.1', '修改学号为：1220820219 的信息时输入非法字符。', '异常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18720, '2021-05-24 14:22:28', '127.0.0.1', '修改学号为：1220820219 的信息时输入非法字符。', '异常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18721, '2021-05-24 14:23:12', '127.0.0.1', '修改学号为：1220820219 的信息时输入非法字符。', '异常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18722, '2021-05-24 14:23:31', '127.0.0.1', '修改学号为：1220820219 的信息。', '重要', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18723, '2021-05-24 14:25:32', '127.0.0.1', '查看所有学分操作信息。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18724, '2021-05-24 14:26:56', '127.0.0.1', '使用错误的密码尝试登陆系统。', '异常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18725, '2021-05-24 14:27:09', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18726, '2021-05-24 15:02:40', '127.0.0.1', '登陆系统。', '正常', 'lixianqi');
+INSERT INTO `systemlog` VALUES (18727, '2021-05-24 15:02:55', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18728, '2021-05-24 15:03:27', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18729, '2021-05-24 15:03:30', '127.0.0.1', '进入审核学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18730, '2021-05-24 15:10:01', '127.0.0.1', '登陆系统。', '正常', 'songliyu');
+INSERT INTO `systemlog` VALUES (18731, '2021-05-24 15:10:06', '127.0.0.1', '修改个人密码。', '正常', 'songliyu');
+INSERT INTO `systemlog` VALUES (18732, '2021-05-24 15:10:12', '127.0.0.1', '登陆系统。', '正常', 'songliyu');
+INSERT INTO `systemlog` VALUES (18733, '2021-05-24 15:10:15', '127.0.0.1', '进入审核学分操作页面。', '正常', 'songliyu');
+INSERT INTO `systemlog` VALUES (18734, '2021-05-24 15:11:03', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18735, '2021-05-24 15:27:10', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18736, '2021-05-24 15:27:13', '127.0.0.1', '修改个人密码。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18737, '2021-05-24 15:27:20', '127.0.0.1', '使用错误的密码尝试登陆系统。', '异常', 'dijun');
+INSERT INTO `systemlog` VALUES (18738, '2021-05-24 15:27:25', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18739, '2021-05-24 15:27:28', '127.0.0.1', '查看学分操作日志。', '异常', 'dijun');
+INSERT INTO `systemlog` VALUES (18740, '2021-05-26 08:44:56', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18741, '2021-05-26 08:45:02', '127.0.0.1', '进入学分操作页面。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18742, '2021-05-26 08:45:03', '127.0.0.1', '查询学生信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18743, '2021-05-26 08:45:58', '127.0.0.1', '进入学分操作页面。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18744, '2021-05-26 08:46:02', '127.0.0.1', '查询学生信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18745, '2021-05-26 08:46:44', '127.0.0.1', '查询学生信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18746, '2021-05-26 08:49:33', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18747, '2021-05-26 08:49:37', '127.0.0.1', '查看所有学生。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18748, '2021-05-26 08:49:42', '127.0.0.1', '进入学分操作页面。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18749, '2021-05-26 08:49:54', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18750, '2021-05-26 09:02:34', '127.0.0.1', '查询学生信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18751, '2021-05-26 09:07:57', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18752, '2021-05-26 09:08:00', '127.0.0.1', '进入审核学分操作页面。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18753, '2021-05-26 09:09:14', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18754, '2021-05-26 09:09:17', '127.0.0.1', '进入学分操作页面。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18755, '2021-05-26 09:09:18', '127.0.0.1', '查看所有学分操作信息。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18756, '2021-05-26 09:09:48', '127.0.0.1', '添加了学分操作一级分类为：学工处测试操作1 的信息。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18757, '2021-05-26 09:10:02', '127.0.0.1', '添加了学分操作二级分类为：学工处测试操作1的二级分类 的信息。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18758, '2021-05-26 09:10:11', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18759, '2021-05-26 09:10:15', '127.0.0.1', '进入审核学分操作页面。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18760, '2021-05-26 09:10:19', '127.0.0.1', '查看所有学分操作信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18761, '2021-05-26 09:10:58', '127.0.0.1', '登陆系统。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18762, '2021-05-26 09:11:00', '127.0.0.1', '进入学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18763, '2021-05-26 09:11:01', '127.0.0.1', '进入审核学分操作页面。', '正常', 'shiwei');
+INSERT INTO `systemlog` VALUES (18764, '2021-05-26 09:12:26', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18765, '2021-05-26 09:12:39', '127.0.0.1', '使用错误的密码尝试登陆系统。', '异常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18766, '2021-05-26 09:12:45', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18767, '2021-05-26 09:13:00', '127.0.0.1', '登陆系统。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18768, '2021-05-26 09:13:03', '127.0.0.1', '查看所有学分操作信息。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18769, '2021-05-26 09:13:31', '127.0.0.1', '添加了学分操作二级分类为：学工处测试操作1二级分类2 的信息。', '正常', 'kangchunli');
+INSERT INTO `systemlog` VALUES (18770, '2021-05-26 09:14:39', '127.0.0.1', '登陆系统。', '正常', 'shenjiawei');
+INSERT INTO `systemlog` VALUES (18771, '2021-05-26 09:21:25', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18772, '2021-05-26 09:24:14', '127.0.0.1', '登陆系统。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18773, '2021-05-26 09:24:16', '127.0.0.1', '查看所有学分操作信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18774, '2021-05-26 09:24:17', '127.0.0.1', '查看所有公寓信息。', '正常', 'dijun');
+INSERT INTO `systemlog` VALUES (18775, '2021-05-26 09:28:30', '127.0.0.1', '登陆系统。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18776, '2021-05-26 09:28:34', '127.0.0.1', '查询学生信息。', '正常', 'admin');
+INSERT INTO `systemlog` VALUES (18777, '2021-05-26 09:28:40', '127.0.0.1', '修改学号为：1220820219 的信息时输入非法字符。', '异常', 'admin');
+INSERT INTO `systemlog` VALUES (18778, '2021-05-26 09:28:41', '127.0.0.1', '查询学生信息。', '正常', 'admin');
 
 -- ----------------------------
 -- Table structure for teacher
@@ -10682,7 +10756,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (937, 'dijun', 'e10adc3949ba59abbe56e057f20f883e', NULL, '邸均', '男', NULL, 2, '1', 9, NULL, '1', NULL, '231005198304114819', '13945101767', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `user` VALUES (937, 'dijun', '4297f44b13955235245b2497399d7a93', NULL, '邸均', '男', NULL, 2, '1', 9, NULL, '1', NULL, '231005198304114819', '13945101767', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (88, 'admin', '4297f44b13955235245b2497399d7a93', '132000a0@qq.com', '管理员', '男', NULL, 1, '1', 1, NULL, '1', NULL, '230126255505050555', '12245564591', '', 'aa1234567444', NULL, 'null', NULL, '', '', 0);
 INSERT INTO `user` VALUES (735, 'yszhoubo', 'e10adc3949ba59abbe56e057f20f883e', NULL, '周勃', '男', NULL, 1, '8', 7, NULL, '1', NULL, '230102199701053415', '13263599627', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (734, 'sunhongpeng', 'e10adc3949ba59abbe56e057f20f883e', NULL, '孙洪鹏', '男', NULL, 1, '8', 4, NULL, '1', NULL, '231025198509083310', '18946175288', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
@@ -10807,7 +10881,7 @@ INSERT INTO `user` VALUES (616, 'sjwangwei', 'e10adc3949ba59abbe56e057f20f883e',
 INSERT INTO `user` VALUES (615, 'yuzibo', 'e10adc3949ba59abbe56e057f20f883e', NULL, '于子博', '男', NULL, 1, '11', 7, NULL, '1', NULL, '230107200112120410', '18745195868', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (614, 'chencheng', 'e10adc3949ba59abbe56e057f20f883e', NULL, '陈成', '男', NULL, 1, '11', 7, NULL, '1', NULL, '232321200004187212', '18645587574', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (613, 'meijunhao', 'e10adc3949ba59abbe56e057f20f883e', NULL, '梅俊昊', '男', NULL, 1, '11', 7, NULL, '1', NULL, '231222200204104039', '15765777933', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `user` VALUES (612, 'songliyu', 'e10adc3949ba59abbe56e057f20f883e', NULL, '宋立雨', '男', NULL, 1, '11', 6, NULL, '1', NULL, '230182199907185853', '18103660121', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `user` VALUES (612, 'songliyu', '4297f44b13955235245b2497399d7a93', NULL, '宋立雨', '男', NULL, 1, '11', 6, NULL, '1', NULL, '230182199907185853', '18103660121', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (610, 'shiwei', '4297f44b13955235245b2497399d7a93', '', '施薇', '女', NULL, 1, '11', 6, NULL, '1', NULL, '230102198707012142', '17766538052', '', '', NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (609, 'sjzhoubo', 'e10adc3949ba59abbe56e057f20f883e', NULL, '周博', '女', NULL, 1, '11', 6, NULL, '1', NULL, '230403198705170529', '18846772722', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `user` VALUES (608, 'zhangjian', 'e10adc3949ba59abbe56e057f20f883e', NULL, '张健', '男', NULL, 1, '11', 6, NULL, '1', NULL, '230182198403081837', '13936057139', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
