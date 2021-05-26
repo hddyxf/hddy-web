@@ -9,6 +9,7 @@
     <script type="text/javascript" src="/css/jquery-ui-1.8.22.custom.min.js"></script>
     <script src="/static/lib/layui-master/dist/layui.js"></script>
     <link rel="stylesheet" href="/static/lib/layui-master/dist/css/layui.css"/>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
     <script>
         function showCustomer(str) {
             var xmlhttp;
@@ -91,11 +92,27 @@
             xmlhttp.send();
         }
     </script>
+    <script>
+        layui.use('element', function(){
+            var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+            //监听导航点击
+            element.on('nav(demo)', function(elem){
+                //console.log(elem)
+                layer.msg(elem.text());
+            });
+        });
+    </script>
 </head>
 <body>
-<div class="layui-anim layui-anim-scaleSpring">
-<div class="alert alert-info">当前位置<b class="tip"></b>学生管理<b class="tip"></b>添加学生</div>
-<table class="table table-striped table-bordered table-condensed list layui-table" lay-skin="nob">
+<div class="">
+    <span class="layui-breadcrumb">
+  <a href="">当前位置</a>
+  <a href="">学生管理</a>
+  <a><cite>添加学生</cite></a>
+</span>
+<!--<div class="alert alert-info">当前位置<b class="tip"></b>学生管理<b class="tip"></b>添加学生</div>-->
+<table class="table table-striped table-bordered table-condensed list " lay-skin="nob">
     <thead>
     <tr>
         <td colspan="6"><b>学生基本信息</b></td>

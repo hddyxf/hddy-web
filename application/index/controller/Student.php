@@ -283,7 +283,7 @@ class Student extends Controller//权限1
                 ->find();//使用find前端可以直接输出
             $this->assign('data2', $result2);
             $result3 = Db::name("scorefirst")
-                ->where('collegeid','1|3')
+                ->where('collegeid','between',[1,3])
                 // ->where('collegeid', $classid)
                 ->select();
             $this->assign('data3', $result3);

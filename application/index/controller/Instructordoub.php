@@ -788,13 +788,6 @@ class Instructordoub extends Controller//权限1
     public function editstuinforun()//学生编辑操作
     {
         $date = input('post.');
-        if (explode('-',$date['s_room'])[1]==null){
-            $dormitory=explode('—',$date['s_room'])[0];
-            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
-        }elseif (explode('-',$date['s_room'])[1]!=null){
-            $dormitory=explode('-',$date['s_room'])[0];
-            $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
-        }
         $validate = new validate([
             ['s_id', 'require|regex:int|min:10|max:15', '学号不能为空！|学号限制全部数字！|学号至少10位！|学号输入过长！'],
             ['s_name', 'require|chs|max:15', '姓名不能为空！|姓名只能为5位以内的汉字！|姓名只能为5位以内的汉字！'],
@@ -820,6 +813,13 @@ class Instructordoub extends Controller//权限1
             echo "<script>parent.layer.alert('$msg');self.location=document.referrer;</script>";
             exit;//判断数据是否合法
         } else {
+            if (explode('-',$date['s_room'])[1]==null){
+                $dormitory=explode('—',$date['s_room'])[0];
+                $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+            }elseif (explode('-',$date['s_room'])[1]!=null){
+                $dormitory=explode('-',$date['s_room'])[0];
+                $s_dormitory=Db::name('dormitory')->where('dormitoryinfo',$dormitory)->value('dormitoryid');
+            }
             $cd=new Formcheck();
             $checkey=array('s_id','s_add','s_proid','s_room');
             $cd_res=$cd->check_stuinfo($date,'students',$checkey,'s_id');
